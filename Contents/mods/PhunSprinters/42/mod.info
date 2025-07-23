@@ -1,7 +1,7 @@
 name=PhunSprinters
-id=PhunSprinters
+id=phunsprinters
 author=UburGeek
 description=Highly configurable chance of sprinters
 poster=poster.png
-require=\phunzones,\MoodleFramework
+require=\phunzones
 icon=icon.png
