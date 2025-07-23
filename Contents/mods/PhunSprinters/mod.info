@@ -1,0 +1,7 @@
+name=PhunSprinters
+id=PhunSprinters
+author=UburGeek
+description=Highly configurable chance of sprinters
+poster=poster.png
+require=phunzones,MoodleFramework
+icon=icon.png

@@ -1,0 +1,9 @@
+LICENSE
+README.txt
+.vscode
+ServerFiles
+Docs
+xclude
+testworkshop.txt
+liveworkshop.txt
+*.xcf
