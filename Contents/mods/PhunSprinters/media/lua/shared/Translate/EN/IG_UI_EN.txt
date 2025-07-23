@@ -6,21 +6,9 @@ IGUI_EN = {
     IGUI_PhunSprinters_minRisk = "Sprinter Risk",
     IGUI_PhunSprinters_minRisk_Tooltip = "The risk of sprinters appearing in this zone before being adjusted for character playtime or moon phase",
 
-    IGUI_PhunSprinters_RiskLevel = "Risk level: %1%",
-    IGUI_PhunSprinters_IgnoringYouForAnotherXHours = "Rabid zombies are ignoring you for %1 hours",
-    IGUI_PhunSprinters_IgnoringYouForAnotherXHour = "Rabid zombies are ignoring you for an hour",
-    IGUI_PhunSprinters_RiskFromMoon = "%1% from %2"
     IGUI_PhunSprinters_ZedsAreRestless = "Zombies are restless"
     IGUI_PhunSprinters_ZedsAreSettling = "Zombies are settled"
-    IGUI_PhunSprinters_ZedsAreRabid = "Zombies are rabid"
-    IGUI_PhunSprinters_AreaRisk.min = "Area is minimal risk"
-    IGUI_PhunSprinters_AreaRisk.low = "Area is low risk"
-    IGUI_PhunSprinters_AreaRisk.moderate = "Area is moderate risk"
-    IGUI_PhunSprinters_AreaRisk.high = "Area is high risk"
-    IGUI_PhunSprinters_AreaRisk.extreme = "Area is extreme risk"
-    IGUI_PhunSprinters_Modifier.darkness = "Darkness: -%1%"
 
-    IGUI_PhunSprinters_Modifiers = "Modifiers"
     IGUI_PhunSprinters_MoonPhase1 = "New Moon"
     IGUI_PhunSprinters_MoonPhase2 = "Crescent Moon"
     IGUI_PhunSprinters_MoonPhase3 = "Quarter Moon"
@@ -41,8 +29,5 @@ IGUI_EN = {
     IGUI_PhunSprinters_Risk_Area_Percentage = " - %1 Risk Area: %2%"
     IGUI_PhunSprinters_Risk_Moon_Percentage = " - %1 Modifier: %2%"
     IGUI_PhunSprinters_Risk_Hours_Discounted = " - %1 hours discount: -%2%"
-    
-    IGUI_PhunSprinters_Grace_Remaining = " - Grace remaining: %1 hours"
-
 
 }

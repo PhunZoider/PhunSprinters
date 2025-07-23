@@ -55,4 +55,7 @@ Sandbox_EN = {
     Sandbox_PhunSprinters_Debug = "Debug"
     Sandbox_PhunSprinters_Debug_tooltip = "Print verbosely (useful when diagnosing issues)"
 
+    Sandbox_PhunSprinters_MaxQueue = "Queue Size"
+    Sandbox_PhunSprinters_MaxQueue_tooltip = "The max number of zeds to update per tick"
+
 }

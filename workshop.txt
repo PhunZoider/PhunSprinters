@@ -1,6 +1,41 @@
 version=1
 id=
 title=PhunSprinters
+
+description=Vary sprinter spawn risk based on player location, moon phase, and light level — with optional visual indicators via MoodleFramework.
+
 description=
-tags=
+description=[H1]IMPORTANT[/H1]
+description=This mod requires [b][url=https://steamcommunity.com/sharedfiles/filedetails/?id=3388867450]PhunZone[/url][/b] and [b][url=https://steamcommunity.com/workshop/filedetails/?id=3411695932]PhunLib[/url][/b]. For an on-screen risk indicator, the [b]MoodleFramework[/b] mod is strongly recommended (B41 version [url=https://steamcommunity.com/sharedfiles/filedetails/?id=2859296947]here[/url], B42 version [url=https://steamcommunity.com/sharedfiles/filedetails/?id=3396446795]here[/url]).
+
+description=
+description=[H1]Quick Start[/H1]
+description=Right-click in the world and choose [b]PhunZones[/b] (Admin mode only). Select the region you'd like to configure (the [b]Default[/b] region controls global values). Click "Edit Region" and scroll to the bottom to set sprinter risk percentages.
+description=
+description=[b]Cap Sprinter Risk %[/b]: The maximum chance sprinters will spawn.
+description=[img]https://i.imgur.com/xaF4Db2.png[/img]
+
+description=
+description=Other Settings:
+description=[list]
+description=[*][b]Display Moodle[/b]: Requires MoodleFramework. Shows your current sprinter risk as an on-screen moodle.
+description=[*][b]Moodle only when at risk[/b]: Hides the moodle unless there’s a chance of sprinters.
+description=[*][b]Percentage Sprinters Volume[/b]: Adjusts how loud their screams are. Some scream audio is... lovingly cursed.
+description=[*][b]Darkness Level[/b]: Threshold for ambient light before sprinting is triggered.
+description=[*][b]Skeletons[/b]: Makes sprinters appear as skeletons — helpful for identification even if not sprinting.
+description=[*][b]Decorate[/b]: Adds themed outfits to sprinters (e.g., Santa hats at Christmas), depending on mods like Authentic Z and time of year.
+description=[*][b]Night Only[/b]: Sprinting only occurs between dusk and dawn, regardless of light level.
+description=[*][b]Moon Phase *[/b]: Adjust sprinter risk by moon phase. E.g., 50 halves the risk, 200 doubles it.
+description=[*][b]Hours Discount[/b]: Eases in new players. Reduces risk for early-game hours. (e.g., 24 hours = no discount after day one).
+description=[*][b]Min/Max Distance[/b]: Controls how close zeds must be to process sprint logic — tuned to target just off-screen.
+description=[*][b]Queue Size[/b]: How many zombies are processed per tick. A buffer to smooth lag spikes in dense areas.
+description=[*][b]Version Key[/b]: Resets all internal state when changed. You probably won’t need this — it’s a dev fallback.
+description=[*][b]Debug[/b]: Enables verbose console logging. Useful when running in debug mode.
+
+description=[/list]
+
+description=[url=https://discord.gg/v2USyAtP6q][img]https://i.imgur.com/q2rnXYZ.png[/img][/url]
+description=Coded with love for the [url=https://discord.gg/v2USyAtP6q]PhunZoid[/url] community. [url=https://github.com/PhunZoider/PhunLewt]GitHub repo and more info[/url]
+
+tags=Build 41;Build 42;Items;Multiplayer
 visibility=unlisted

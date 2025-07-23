@@ -11,6 +11,8 @@ PhunSprinters = {
     },
     settings = {},
     ui = {},
+    queueIds = {},
+    queue = {},
     sprint = true,
     daytime = true,
     baseOutfits = {

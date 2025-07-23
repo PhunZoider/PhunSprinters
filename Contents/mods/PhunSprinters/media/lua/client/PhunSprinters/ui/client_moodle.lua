@@ -115,12 +115,6 @@ function Core.moodles:update(player, data)
 
     local moodle = self:get(player)
 
-    -- if Core.settings.ShowMoodle and Core.settings.ShowMoodleOnlyWhenRunning then
-    --     if not Core.sprint then
-    --         moodle:setValue(2)
-    --     end
-    -- end
-
     if not moodle or not Core.settings.ShowMoodle or not Core.settings.ShowMoodleOnlyWhenRunning then
         if moodle then
             moodle:setValue(2)
