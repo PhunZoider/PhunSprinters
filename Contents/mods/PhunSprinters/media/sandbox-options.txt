@@ -1,7 +1,5 @@
 VERSION = 1,
 
-
-
 option PhunSprinters.ShowMoodle
 { 
     type = boolean, 
@@ -60,6 +58,14 @@ option PhunSprinters.NightOnly
     default = true,
     page = PhunSprinters, 
     translation = PhunSprinters_NightOnly,
+}
+
+option PhunSprinters.SlowInLight
+{
+    type = boolean, 
+    default = false,
+    page = PhunSprinters, 
+    translation = PhunSprinters_SlowInLight,
 }
 
 option PhunSprinters.MoonPhaseMultiplierNew

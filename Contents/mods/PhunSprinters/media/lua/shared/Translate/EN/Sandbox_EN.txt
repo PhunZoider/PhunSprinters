@@ -16,6 +16,9 @@ Sandbox_EN = {
     Sandbox_PhunSprinters_DarknessLevel = "Darkness level"
     Sandbox_PhunSprinters_DarknessLevel_tooltip = "Adjusted light level where all sprinters will run"
 
+    Sandbox_PhunSprinters_SlowInLight = "Slow in light"
+    Sandbox_PhunSprinters_SlowInLight_tooltip = "Experimental - if sprinter is running, light over your darkness level (eg a flashlight) can force them to walk (until its too dark again). Experimental "
+
     Sandbox_PhunSprinters_FrequencyOfEnvUpdate = "Env Checks"
     Sandbox_PhunSprinters_FrequencyOfEnvUpdate_tooltip = "Number of seconds before recalculating enviromental changes like light and fog. Increase for improved performance"
 

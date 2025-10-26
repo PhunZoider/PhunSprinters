@@ -19,9 +19,7 @@ local function setup()
 
     Core:ini()
     sendClientCommand(Core.name, Core.commands.playerSetup, {})
-
     Core:recalcOutfits()
-
     local nextCheck = getTimestamp()
 
     -- === Main OnTick Handler ===
@@ -47,6 +45,10 @@ Events.EveryOneMinute.Add(function()
     Core.CalcPlayersSprinterPercentage()
 end)
 
+Events[PL.events.OnDawn].Add(function()
+    Core.CalcMoon()
+end)
+
 -- === Track Player Death (Save Sprinter Hours) ===
 Events.OnPlayerDeath.Add(function(player)
     if not player or not player:isLocalPlayer() then
@@ -64,16 +66,38 @@ end)
 Events.OnZombieUpdate.Add(function(zed)
     -- Core:updateZed(zed)
     Core:enqueueUpdate(zed)
+
+    -- if Core.settings.SlowInLight then
+
+    --     local player = zed:getTarget()
+    --     if player and instanceof(player, "IsoPlayer") then
+
+    --         local data = Core:getZedData(zed)
+    --         if data.sprinter then
+    --             if getTimestamp() > (data.next or 9999999999) then
+    --                 return
+    --             end
+
+    --             data.next = getTimestamp() + 1
+    --             Core:testPlayers(player, zed, data)
+    --             -- Core:adjustForLight(zed, data, player)
+    --         end
+    --     end
+    -- end
 end)
 
 -- === Handle Day/Night Sprint Toggles ===
 Events[PL.events.OnDawn].Add(function()
-    Core.sprint = false
+    if Core.settings.NightOnly then
+        Core:enableSprinting(false)
+    end
     Core.lastRecalc = getTimestampMs()
     Core:recalcOutfits()
 end)
 
 Events[PL.events.OnDusk].Add(function()
-    Core.sprint = true
+    if Core.settings.NightOnly then
+        Core:enableSprinting(true)
+    end
     Core.lastRecalc = getTimestampMs()
 end)

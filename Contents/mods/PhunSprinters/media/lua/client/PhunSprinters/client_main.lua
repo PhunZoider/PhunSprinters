@@ -22,17 +22,38 @@ local moonMappings = {"MoonPhaseMultiplierNew", "MoonPhaseMultiplierCrescent", "
 -- Risk & Environment Evaluation
 -- ============================================================
 
+local function formatNumber(number, decimals)
+    number = number or 0
+    -- Round the number to remove the decimal part
+    local roundedNumber = math.floor(number + (decimals and 0.005 or 0.5))
+    -- Convert to string and format with commas
+    local formattedNumber = tostring(roundedNumber):reverse():gsub("(%d%d%d)", "%1,")
+    formattedNumber = formattedNumber:reverse():gsub("^,", "")
+    return formattedNumber
+end
+
+function Core.CalcMoon()
+    Core.moonPhase = climateMoon:getCurrentMoonPhase()
+    Core.moon = (Core.settings[moonMappings[Core.moonPhase + 1]] or 100) * 0.01
+end
+
 -- Calculate per-player sprinter risk based on hours, zone, moon phase, etc.
 function Core.CalcPlayersSprinterPercentage()
     local players = PL.onlinePlayers()
-    local moonPhase = climateMoon:getCurrentMoonPhase()
-    local moon = (Core.settings[moonMappings[moonPhase]] or 100) * 0.01
+    if Core.moonPhase == nil or Core.moon == nil then
+        Core.CalcMoon()
+    end
+    local moonPhase = Core.moonPhase
+    local moon = Core.moon
 
     for i = 0, players:size() - 1 do
         local player = players:get(i)
         local modData = player:getModData()
+
         modData.PhunSprinters = modData.PhunSprinters or {}
         modData.PhunZones = modData.PhunZones or {}
+
+        local lastRisk = formatNumber(modData.PhunSprinters.risk or 0)
 
         local totalHours = (modData.PhunSprinters.totalHours or 0) + player:getHoursSurvived()
         local discount = Core.settings.HoursDiscount or 0
@@ -66,13 +87,16 @@ function Core.CalcPlayersSprinterPercentage()
         else
             modData.PhunSprinters.riskLevel = "VeryHigh"
         end
-
+        if Core.settings.Debug and lastRisk ~= formatNumber(risk) then
+            print("PhunSprinters: risk=" .. tostring(formatNumber(risk)) .. " (was " .. tostring(lastRisk) .. ")")
+        end
         Core.moodles:update(player, modData.PhunSprinters)
     end
 end
 
 -- Reassess environment light/fog to determine sprint toggle
 function Core:testEnvironment()
+
     local cm = getClimateManager()
     local daylight = math.floor((cm:getDayLightStrength() or 0) * 100 + 0.5)
     local fog = math.floor((cm:getFogIntensity() or 0) * 100 + 0.5)
@@ -82,19 +106,31 @@ function Core:testEnvironment()
     self.env = {
         lightIntensity = daylight,
         fogIntensity = fog,
-        adjustedLightIntensity = adjustedLight
+        adjustedLightIntensity = adjustedLight,
+        night = PL.isNight
     }
 
-    local threshold = self.settings.DarknessLevel or 74
-    local shouldSprint = (Core.settings.NightOnly and PL.isNight) or (adjustedLight < threshold)
-
-    if shouldSprint ~= self.sprint then
-        self.sprint = shouldSprint
-        self.lastRecalc = getTimestampMs()
-        if self.settings.Debug then
-            print("PhunSprinters: Environment changed - " .. (shouldSprint and "sprinting" or "normal"))
+    if Core.settings.NightOnly then
+        if not PL.isNight then
+            if self.sprint then
+                self:enableSprinting(false)
+            end
+        else
+            if not self.sprint then
+                self:enableSprinting(true)
+            end
         end
     end
+
+    if self.settings.SlowInLight then
+        local threshold = self.settings.DarknessLevel or 74
+        local shouldSprint = (Core.settings.NightOnly and PL.isNight) or (adjustedLight < threshold)
+
+        if not self.settings.NightOnly and shouldSprint ~= self.sprint then
+            Core:enableSprinting(shouldSprint)
+        end
+    end
+
 end
 
 -- ============================================================
@@ -114,7 +150,21 @@ function Core:enqueueUpdate(zed)
 
     local dx, dy = zed:getX() - player:getX(), zed:getY() - player:getY()
     local distance = dx * dx + dy * dy
-    if distance < (self.settings.MinDistance or 400) or distance > (self.settings.MaxDistance or 3000) then
+    if distance < (self.settings.MinDistance or 400) then
+        -- zed is "too close" to test, however...
+        if self.settings.SlowInLight then
+            --- if they are close, lets check for light?
+            if zed:getTarget() and instanceof(zed:getTarget(), "IsoPlayer") then
+                local zdata = self:getZedData(zed)
+                if zdata and zdata.sprinter then
+                    local p = zed:getTarget()
+                    self:testPlayers(p, zed, zdata, p:getModData().PhunSprinters or {})
+                end
+            end
+        end
+        return
+    elseif distance > (self.settings.MaxDistance or 3000) then
+        -- too far away
         return
     end
 
@@ -171,6 +221,14 @@ function Core:updateZed(zed)
         return
     end
 
+    -- if self.settings.SlowInLight and zData.sprinter ~= false and zed.getTarget and
+    --     instanceof(zed:getTarget(), "IsoPlayer") then
+    --     if self:testPlayers(zed:getTarget(), zed, zData) == false then
+    --         -- out of sight of all players?
+    --         return
+    --     end
+    -- end
+
     if self.sprint and not zData.sprinting then
         self.makeSprint(zed)
         if self.settings.Debug then
@@ -184,6 +242,27 @@ function Core:updateZed(zed)
     end
 end
 
+function Core:enableSprinting(value)
+
+    if self.sprint == value then
+        return
+    end
+    Core.sprint = value
+    Core.lastRecalc = getTimestampMs()
+    local now = getTimestamp()
+    if not self.lastChangeSound then
+        self.lastChangeSound = now
+    elseif now - (Core.lastChangeSound or 0) > 5 then
+        Core.lastChangeSound = now
+        local vol = (self.settings.PhunRunnersVolume or 15) * .01
+        getSoundManager():PlaySound(value and "PhunSprinters_Start" or "PhunSprinters_End", false, 0):setVolume(vol);
+    end
+    if self.settings.Debug then
+        print("PhunSprinters: Environment changed - " .. (value and "sprinting" or "normal"))
+    end
+
+end
+
 -- ============================================================
 -- Screaming
 -- ============================================================
@@ -193,7 +272,7 @@ function Core:scream(zed, zData)
     local soundName = "PhunSprinters_" .. (ZombRand(5) + 1)
 
     if not zed:getEmitter():isPlaying(soundName) then
-        local vol = ((self.settings.Volume or 15) * 0.01)
+        local vol = ((self.settings.Volume or 15) * 0.1)
         local soundEmitter = getWorld():getFreeEmitter()
         local hnd = soundEmitter:playSound(soundName, zed:getX(), zed:getY(), zed:getZ())
         soundEmitter:setVolume(hnd, vol)
@@ -362,25 +441,34 @@ function Core:adjustForLight(zed, zData, player)
     local light = zed:getCurrentSquare():getLightLevel(player:getPlayerNum())
 
     if zData.sprinting and light > threshold then
-        self:normalSpeed(zed)
+        Core.makeNormal(zed)
     elseif not zData.sprinting and light < threshold then
-        self:sprintSpeed(zed)
+        Core.makeSprint(zed)
     end
 end
 
 -- Handle light-based behavior tests for targeted player
-function Core:testPlayers(player, zed, zData)
-    local pData = player:getModData().PhunSprinters or {}
+function Core:testPlayers(player, zed, zData, pData)
+
+    local zData = zData or self:getZedData(zed)
+    if zData == nil then
+        return
+    end
+
+    local pData = pData or player:getModData().PhunSprinters or {}
 
     if zData.sprinter == nil then
         zData.sprinter = self:shouldSprint(zed, zData, pData)
     end
 
     if zData.sprinter and zed:getTarget() == player then
+        if not zData.screamed and zData.sprinting then
+            self:scream(zed, zData)
+        end
         if self.sprint then
             self:adjustForLight(zed, zData, player)
         elseif zData.sprinting then
-            self:normalSpeed(zed)
+            Core.makeNormal(zed)
         end
     end
 end

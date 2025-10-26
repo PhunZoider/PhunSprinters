@@ -4,7 +4,9 @@ end
 require "MF_ISMoodle"
 local mf = MF
 local Core = PhunSprinters
-mf.createMoodle(Core.name)
+if mf and mf.createMoodle then
+    mf.createMoodle("PhunSprinters")
+end
 
 Core.moodles = {}
 local inied = {}
@@ -88,7 +90,9 @@ local function getDescription(player)
 end
 
 function Core.moodles:get(player)
-
+    if not mf or not mf.getMoodle then
+        return
+    end
     local moodle = mf.getMoodle(Core.name, player and player:getPlayerNum())
 
     if inied[tostring(player)] == nil then
@@ -115,28 +119,40 @@ function Core.moodles:update(player, data)
 
     local moodle = self:get(player)
 
-    if not moodle or not Core.settings.ShowMoodle or not Core.settings.ShowMoodleOnlyWhenRunning then
+    if not moodle then
+        return
+    end
+
+    local c = Core
+
+    if c.settings.ShowMoodle == false or (Core.settings.ShowMoodleOnlyWhenRunning == true and not Core.sprint) then
         if moodle then
-            moodle:setValue(2)
+            moodle:setValue(1)
         end
-        if not isAdmin() and not isDebugEnabled() then
-            return
-        end
+        return
+        -- if not isAdmin() and not isDebugEnabled() then
+        --     return
+        -- end
     end
 
     local modData = player:getModData()
     local pd = data or modData.PhunSprinters or {}
 
-    if not Core.sprint and not isAdmin() and not Core.settings.ShowMoodleOnlyWhenRunning then
-        moodle:setValue(2)
-        if not isAdmin() and not isDebugEnabled() then
-            return
-        else
-            moodle:setValue(2)
-        end
-    end
+    -- if not Core.sprint and not Core.settings.ShowMoodleOnlyWhenRunning then
+    --     moodle:setValue(2)
+    --     -- if not isAdmin() and not isDebugEnabled() then
+    --     --     return
+    --     -- else
+    --     --     moodle:setValue(2)
+    --     -- end
+    -- end
 
-    local value = 1 - (data.risk * .01)
+    local value = 1
+    if data.risk < 4 then
+        value = 2 - data.risk
+    else
+        value = 1 - (data.risk * .01)
+    end
 
     moodle:setValue(value)
 

@@ -1,0 +1,36 @@
+VERSION = 1,
+
+
+option PhunSprintersUI.Elements
+{ 
+    type = boolean, 
+    default = false,
+    page=PhunSprintersUI,
+    translation = PhunSprintersUI_AlwaysShowElements,
+}
+
+option PhunSprintersUI.AddToLoot
+{ 
+    type = boolean, 
+    default = false,
+    page=PhunSprintersUI,
+    translation = PhunSprintersUI_AddToLoot,
+}
+
+option PhunSprintersUI.ShowRNCToolTip
+{ 
+    type = boolean, 
+    default = false,
+    page=PhunSprintersUI,
+    translation = PhunSprintersUI_ShowRNCToolTip,
+}
+
+option PhunSprintersUI.layout
+{
+	type = enum,
+	numValues = 2,
+	default = 1,
+	page = PhunSprintersUI,
+	translation = PhunSprintersUI_option,
+	valueTranslation = PhunSprintersUI_option,
+}
