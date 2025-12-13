@@ -3,7 +3,7 @@ VERSION = 1,
 option PhunSprinters.ShowMoodle
 { 
     type = boolean, 
-    default = true,
+    default = false,
     page=PhunSprinters,
     translation = PhunSprinters_ShowMoodle,
 }

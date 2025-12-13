@@ -14,6 +14,7 @@ local ZombRand = ZombRand
 local ItemVisual = ItemVisual
 local getClimateManager = getClimateManager
 local getTimestampMs = getTimestampMs
+local getSandboxOptions = getSandboxOptions
 local moonMappings = {"MoonPhaseMultiplierNew", "MoonPhaseMultiplierCrescent", "MoonPhaseMultiplierQuarter",
                       "MoonPhaseMultiplierGibbous", "MoonPhaseMultiplierFull", "MoonPhaseMultiplierGibbous",
                       "MoonPhaseMultiplierQuarter", "MoonPhaseMultiplierCrescent"}
@@ -56,12 +57,18 @@ function Core.CalcPlayersSprinterPercentage()
         local lastRisk = formatNumber(modData.PhunSprinters.risk or 0)
 
         local totalHours = (modData.PhunSprinters.totalHours or 0) + player:getHoursSurvived()
-        local discount = Core.settings.HoursDiscount or 0
+        local discount = getSandboxOptions():getOptionByName("PhunSprinters.HoursDiscount"):getValue() or 0
         local hoursAdj = (discount > totalHours) and (totalHours / discount) or 1
-
-        local baseRisk = math.max(modData.PhunZones.minSprinterRisk or 0, 0)
+        local minRisk = modData.PhunZones.minSprinterRisk
+        local baseRisk = math.max(minRisk or 0, 0)
         local risk = baseRisk * moon * hoursAdj
         local maxRisk = modData.PhunZones.maxSprinterRisk or 0
+
+        if minRisk == nil then
+            print("PhunSprinters: missing Sprinter Risk value in zone " .. tostring(modData.PhunZones.region) .. ":" ..
+                      tostring(modData.PhunZones.zone) .. " for player " .. tostring(player:getDisplayName()) ..
+                      ". Defaulting to 0 risk")
+        end
 
         if maxRisk > 0 and risk > maxRisk then
             risk = maxRisk
@@ -110,7 +117,7 @@ function Core:testEnvironment()
         night = PL.isNight
     }
 
-    if Core.settings.NightOnly then
+    if getSandboxOptions():getOptionByName("PhunSprinters.NightOnly"):getValue() then
         if not PL.isNight then
             if self.sprint then
                 self:enableSprinting(false)
@@ -122,11 +129,12 @@ function Core:testEnvironment()
         end
     end
 
-    if self.settings.SlowInLight then
-        local threshold = self.settings.DarknessLevel or 74
-        local shouldSprint = (Core.settings.NightOnly and PL.isNight) or (adjustedLight < threshold)
-
-        if not self.settings.NightOnly and shouldSprint ~= self.sprint then
+    if getSandboxOptions():getOptionByName("PhunSprinters.SlowInLight"):getValue() then
+        local threshold = getSandboxOptions():getOptionByName("PhunSprinters.DarknessLevel"):getValue() or 74
+        local shouldSprint =
+            (getSandboxOptions():getOptionByName("PhunSprinters.NightOnly"):getValue() and PL.isNight) or
+                (adjustedLight < threshold)
+        if not getSandboxOptions():getOptionByName("PhunSprinters.NightOnly"):getValue() and shouldSprint ~= self.sprint then
             Core:enableSprinting(shouldSprint)
         end
     end

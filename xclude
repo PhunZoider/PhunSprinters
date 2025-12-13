@@ -6,4 +6,4 @@ Docs
 xclude
 testworkshop.txt
 liveworkshop.txt
-*.xcf
+.xcf

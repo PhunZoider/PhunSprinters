@@ -70,16 +70,18 @@ local function getSprinterDescription(player)
     local c = PS
     local p = PL
 
-    if c.sprint and not p.isNight then
+    if c.sprint and not p.isNight and (PS.env.adjustedLightIntensity < PS.env.lightIntensity) then
         table.insert(texts, getText("IGUI_PhunSprinters_Bad_Weather_Desc"))
-    elseif PS.sprint then
+    elseif PS.sprint and PS.env.adjustedLightIntensity < PS.settings.DarknessLevel then
         table.insert(texts, getText("IGUI_PhunSprinters_Too_Dark_Desc"))
-    else
+    elseif not PS.sprint then
         table.insert(texts, getText("IGUI_PhunSprinters_Too_Light_Desc"))
     end
     table.insert(texts, "")
 
-    table.insert(texts, getText("IGUI_PhunSprinters_X_Risk", zoneName, pd.riskLevel, formatNumber(pd.risk, true)))
+    table.insert(texts,
+        getText("IGUI_PhunSprinters_X_Risk", zoneName, getText("IGUI_PhunSprinters_Risk" .. pd.riskLevel),
+            formatNumber(pd.risk, true)))
     table.insert(texts, "")
     if pd.hoursAdj and pd.hoursAdj ~= 1 then
         local hours = (pd.totalHours or 0) + player:getHoursSurvived()

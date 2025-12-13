@@ -88,7 +88,7 @@ end)
 
 -- === Handle Day/Night Sprint Toggles ===
 Events[PL.events.OnDawn].Add(function()
-    if Core.settings.NightOnly then
+    if getSandboxOptions():getOptionByName("PhunSprinters.NightOnly"):getValue() then
         Core:enableSprinting(false)
     end
     Core.lastRecalc = getTimestampMs()
@@ -96,7 +96,7 @@ Events[PL.events.OnDawn].Add(function()
 end)
 
 Events[PL.events.OnDusk].Add(function()
-    if Core.settings.NightOnly then
+    if getSandboxOptions():getOptionByName("PhunSprinters.NightOnly"):getValue() then
         Core:enableSprinting(true)
     end
     Core.lastRecalc = getTimestampMs()
