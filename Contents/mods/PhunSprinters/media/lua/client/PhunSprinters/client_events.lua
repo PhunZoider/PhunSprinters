@@ -30,6 +30,7 @@ local function setup()
             Core:testEnvironment()
         end
     end)
+
 end
 
 Events.OnTick.Add(setup)
@@ -86,7 +87,6 @@ Events.OnZombieUpdate.Add(function(zed)
     -- end
 end)
 
--- === Handle Day/Night Sprint Toggles ===
 Events[PL.events.OnDawn].Add(function()
     if getSandboxOptions():getOptionByName("PhunSprinters.NightOnly"):getValue() then
         Core:enableSprinting(false)
@@ -95,9 +95,13 @@ Events[PL.events.OnDawn].Add(function()
     Core:recalcOutfits()
 end)
 
+
+
 Events[PL.events.OnDusk].Add(function()
     if getSandboxOptions():getOptionByName("PhunSprinters.NightOnly"):getValue() then
         Core:enableSprinting(true)
     end
     Core.lastRecalc = getTimestampMs()
 end)
+
+
