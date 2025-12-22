@@ -1,20 +1,5 @@
 VERSION = 1,
 
-option PhunSprinters.ShowMoodle
-{ 
-    type = boolean, 
-    default = false,
-    page=PhunSprinters,
-    translation = PhunSprinters_ShowMoodle,
-}
-
-option PhunSprinters.ShowMoodleOnlyWhenRunning
-{ 
-    type = boolean, 
-    default = true,
-    page = PhunSprinters, 
-    translation = PhunSprinters_ShowMoodleOnlyWhenRunning,
-}
 
 option PhunSprinters.Volume
 { 

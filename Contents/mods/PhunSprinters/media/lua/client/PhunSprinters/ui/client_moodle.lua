@@ -112,6 +112,9 @@ function Core.moodles:get(player)
 end
 
 function Core.moodles:update(player, data)
+end
+
+function Core.moodles:oldupdate(player, data)
 
     if not data or not Core.data then
         return

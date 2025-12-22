@@ -7,7 +7,8 @@ PhunSprinters = {
         playerSetup = "playerSetup"
     },
     events = {
-        onReady = "PhunSprintersOnReady"
+        onReady = "PhunSprintersOnReady",
+        onSprinterAdded = "PhunSprintersOnSprinterAdded"
     },
     settings = {},
     ui = {},

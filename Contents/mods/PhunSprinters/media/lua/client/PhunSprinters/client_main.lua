@@ -59,10 +59,10 @@ function Core.CalcPlayersSprinterPercentage()
         local totalHours = (modData.PhunSprinters.totalHours or 0) + player:getHoursSurvived()
         local discount = getSandboxOptions():getOptionByName("PhunSprinters.HoursDiscount"):getValue() or 0
         local hoursAdj = (discount > totalHours) and (totalHours / discount) or 1
-        local minRisk = modData.PhunZones.minSprinterRisk
-        local baseRisk = math.max(minRisk or 0, 0)
+        local minRisk = tonumber(modData.PhunZones.minSprinterRisk or 0)
+        local baseRisk = minRisk
         local risk = baseRisk * moon * hoursAdj
-        local maxRisk = modData.PhunZones.maxSprinterRisk or 0
+        local maxRisk = tonumber(modData.PhunZones.maxSprinterRisk or 0)
 
         if minRisk == nil then
             print("PhunSprinters: missing Sprinter Risk value in zone " .. tostring(modData.PhunZones.region) .. ":" ..
@@ -97,7 +97,7 @@ function Core.CalcPlayersSprinterPercentage()
         if Core.settings.Debug and lastRisk ~= formatNumber(risk) then
             print("PhunSprinters: risk=" .. tostring(formatNumber(risk)) .. " (was " .. tostring(lastRisk) .. ")")
         end
-        Core.moodles:update(player, modData.PhunSprinters)
+        -- Core.moodles:update(player, modData.PhunSprinters)
     end
 end
 
@@ -150,7 +150,7 @@ function Core:enqueueUpdate(zed)
         return
     end
 
-    local id = tostring(zed)
+    local id = tostring(self:getId(zed))
     local player = getPlayer()
     if not player or self.queueIds[id] then
         return
@@ -200,7 +200,7 @@ function Core:processQueue()
 
     while #self.queue > 0 and count < maxCount do
         local zed = table.remove(self.queue, 1)
-        self.queueIds[tostring(zed)] = nil
+        self.queueIds[tostring(self:getId(zed))] = nil
         self:updateZed(zed)
         count = count + 1
     end
@@ -219,16 +219,19 @@ function Core:updateZed(zed)
 
         if not zData.sprinter then
             self:applyZedVisualState(zed, zData)
+            zData.dressed = nil
             if self.settings.Debug then
                 print("PhunSprinters: " .. tostring(zData.id) .. " is not a sprinter")
             end
             self.makeNormal(zed)
             return
         end
+        -- zed:transmitModData()
     elseif not zData.sprinter then
+        zData.dressed = nil
         return
     end
-
+    triggerEvent(self.events.onSprinterAdded, zed)
     -- if self.settings.SlowInLight and zData.sprinter ~= false and zed.getTarget and
     --     instanceof(zed:getTarget(), "IsoPlayer") then
     --     if self:testPlayers(zed:getTarget(), zed, zData) == false then
@@ -437,8 +440,10 @@ end
 
 -- Determine if zombie should sprint based on player risk
 function Core:shouldSprint(zed, zData, pData)
-    if (pData.risk or 0) > 0 then
-        return ZombRand(100) <= pData.risk
+    local risk = pData.risk or 0
+    if risk > 0 then
+        local chance = ZombRand(100)
+        return chance <= risk
     end
     return false
 end

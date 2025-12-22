@@ -4,7 +4,7 @@ title=PhunSprinters
 description=Vary sprinter spawn rate based on player location, moon phase, time played and light level with optional visual indicators.
 description=
 description=[H1]IMPORTANT[/H1]
-description=This mod requires [b][url=https://steamcommunity.com/sharedfiles/filedetails/?id=3388867450]PhunZones[/url][/b] and [b][url=https://steamcommunity.com/workshop/filedetails/?id=3411695932]PhunLib[/url][/b]. For an on-screen risk indicator, use [b]phunsprintersui[/b] (the preferred method) or the [b]MoodleFramework[/b] (B41 version [url=https://steamcommunity.com/sharedfiles/filedetails/?id=2859296947]here[/url], B42 version [url=https://steamcommunity.com/sharedfiles/filedetails/?id=3396446795]here[/url]).
+description=This mod requires [b][url=https://steamcommunity.com/sharedfiles/filedetails/?id=3388867450]PhunZones[/url][/b] and [b][url=https://steamcommunity.com/workshop/filedetails/?id=3411695932]PhunLib[/url][/b]. For an on-screen risk indicator, use [b]phunsprintersui[/b].
 description=
 description=[H1]Quick Start[/H1]
 description=[list]
@@ -18,8 +18,6 @@ description=
 description=Global Settings. Note some of these require a restart to take effect:
 description=[table]
 description=[tr][th]Setting[/th][th]Description[/th][/tr]
-description=[tr][td][b]Display Moodle[/b][/td][td](deprecated, use phunsprintersui instead). Shows your current sprinter risk as an on-screen moodle. Requires the MoodleFramework mod[/td][/tr]
-description=[tr][td][b]Moodle only when at risk[/b][/td][td]Hides the moodle unless there is a chance of sprinters[/td][/tr]
 description=[tr][td][b]Percentage Sprinters Volume[/b][/td][td]Adjusts how loud their screams are. Some scream audio is... lovingly cursed.[/td][/tr]
 description=[tr][td][b]Darkness Level[/b][/td][td]Threshold for global ambient light before sprinting is triggered. The higher this value, the lighter it can be to make sprinters run[/td][/tr]
 description=[tr][td][b]Slow In Light[/b][/td][td]Makes a sprinter start walking if it gets too bright (eg player shines a flashlight on them). There are some limitations here to minimise performance impact.[/td][/tr]
@@ -34,7 +32,7 @@ description=[tr][td][b]Version Key[/b][/td][td]Resets all internal state when ch
 description=[tr][td][b]Debug[/b][/td][td]Enables verbose console logging. Useful when running in debug mode.[/td][/tr]
 description=[/table]
 description=
-description=PhunSprintersUI mod - add "phunsprintersui" to your mod list to enable new UI indicators that aim to inform the user better than the current moodles.
+description=PhunSprintersUI mod - add "phunsprintersui" to your mod list to enable new UI indicators that aim to inform the user.
 description=[table]
 description=[tr][th]Setting[/th][th]Description[/th][/tr]
 description=[tr][td][b]Elements[/b][/td][td]Enables auto display of the new UI widgets. If ticked, they will always be shown[/td][/tr]
@@ -44,7 +42,7 @@ description=[tr][td][b]Layout[/b][/td][td]Horizontal or vertical options (I thin
 description=[/table]
 description=
 description=[H2]More Phun Stuff[/h2]
-description=[url=https://steamcommunity.com/sharedfiles/filedetails/?id=3623897097][img]https://i.ibb.co/mCv5kDgy/preview.png[/img][/url] [url=https://steamcommunity.com/sharedfiles/filedetails/?id=3388867450][img]https://i.ibb.co/x8H5KRhs/preview.png[/img][/url] [url=https://steamcommunity.com/sharedfiles/filedetails/?id=3606988132][img]https://i.ibb.co/ZtQtmJd/preview.png[/img][/url]
+description=[url=https://steamcommunity.com/sharedfiles/filedetails/?id=3623897097][img]https://i.ibb.co/mCv5kDgy/preview.png[/img][/url] [url=https://steamcommunity.com/sharedfiles/filedetails/?id=3388867450][img]https://i.ibb.co/x8H5KRhs/preview.png[/img][/url] [url=https://steamcommunity.com/sharedfiles/filedetails/?id=3606988132][img]https://i.ibb.co/ZtQtmJd/preview.png[/img][/url] [url=https://steamcommunity.com/sharedfiles/filedetails/?id=3606988132][img]https://i.ibb.co/wrZbknjt/preview.png[/img][/url]
 description=
 description=Coded with love for our awesome [url=https://discord.gg/v2USyAtP6q]PhunZoid[/url] community. [url=https://github.com/PhunZoider/PhunSprinters]GitHub repo and more info[/url]
 tags=Build 41;Build 42;Items;Multiplayer

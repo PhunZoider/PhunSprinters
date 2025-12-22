@@ -1,0 +1,7 @@
+name=PhunServer TEST
+id=phunsprinterstest
+author=UburGeek
+description=Highly configurable chance of sprinters
+poster=poster.png
+require=\phunlib
+icon=icon.png
