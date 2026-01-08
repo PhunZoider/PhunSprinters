@@ -490,7 +490,11 @@ end
 function Core.makeNormal(zed)
     zed:makeInactive(true)
     sandboxOptions:set("ZombieLore.Speed", 2)
-    zed:getModData().PhunSprinters.sprinting = false
+    local data = zed:getModData()
+    if not data.PhunSprinters then
+        data.PhunSprinters = {}
+    end
+    data.PhunSprinters.sprinting = false
     zed:makeInactive(false)
 end
 
@@ -498,7 +502,11 @@ end
 function Core.makeSprint(zed)
     zed:makeInactive(true)
     sandboxOptions:set("ZombieLore.Speed", 1)
-    zed:getModData().PhunSprinters.sprinting = true
+    local data = zed:getModData()
+    if not data.PhunSprinters then
+        data.PhunSprinters = {}
+    end
+    data.PhunSprinters.sprinting = true
     zed:makeInactive(false)
     sandboxOptions:set("ZombieLore.Speed", 2)
 end
