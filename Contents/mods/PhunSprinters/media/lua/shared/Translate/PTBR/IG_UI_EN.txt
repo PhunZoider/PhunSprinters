@@ -1,0 +1,42 @@
+IGUI_PTBR = {
+
+    IGUI_PhunSprinters_maxRisk = "Limite Máximo de Risco de Sprinters %",
+    IGUI_PhunSprinters_maxRisk_Tooltip = "O risco máximo de surgimento de sprinters nesta zona. Deixe em branco ou 100 para 100%",
+
+    IGUI_PhunSprinters_minRisk = "Risco de Sprinters",
+    IGUI_PhunSprinters_minRisk_Tooltip = "O risco base de sprinters aparecerem nesta zona antes de ajustes por tempo de jogo do personagem ou fase da lua",
+
+    IGUI_PhunSprinters_ZedsAreRestless = "Os zumbis estão agitados",
+    IGUI_PhunSprinters_ZedsAreSettling = "Os zumbis estão mais calmos",
+
+    IGUI_PhunSprinters_MoonPhase0 = "Lua Nova",
+    IGUI_PhunSprinters_MoonPhase1 = "Lua Crescente",
+    IGUI_PhunSprinters_MoonPhase2 = "Quarto Crescente",
+    IGUI_PhunSprinters_MoonPhase3 = "Lua Gibosa",
+    IGUI_PhunSprinters_MoonPhase4 = "Lua Cheia",
+    IGUI_PhunSprinters_MoonPhase5 = "Lua Gibosa",
+    IGUI_PhunSprinters_MoonPhase6 = "Quarto Minguante",
+    IGUI_PhunSprinters_MoonPhase7 = "Lua Minguante",
+
+    
+    IGUI_PhunSprinters_RiskNone = "Seguro",
+    IGUI_PhunSprinters_RiskLow = "Baixo",
+    IGUI_PhunSprinters_RiskMedium = "Moderado",
+    IGUI_PhunSprinters_RiskHigh = "Alto",
+    IGUI_PhunSprinters_RiskVeryHigh = "Muito Alto",
+
+    IGUI_PhunSprinters_Risk_Percentage = "Risco: %1%",
+    IGUI_PhunSprinters_Risk_Area_Percentage = " - %1 Risco da Área: %2%",
+    IGUI_PhunSprinters_Risk_Moon_Percentage = " - %1 Modificador: %2%",
+    IGUI_PhunSprinters_Risk_Hours_Discounted = " - %1 horas de desconto: -%2%",
+    IGUI_PhunSprinters_Tomorrows_Forcast = "Previsão para Amanhã",
+    IGUI_PhunSprinters_Moon_Reducing_Desc = "A %1 tem um efeito calmante nos zumbis, reduzindo a quantidade de sprinters em %2%",
+    IGUI_PhunSprinters_Moon_Normal_Desc = "A %1 não parece ter nenhum efeito sobre a quantidade de sprinters surgindo",
+    IGUI_PhunSprinters_Moon_Increasing_Desc = "A %1 está causando um aumento de sprinters em %2%",
+    IGUI_PhunSprinters_X_Risk = "A classificação de risco para %1 é: %2, pois %3% dos zumbis podem ser sprinters raivosos",
+    IGUI_PhunSprinters_Too_Light_Desc = "A claridade externa está acalmando os sprinters raivosos",
+    IGUI_PhunSprinters_Too_Dark_Desc = "A escuridão geral está deixando os zumbis raivosos mais agitados",
+
+    IGUI_PhunSprinters_Bad_Weather_Desc = "O mau tempo está reduzindo a luminosidade, deixando os zumbis raivosos mais inquietos"
+
+}

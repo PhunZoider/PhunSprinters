@@ -1,0 +1,64 @@
+
+Sandbox_PTBR = {
+    Sandbox_PhunSprinters = "PhunSprinters",
+    Sandbox_PhunSprinters_VersionKey = "Chave de Versão"
+    Sandbox_PhunSprinters_VersionKey_tooltip = "Configuração avançada. Altere para redefinir o ModData dos zumbis, caso seja necessário por algum motivo"
+
+    Sandbox_PhunSprinters_ShowMoodle = "Exibir Moodle"
+    Sandbox_PhunSprinters_ShowMoodle_tooltip = "Mostra um moodle com informações sobre os riscos atuais de sprinters"
+
+    Sandbox_PhunSprinters_ShowMoodleOnlyWhenRunning = "Moodle apenas quando há risco"
+    Sandbox_PhunSprinters_ShowMoodleOnlyWhenRunning_tooltip = "Exibe o moodle somente quando sprinters podem surgir"
+
+    Sandbox_PhunSprinters_Volume = "Porcentagem do Volume dos Sprinters"
+    Sandbox_PhunSprinters_Volume_tooltip = "Volume do grito dos sprinters"
+
+    Sandbox_PhunSprinters_DarknessLevel = "Nível de Escuridão"
+    Sandbox_PhunSprinters_DarknessLevel_tooltip = "Nível de luz ajustado em que todos os sprinters irão correr"
+
+    Sandbox_PhunSprinters_SlowInLight = "Lentos na Luz"
+    Sandbox_PhunSprinters_SlowInLight_tooltip = "Experimental - se o sprinter estiver correndo, luz acima do seu nível de escuridão (ex: lanterna) pode forçá-lo a andar (até escurecer novamente). Experimental "
+
+    Sandbox_PhunSprinters_FrequencyOfEnvUpdate = "Verificações de Ambiente"
+    Sandbox_PhunSprinters_FrequencyOfEnvUpdate_tooltip = "Número de segundos antes de recalcular mudanças ambientais como luz e neblina. Aumente para melhorar a performance"
+
+    Sandbox_PhunSprinters_Skeletons = "Esqueletos"
+    Sandbox_PhunSprinters_Skeletons_tooltip = "Transforma sprinters em esqueletos para indicar visualmente que eles... você sabe... correm"
+
+    Sandbox_PhunSprinters_Decorate = "Decorar"
+    Sandbox_PhunSprinters_Decorate_tooltip = "Veste os sprinters de acordo com datas comemorativas (funciona apenas com certos mods adicionais ativos e instalados)"
+
+    Sandbox_PhunSprinters_NightOnly = "Apenas à Noite"
+    Sandbox_PhunSprinters_NightOnly_tooltip = "Corre apenas entre o anoitecer e o amanhecer. Desmarque se quiser sprinters durante o dia em clima ruim"
+
+    Sandbox_PhunSprinters_MoonPhaseNew = "Fase da Lua (Lua Nova)"
+    Sandbox_PhunSprinters_MoonPhaseNew_tooltip = "Ajusta o risco em noites de lua nova por este valor. Ex: 50 reduz o risco em 50%, enquanto 200 aumenta para 200% (risco dobrado). Deixe em branco ou 0 para não ajustar."
+
+    Sandbox_PhunSprinters_MoonPhaseCrescent = "Fase da Lua (Lua Crescente)"
+    Sandbox_PhunSprinters_MoonPhaseCrescent_tooltip = "Ajusta o risco em noites de lua crescente por este valor. Ex: 50 reduz o risco em 50%, enquanto 200 aumenta para 200% (risco dobrado). Deixe em branco ou 0 para não ajustar."
+
+    Sandbox_PhunSprinters_MoonPhaseQuarter = "Fase da Lua (Quarto Crescente)"
+    Sandbox_PhunSprinters_MoonPhaseQuarter_tooltip = "Ajusta o risco em noites de quarto crescente por este valor. Ex: 50 reduz o risco em 50%, enquanto 200 aumenta para 200% (risco dobrado). Deixe em branco ou 0 para não ajustar."
+
+    Sandbox_PhunSprinters_MoonPhaseGibbous = "Fase da Lua (Lua Gibosa)"
+    Sandbox_PhunSprinters_MoonPhaseGibbous_tooltip = "Ajusta o risco em noites de lua gibosa por este valor. Ex: 50 reduz o risco em 50%, enquanto 200 aumenta para 200% (risco dobrado). Deixe em branco ou 0 para não ajustar."
+
+    Sandbox_PhunSprinters_MoonPhaseFull = "Fase da Lua (Lua Cheia)"
+    Sandbox_PhunSprinters_MoonPhaseFull_tooltip = "Ajusta o risco em noites de lua cheia por este valor. Ex: 50 reduz o risco em 50%, enquanto 200 aumenta para 200% (risco dobrado). Deixe em branco ou 0 para não ajustar."
+
+    Sandbox_PhunSprinters_HoursDiscount = "Desconto por Horas"
+    Sandbox_PhunSprinters_HoursDiscount_tooltip = "Número de horas (somando todos os personagens) até que o nível de risco seja totalmente aplicado. Por exemplo, se este valor for 240 (10 dias de jogo), no quinto dia de jogo (independente de quantas vezes o jogador morreu), o risco efetivo é reduzido em 50%. Deixe em branco ou 0 para ignorar"
+
+    Sandbox_PhunSprinters_MinDistance = "Distância Mínima"
+    Sandbox_PhunSprinters_MinDistance_tooltip = "Distância mínima entre o jogador e o zumbi para processar a chance de ser sprinter (evita surgimentos repentinos)"
+
+    Sandbox_PhunSprinters_MaxDistance = "Distância Máxima"
+    Sandbox_PhunSprinters_MaxDistance_tooltip = "Distância máxima entre o jogador e o zumbi para processar a chance de ser sprinter (melhora a performance ao ignorar zumbis muito distantes)"
+
+    Sandbox_PhunSprinters_Debug = "Depuração"
+    Sandbox_PhunSprinters_Debug_tooltip = "Exibe logs detalhados (útil para diagnosticar problemas)"
+
+    Sandbox_PhunSprinters_MaxQueue = "Tamanho da Fila"
+    Sandbox_PhunSprinters_MaxQueue_tooltip = "Número máximo de zumbis atualizados por ciclo"
+
+}
