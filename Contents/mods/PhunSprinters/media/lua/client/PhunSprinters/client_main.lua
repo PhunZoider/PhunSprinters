@@ -58,8 +58,9 @@ function Core.CalcPlayersSprinterPercentage()
 
         local totalHours = (modData.PhunSprinters.totalHours or 0) + player:getHoursSurvived()
         local discount = getSandboxOptions():getOptionByName("PhunSprinters.HoursDiscount"):getValue() or 0
+        local defaultRisk = getSandboxOptions():getOptionByName("PhunSprinters.DefaultRisk"):getValue() or 0
         local hoursAdj = (discount > totalHours) and (totalHours / discount) or 1
-        local minRisk = tonumber(modData.PhunZones.minSprinterRisk or 0)
+        local minRisk = tonumber(modData.PhunZones.minSprinterRisk or defaultRisk or 0)
         local baseRisk = minRisk
         local risk = baseRisk * moon * hoursAdj
         local maxRisk = tonumber(modData.PhunZones.maxSprinterRisk or 0)

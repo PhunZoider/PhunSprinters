@@ -61,4 +61,7 @@ Sandbox_EN = {
     Sandbox_PhunSprinters_MaxQueue = "Queue Size"
     Sandbox_PhunSprinters_MaxQueue_tooltip = "The max number of zeds to update per tick"
 
+    Sandbox_PhunSprinters_DefaultRisk = "Default Risk"
+    Sandbox_PhunSprinters_DefaultRisk_tooltip = "Chance out of 10000 of a zed being a sprinter. This value is used when there is no valid PhunZones value to use"
+
 }

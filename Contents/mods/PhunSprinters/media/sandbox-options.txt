@@ -1,25 +1,26 @@
 VERSION = 1,
 
 
-option PhunSprinters.Volume
+option PhunSprinters.DefaultRisk
 { 
     type = integer, 
-    default = 10, 
-    min = 1,
-    max = 100,
+    default = 1, 
+    min = 0,
+    max = 10000,
     page=PhunSprinters,
-    translation = PhunSprinters_Volume,
+    translation = PhunSprinters_DefaultRisk,
 }
 
-option PhunSprinters.DarknessLevel
-{ 
+option PhunSprinters.HoursDiscount
+{
     type = integer, 
-    default = 74, 
+    default = 60,
     min = 0,
-    max = 100,
+    max = 10000,
     page=PhunSprinters,
-    translation = PhunSprinters_DarknessLevel,
+    translation = PhunSprinters_HoursDiscount,
 }
+
 
 option PhunSprinters.Skeletons
 {
@@ -103,15 +104,24 @@ option PhunSprinters.MoonPhaseMultiplierFull
     translation = PhunSprinters_MoonPhaseFull,
 }
 
-
-option PhunSprinters.HoursDiscount
-{
-    type = integer, 
-    default = 240,
-    min = 0,
-    max = 10000,
+option PhunSprinters.Debug
+{ 
+    type = boolean, 
+    default = false,
+    min = 1,
+    max = 100,
     page=PhunSprinters,
-    translation = PhunSprinters_HoursDiscount,
+    translation = PhunSprinters_Debug,
+}
+
+option PhunSprinters.DarknessLevel
+{ 
+    type = integer, 
+    default = 74, 
+    min = 0,
+    max = 100,
+    page=PhunSprinters,
+    translation = PhunSprinters_DarknessLevel,
 }
 
 option PhunSprinters.MinDistance
@@ -143,6 +153,15 @@ option PhunSprinters.MaxQueue
     page=PhunSprinters,
     translation = PhunSprinters_MaxQueue,
 }
+option PhunSprinters.Volume
+{ 
+    type = integer, 
+    default = 10, 
+    min = 1,
+    max = 100,
+    page=PhunSprinters,
+    translation = PhunSprinters_Volume,
+}
 
 
 option PhunSprinters.VersionKey
@@ -153,12 +172,3 @@ option PhunSprinters.VersionKey
     translation = PhunSprinters_VersionKey,
 }
 
-option PhunSprinters.Debug
-{ 
-    type = boolean, 
-    default = false,
-    min = 1,
-    max = 100,
-    page=PhunSprinters,
-    translation = PhunSprinters_Debug,
-}
