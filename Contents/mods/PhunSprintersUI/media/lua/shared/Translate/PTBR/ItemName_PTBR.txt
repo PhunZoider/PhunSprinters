@@ -1,0 +1,4 @@
+ItemName_PTBR = {
+    ItemName_Phun.WristWatch_Right_MilitaryX = "Relógio Militar Especial",
+    ItemName_Phun.WristWatch_Left_MilitaryX = "Relógio Militar Especial",
+}

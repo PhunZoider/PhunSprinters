@@ -186,6 +186,15 @@ function Core:ini()
     triggerEvent(self.events.OnReady, self)
 end
 
+function Core.getOption(name, default)
+    local n = Core.name .. "." .. name
+    local val = getSandboxOptions():getOptionByName(n) and getSandboxOptions():getOptionByName(n):getValue()
+    if val == nil then
+        return default
+    end
+    return val
+end
+
 function Core:getId(zedObj)
     if zedObj then
         if instanceof(zedObj, "IsoZombie") then

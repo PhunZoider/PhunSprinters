@@ -1,0 +1,16 @@
+Sandbox_PTBR = {
+    Sandbox_PhunSprintersUI = "PhunSprintersUI",
+    Sandbox_PhunSprintersUI_AlwaysShowElements = "Sempre Mostrar"
+    Sandbox_PhunSprintersUI_AlwaysShowElements_tooltip = "Interface sempre visível. Requer o mod PhunSprintersUI ativo. Provavelmente faz sentido desativar a opção de moodle se estiver usando isso. Requer reinício"
+
+    Sandbox_PhunSprintersUI_AddToLoot = "Relógios no Loot"
+    Sandbox_PhunSprintersUI_AddToLoot_tooltip = "Se a opção Sempre Mostrar estiver desativada, marque para que relógios militares apareçam no loot. Ao usá-los, a interface será exibida. Requer reinício"
+
+    Sandbox_PhunSprintersUI_ShowRNCToolTip = "Integração com RNC"
+    Sandbox_PhunSprintersUI_ShowRNCToolTip_tooltip = "Se ativado (e se o mod Rewarding Night Combat estiver instalado), adiciona o tooltip dele ao elemento da lua, permitindo remover o tooltip original"
+
+    Sandbox_PhunSprintersUI_option = "Layout",
+    Sandbox_PhunSprintersUI_option_option1 = "Vertical",
+    Sandbox_PhunSprintersUI_option_option2 = "Horizontal",
+    
+}

@@ -266,8 +266,10 @@ function Core:enableSprinting(value)
         self.lastChangeSound = now
     elseif now - (Core.lastChangeSound or 0) > 5 then
         Core.lastChangeSound = now
-        local vol = (self.settings.PhunRunnersVolume or 15) * .01
-        getSoundManager():PlaySound(value and "PhunSprinters_Start" or "PhunSprinters_End", false, 0):setVolume(vol);
+        local vol = Core.getOption("SprintingChangeNotificationVolume", 15) * .01
+        if vol > 0 then
+            getSoundManager():PlaySound(value and "PhunSprinters_Start" or "PhunSprinters_End", false, 0):setVolume(vol);
+        end
     end
     if self.settings.Debug then
         print("PhunSprinters: Environment changed - " .. (value and "sprinting" or "normal"))

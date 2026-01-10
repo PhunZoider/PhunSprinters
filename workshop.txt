@@ -3,9 +3,6 @@ id=3532685233
 title=PhunSprinters
 description=Vary sprinter spawn rate based on player location, moon phase, time played and light level with optional visual indicators.
 description=
-description=[H1]IMPORTANT[/H1]
-description=This mod requires [b][url=https://steamcommunity.com/sharedfiles/filedetails/?id=3388867450]PhunZones[/url][/b] and [b][url=https://steamcommunity.com/workshop/filedetails/?id=3411695932]PhunLib[/url][/b]. For an on-screen risk indicator, use [b]phunsprintersui[/b].
-description=
 description=[H1]Quick Start[/H1]
 description=[list]
 description=[*]Click the [b]PhunZones[/b] button in your admin or debug menu
@@ -40,6 +37,8 @@ description=[tr][td][b]Lootable bands[/b][/td][td]Adds a UV sensor band to loot 
 description=[tr][td][b]RNC Integration[/b][/td][td]Ticking this box when you have [url=https://steamcommunity.com/sharedfiles/filedetails/?id=2781963981]Rewarding Night Combat[/url] installed and the RNC tooltip that appears in its moon indicator will be incorporated into the moon element tooltip so you could disable their indicator which could overlap with this one[/td][/tr]
 description=[tr][td][b]Layout[/b][/td][td]Horizontal or vertical options (I think horizontal is the best!)[/td][/tr]
 description=[/table]
+description=
+description=PTBR Transalations by [url=https://steamcommunity.com/id/SIMBAproduz]SIMBAproduz[/url]
 description=
 description=[H2]More Phun Stuff[/h2]
 description=[url=https://steamcommunity.com/sharedfiles/filedetails/?id=3623897097][img]https://i.ibb.co/mCv5kDgy/preview.png[/img][/url] [url=https://steamcommunity.com/sharedfiles/filedetails/?id=3388867450][img]https://i.ibb.co/x8H5KRhs/preview.png[/img][/url] [url=https://steamcommunity.com/sharedfiles/filedetails/?id=3606988132][img]https://i.ibb.co/ZtQtmJd/preview.png[/img][/url] [url=https://steamcommunity.com/sharedfiles/filedetails/?id=3628843367][img]https://i.ibb.co/wrZbknjt/preview.png[/img][/url]

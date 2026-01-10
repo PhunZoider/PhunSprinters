@@ -64,4 +64,7 @@ Sandbox_EN = {
     Sandbox_PhunSprinters_DefaultRisk = "Default Risk"
     Sandbox_PhunSprinters_DefaultRisk_tooltip = "Chance out of 10000 of a zed being a sprinter. This value is used when there is no valid PhunZones value to use"
 
+    Sandbox_PhunSprinters_SprintingChangeNotificationVolume = "Night Change Volume"
+    Sandbox_PhunSprinters_SprintingChangeNotificationVolume_tooltip = "Volume of the sound that notifies players that sprinters are no longer running (eg day) or that they have now started to run (eg night or bad weather). Set to 0 to disable"
+
 }

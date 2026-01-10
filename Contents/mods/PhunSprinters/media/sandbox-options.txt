@@ -163,6 +163,15 @@ option PhunSprinters.Volume
     translation = PhunSprinters_Volume,
 }
 
+option PhunSprinters.SprintingChangeNotificationVolume
+{ 
+    type = integer, 
+    default = 15, 
+    min = 1,
+    max = 100,
+    page=PhunSprinters,
+    translation = PhunSprinters_SprintingChangeNotificationVolume,
+}
 
 option PhunSprinters.VersionKey
 { 

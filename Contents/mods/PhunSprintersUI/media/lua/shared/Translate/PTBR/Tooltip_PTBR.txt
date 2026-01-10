@@ -1,0 +1,4 @@
+Tooltip_PTBR = {
+	Tooltip_Item_WristWatch_Right_MilitaryX = "Hora, alarme, data, temperatura, fase da lua e informações sobre sprinters",
+	Tooltip_Item_WristWatch_Left_MilitaryX = "Hora, alarme, data, temperatura, fase da lua e informações sobre sprinters"
+}
