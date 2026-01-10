@@ -286,7 +286,10 @@ function Core:scream(zed, zData)
     local soundName = "PhunSprinters_" .. (ZombRand(5) + 1)
 
     if not zed:getEmitter():isPlaying(soundName) then
-        local vol = ((self.settings.Volume or 15) * 0.1)
+        local vol = Core.getOption("SprintingChangeNotificationVolume", 15) * .01
+        if vol <= 0 then
+            return
+        end
         local soundEmitter = getWorld():getFreeEmitter()
         local hnd = soundEmitter:playSound(soundName, zed:getX(), zed:getY(), zed:getZ())
         soundEmitter:setVolume(hnd, vol)

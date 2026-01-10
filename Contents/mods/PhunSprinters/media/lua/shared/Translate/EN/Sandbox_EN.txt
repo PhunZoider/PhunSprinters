@@ -11,7 +11,7 @@ Sandbox_EN = {
     Sandbox_PhunSprinters_ShowMoodleOnlyWhenRunning_tooltip = "Only show moodle when sprinters can spawn"
 
     Sandbox_PhunSprinters_Volume = "Percentage Sprinters Volume"
-    Sandbox_PhunSprinters_Volume_tooltip = "Volume of sprinter screech"
+    Sandbox_PhunSprinters_Volume_tooltip = "Volume of sprinter screech. 0 to disable"
 
     Sandbox_PhunSprinters_DarknessLevel = "Darkness level"
     Sandbox_PhunSprinters_DarknessLevel_tooltip = "Adjusted light level where all sprinters will run"
