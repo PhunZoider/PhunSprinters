@@ -98,9 +98,14 @@ local function getSprinterDescription(player)
     end
 
     if isAdmin() or isDebugEnabled() then
+        local defaultRisk = getSandboxOptions():getOptionByName("PhunSprinters.DefaultRisk"):getValue() or 0
+        local maxRisk = md.PhunZones.maxSprinterRisk or 100
+        if maxRisk == 0 then
+            maxRisk = 100
+        end
         table.insert(texts, "Env")
-        table.insert(texts, " - Base risk: " .. tostring(md.PhunZones.minSprinterRisk) .. "%")
-        table.insert(texts, " - Max Risk: " .. formatNumber(md.PhunZones.maxSprinterRisk) .. "%")
+        table.insert(texts, " - Base risk: " .. tostring(md.PhunZones.minSprinterRisk or defaultRisk) .. "%")
+        table.insert(texts, " - Max Risk: " .. formatNumber(maxRisk) .. "%")
         table.insert(texts, " - Moon Phase: " .. tostring(md.PhunSprinters.moonPhase))
         table.insert(texts, " - Moon Multiplier: " .. tostring(md.PhunSprinters.moon * 100) .. "%")
         table.insert(texts, " - Light: " .. tostring(PS.env.lightIntensity) .. "%")

@@ -6,7 +6,7 @@ option PhunSprinters.DefaultRisk
     type = integer, 
     default = 1, 
     min = 0,
-    max = 10000,
+    max = 100,
     page=PhunSprinters,
     translation = PhunSprinters_DefaultRisk,
 }
@@ -76,7 +76,7 @@ option PhunSprinters.MoonPhaseMultiplierCrescent
 
 option PhunSprinters.MoonPhaseMultiplierQuarter
 {
-    type = integer, 
+    type = integer, --
     default = 90, 
     min = 0,
     max = 1000,

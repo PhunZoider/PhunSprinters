@@ -449,6 +449,11 @@ function Core:shouldSprint(zed, zData, pData)
     local risk = pData.risk or 0
     if risk > 0 then
         local chance = ZombRand(100)
+        if self.settings.Debug then
+            print("[PhunSprinters]: Testing Zed (" .. tostring(zData.id) .. "). Rolled " .. tostring(chance) ..
+                      " against risk " .. tostring(risk) .. " and is " ..
+                      (chance <= risk and "now a sprinter" or "not going to be a sprinter "))
+        end
         return chance <= risk
     end
     return false
