@@ -57,9 +57,9 @@ function Core.CalcPlayersSprinterPercentage()
         local lastRisk = formatNumber(modData.PhunSprinters.risk or 0)
 
         local totalHours = (modData.PhunSprinters.totalHours or 0) + player:getHoursSurvived()
-        local discount = getSandboxOptions():getOptionByName("PhunSprinters.HoursDiscount"):getValue() or 0
-        local defaultRisk = getSandboxOptions():getOptionByName("PhunSprinters.DefaultRisk"):getValue() or 0
-        local hoursAdj = (discount > totalHours) and (totalHours / discount) or 1
+        local discount = Core.getOption("HoursDiscount", 0)
+        local defaultRisk = Core.getOption("DefaultRisk", 0)
+        local hoursAdj = (discount > 0 and discount > totalHours) and (totalHours / discount) or 1
         local minRisk = tonumber(modData.PhunZones.minSprinterRisk or defaultRisk or 0)
         local baseRisk = minRisk
         local risk = baseRisk * moon * hoursAdj
@@ -118,7 +118,8 @@ function Core:testEnvironment()
         night = PL.isNight
     }
 
-    if getSandboxOptions():getOptionByName("PhunSprinters.NightOnly"):getValue() then
+    if self.getOption("NightOnly") then
+        -- only sprint at night
         if not PL.isNight then
             if self.sprint then
                 self:enableSprinting(false)
@@ -128,14 +129,15 @@ function Core:testEnvironment()
                 self:enableSprinting(true)
             end
         end
+    elseif not self.sprint and not self.getOption("SlowInLight") then
+        -- sprint always unless SlowInLight is on
+        self:enableSprinting(true)
     end
 
-    if getSandboxOptions():getOptionByName("PhunSprinters.SlowInLight"):getValue() then
+    if self.getOption("SlowInLight") then
         local threshold = getSandboxOptions():getOptionByName("PhunSprinters.DarknessLevel"):getValue() or 74
-        local shouldSprint =
-            (getSandboxOptions():getOptionByName("PhunSprinters.NightOnly"):getValue() and PL.isNight) or
-                (adjustedLight < threshold)
-        if not getSandboxOptions():getOptionByName("PhunSprinters.NightOnly"):getValue() and shouldSprint ~= self.sprint then
+        local shouldSprint = (self.getOption("NightOnly") and PL.isNight) or (adjustedLight < threshold)
+        if not self.getOption("NightOnly") and shouldSprint ~= self.sprint then
             Core:enableSprinting(shouldSprint)
         end
     end

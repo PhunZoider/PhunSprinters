@@ -65,30 +65,11 @@ end)
 
 -- === Update Zombie State on Every Zombie Tick ===
 Events.OnZombieUpdate.Add(function(zed)
-    -- Core:updateZed(zed)
     Core:enqueueUpdate(zed)
-
-    -- if Core.settings.SlowInLight then
-
-    --     local player = zed:getTarget()
-    --     if player and instanceof(player, "IsoPlayer") then
-
-    --         local data = Core:getZedData(zed)
-    --         if data.sprinter then
-    --             if getTimestamp() > (data.next or 9999999999) then
-    --                 return
-    --             end
-
-    --             data.next = getTimestamp() + 1
-    --             Core:testPlayers(player, zed, data)
-    --             -- Core:adjustForLight(zed, data, player)
-    --         end
-    --     end
-    -- end
 end)
 
 Events[PL.events.OnDawn].Add(function()
-    if getSandboxOptions():getOptionByName("PhunSprinters.NightOnly"):getValue() then
+    if Core.getOption("NightOnly") then
         Core:enableSprinting(false)
     end
     Core.lastRecalc = getTimestampMs()
@@ -96,7 +77,7 @@ Events[PL.events.OnDawn].Add(function()
 end)
 
 Events[PL.events.OnDusk].Add(function()
-    if getSandboxOptions():getOptionByName("PhunSprinters.NightOnly"):getValue() then
+    if Core.getOption("NightOnly") then
         Core:enableSprinting(true)
     end
     Core.lastRecalc = getTimestampMs()
