@@ -71,6 +71,8 @@ end)
 Events[PL.events.OnDawn].Add(function()
     if Core.getOption("NightOnly") then
         Core:enableSprinting(false)
+    else
+        Core:enableSprinting(true)
     end
     Core.lastRecalc = getTimestampMs()
     Core:recalcOutfits()
@@ -78,6 +80,8 @@ end)
 
 Events[PL.events.OnDusk].Add(function()
     if Core.getOption("NightOnly") then
+        Core:enableSprinting(true)
+    else
         Core:enableSprinting(true)
     end
     Core.lastRecalc = getTimestampMs()

@@ -22,8 +22,8 @@ Sandbox_EN = {
     Sandbox_PhunSprinters_FrequencyOfEnvUpdate = "Env Checks"
     Sandbox_PhunSprinters_FrequencyOfEnvUpdate_tooltip = "Number of seconds before recalculating enviromental changes like light and fog. Increase for improved performance"
 
-    Sandbox_PhunSprinters_Skeletons = "Skeletons"
-    Sandbox_PhunSprinters_Skeletons_tooltip = "Change sprinters into skeletons to visually indicate they... you know... sprint"
+    Sandbox_PhunSprinters_Skeletons = "Skeletons (NOTE TOOLTIP)"
+    Sandbox_PhunSprinters_Skeletons_tooltip = "NOTE: There is a bug in B42.13.1 when aiming guns at skeletons, maybe best to wait until they fix it before re-enabling if you use guns"
 
     Sandbox_PhunSprinters_Decorate = "Decorate"
     Sandbox_PhunSprinters_Decorate_tooltip = "Dress the sprinters up around the holidays (only works with certain additional mods active and installed)"
