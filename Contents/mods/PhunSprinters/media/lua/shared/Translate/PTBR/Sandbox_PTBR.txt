@@ -28,9 +28,6 @@ Sandbox_PTBR = {
     Sandbox_PhunSprinters_Decorate = "Decorar"
     Sandbox_PhunSprinters_Decorate_tooltip = "Veste os sprinters de acordo com datas comemorativas (funciona apenas com certos mods adicionais ativos e instalados)"
 
-    Sandbox_PhunSprinters_NightOnly = "Apenas à Noite"
-    Sandbox_PhunSprinters_NightOnly_tooltip = "Corre apenas entre o anoitecer e o amanhecer. Desmarque se quiser sprinters durante o dia em clima ruim"
-
     Sandbox_PhunSprinters_MoonPhaseNew = "Fase da Lua (Lua Nova)"
     Sandbox_PhunSprinters_MoonPhaseNew_tooltip = "Ajusta o risco em noites de lua nova por este valor. Ex: 50 reduz o risco em 50%, enquanto 200 aumenta para 200% (risco dobrado). Deixe em branco ou 0 para não ajustar."
 

@@ -11,16 +11,6 @@ local UI = PhunSprintersUIContainer
 Core.ui = Core.ui or {}
 Core.ui.container = UI
 
-local function formatNumber(number, decimals)
-    number = number or 0
-    -- Round the number to remove the decimal part
-    local roundedNumber = math.floor(number + (decimals and 0.005 or 0.5))
-    -- Convert to string and format with commas
-    local formattedNumber = tostring(roundedNumber):reverse():gsub("(%d%d%d)", "%1,")
-    formattedNumber = formattedNumber:reverse():gsub("^,", "")
-    return formattedNumber
-end
-
 local function getMoonDescription(player)
     local md = player:getModData()
     local pd = md.PhunSprinters or {}
@@ -34,17 +24,17 @@ local function getMoonDescription(player)
     elseif moon < 1 then
         table.insert(texts,
             getText("IGUI_PhunSprinters_Moon_Reducing_Desc", getText("IGUI_PhunSprinters_MoonPhase" .. PS.moonPhase),
-                100 - formatNumber(moon * 100)))
+                100 - PL.string.formatNumber(moon * 100)))
     else
         table.insert(texts,
             getText("IGUI_PhunSprinters_Moon_Increasing_Desc", getText("IGUI_PhunSprinters_MoonPhase" .. PS.moonPhase),
-                formatNumber(moon * 100)))
+                PL.string.formatNumber(moon * 100)))
     end
 
     if PS.env.adjustedLightIntensity <= PS.settings.DarknessLevel then
-        table.insert(texts, "Dark: " .. tostring(formatNumber(100 - PS.env.adjustedLightIntensity)) .. "%")
+        table.insert(texts, "Dark: " .. tostring(PL.string.formatNumber(100 - PS.env.adjustedLightIntensity)) .. "%")
         if PS.env.fogIntensity > 0 then
-            table.insert(texts, " - Light level: " .. formatNumber(PS.env.lightIntensity) .. "%")
+            table.insert(texts, " - Light level: " .. PL.string.formatNumber(PS.env.lightIntensity) .. "%")
             table.insert(texts, " - Fog density: " .. tostring(PS.env.fogIntensity) .. "%")
         end
     end
@@ -69,30 +59,37 @@ local function getSprinterDescription(player)
 
     local c = PS
     local p = PL
-
-    if c.sprint and not p.isNight and (PS.env.adjustedLightIntensity < PS.env.lightIntensity) then
-        table.insert(texts, getText("IGUI_PhunSprinters_Bad_Weather_Desc"))
-    elseif PS.sprint and PS.env.adjustedLightIntensity < PS.settings.DarknessLevel then
-        table.insert(texts, getText("IGUI_PhunSprinters_Too_Dark_Desc"))
-    elseif not PS.sprint then
-        table.insert(texts, getText("IGUI_PhunSprinters_Too_Light_Desc"))
+    local prefix = ""
+    if c.sprint then
+        prefix = "IGUI_PhunSprinters_ActiveMode" .. tostring(c.settings.Mode)
+    else
+        prefix = "IGUI_PhunSprinters_InactiveMode" .. tostring(c.settings.Mode)
     end
+
+    -- if c.sprint and not p.isNight and (PS.env.adjustedLightIntensity < PS.env.lightIntensity) then
+    --     table.insert(texts, getText("IGUI_PhunSprinters_Bad_Weather_Desc"))
+    -- elseif PS.sprint and PS.env.adjustedLightIntensity < PS.settings.DarknessLevel then
+    --     table.insert(texts, getText("IGUI_PhunSprinters_Too_Dark_Desc"))
+    -- elseif not PS.sprint then
+    --     table.insert(texts, getText("IGUI_PhunSprinters_Too_Light_Desc"))
+    -- end
+    table.insert(texts, getText(prefix))
     table.insert(texts, "")
 
     table.insert(texts,
         getText("IGUI_PhunSprinters_X_Risk", zoneName, getText("IGUI_PhunSprinters_Risk" .. pd.riskLevel),
-            formatNumber(pd.risk, true)))
+            PL.string.formatNumber(pd.risk, true)))
     table.insert(texts, "")
     if pd.hoursAdj and pd.hoursAdj ~= 1 then
         local hours = (pd.totalHours or 0) + player:getHoursSurvived()
-        table.insert(texts, getText("IGUI_PhunSprinters_Risk_Hours_Discounted", formatNumber(hours),
-            formatNumber((1 - pd.hoursAdj) * 100)))
+        table.insert(texts, getText("IGUI_PhunSprinters_Risk_Hours_Discounted", PL.string.formatNumber(hours),
+            PL.string.formatNumber((1 - pd.hoursAdj) * 100)))
     end
 
     if PS.env.adjustedLightIntensity <= PS.settings.DarknessLevel then
-        table.insert(texts, "Dark: " .. tostring(formatNumber(100 - PS.env.adjustedLightIntensity)) .. "%")
+        table.insert(texts, "Dark: " .. tostring(PL.string.formatNumber(100 - PS.env.adjustedLightIntensity)) .. "%")
         if PS.env.fogIntensity > 0 then
-            table.insert(texts, " - Light level: " .. formatNumber(PS.env.lightIntensity) .. "%")
+            table.insert(texts, " - Light level: " .. PL.string.formatNumber(PS.env.lightIntensity) .. "%")
             table.insert(texts, " - Fog density: " .. tostring(PS.env.fogIntensity) .. "%")
         end
     end
@@ -105,17 +102,20 @@ local function getSprinterDescription(player)
         end
         table.insert(texts, "Env")
         table.insert(texts, " - Base risk: " .. tostring(md.PhunZones.minSprinterRisk or defaultRisk) .. "%")
-        table.insert(texts, " - Max Risk: " .. formatNumber(maxRisk) .. "%")
+        table.insert(texts, " - Max Risk: " .. PL.string.formatNumber(maxRisk) .. "%")
         table.insert(texts, " - Moon Phase: " .. tostring(md.PhunSprinters.moonPhase))
         table.insert(texts, " - Moon Multiplier: " .. tostring(md.PhunSprinters.moon * 100) .. "%")
         table.insert(texts, " - Light: " .. tostring(PS.env.lightIntensity) .. "%")
         table.insert(texts, " - Fog: " .. tostring(PS.env.fogIntensity) .. "%")
-        table.insert(texts, " - Adjusted: " .. formatNumber(PS.env.adjustedLightIntensity) .. "%")
+        table.insert(texts, " - Adjusted: " .. PL.string.formatNumber(PS.env.adjustedLightIntensity) .. "%")
         table.insert(texts, "-----")
         table.insert(texts, "Spawning mode")
         table.insert(texts, " - sprinting: " .. tostring(PS.sprint))
         table.insert(texts, "Settings")
         table.insert(texts, " - Darkness Level: " .. tostring(PS.settings.DarknessLevel))
+        table.insert(texts, " - Mode: " .. tostring(PS.settings.Mode))
+        table.insert(texts, " - Dawn:" .. PL.string.formatGameTime(PL.dawnTime))
+        table.insert(texts, " - Dusk:" .. PL.string.formatGameTime(PL.duskTime))
 
     end
 

@@ -3,7 +3,7 @@ PhunSprintersUI = {
     settings = {},
     ui = {},
     events = {
-        onReady = "PhunSprintersUIOnReady"
+        OnReady = "PhunSprintersUIOnReady"
     }
 }
 

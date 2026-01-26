@@ -122,54 +122,77 @@
             // TESTING STUFF
 
             // del TEST mod
-            {
-                "match": ".*",
-                "cmd": "rmdir /S /Q ${env.USERPROFILE}\\Zomboid\\mods\\PhunSprintersTest 2>nul"
-            },
+            // {
+            //     "match": ".*",
+            //     "cmd": "rmdir /S /Q ${env.USERPROFILE}\\Zomboid\\mods\\PhunSprintersTest 2>nul"
+            // },
 
+            
             // copy TEST from live
             {
                 "match": ".*",
                 "cmd": "xcopy ${env.USERPROFILE}\\Zomboid\\mods\\PhunSprinters ${env.USERPROFILE}\\Zomboid\\mods\\PhunSprintersTest /Y /I /E /F /EXCLUDE:xclude"
-            },            
-
+            },         
+            // copy TEST from live
+            {
+                "match": ".*",
+                "cmd": "xcopy ${env.USERPROFILE}\\Zomboid\\mods\\PhunSprintersUI ${env.USERPROFILE}\\Zomboid\\mods\\PhunSprintersUITest /Y /I /E /F /EXCLUDE:xclude"
+            },               
+            
             // copy TEST overrides
             {
                 "match": ".*",
-                "cmd": "xcopy ${workspaceFolder}\\Tests\\root ${env.USERPROFILE}\\Zomboid\\mods\\PhunSprintersTest /Y /I /E /F /EXCLUDE:xclude"
+                "cmd": "xcopy ${workspaceFolder}\\Tests\\PhunSprinters ${env.USERPROFILE}\\Zomboid\\mods\\PhunSprintersTest /Y /I /E /F /EXCLUDE:xclude"
             }, 
+            // copy TEST overrides
+            {
+                "match": ".*",
+                "cmd": "xcopy ${workspaceFolder}\\Tests\\PhunSprintersUI ${env.USERPROFILE}\\Zomboid\\mods\\PhunSprintersUITest /Y /I /E /F /EXCLUDE:xclude"
+            },            
+
 
             // remove TEST workshop
             {
                 "match": ".*",
                 "cmd": "rmdir /S /Q ${env.USERPROFILE}\\Zomboid\\Workshop\\PhunSprintersTest 2>nul"
-            },            
+            }, 
+
             // copy src to TEST workshop
             {
                 "match": ".*",
                 "cmd": "xcopy ${workspaceFolder} ${env.USERPROFILE}\\Zomboid\\Workshop\\PhunSprintersTest /Y /I /E /F /EXCLUDE:xclude"
             },
+
             // del Tests folder from deployment
             {
                 "match": ".*",
                 "cmd": "rmdir /S /Q ${env.USERPROFILE}\\Zomboid\\Workshop\\PhunSprintersTest\\Tests 2>nul"
-            },            
+            }, 
+
+
             // copy TEST mods to workshop version
             {
                 "match": ".*",
                 "cmd": "xcopy ${env.USERPROFILE}\\Zomboid\\mods\\PhunSprintersTest ${env.USERPROFILE}\\Zomboid\\Workshop\\PhunSprintersTest\\Contents\\mods\\PhunSprinters /Y /I /E /F"
-            },
-
+            }, 
+            // copy TEST mods to workshop version
+            {
+                "match": ".*",
+                "cmd": "xcopy ${env.USERPROFILE}\\Zomboid\\mods\\PhunSprintersUITest ${env.USERPROFILE}\\Zomboid\\Workshop\\PhunSprintersTest\\Contents\\mods\\PhunSprintersUI /Y /I /E /F"
+            },  
+            
             // copy TEST preview file to workshop version
             {
                 "match": ".*",
                 "cmd": "xcopy ${workspaceFolder}\\Tests\\preview.png ${env.USERPROFILE}\\Zomboid\\Workshop\\PhunSprintersTest\\preview.png /Y /I /E /F"
             }, 
+
+
             // Copy TEST workshop file to workshop version
             {
                 "match": ".*",
                 "cmd": "xcopy ${workspaceFolder}\\Tests\\workshop.txt ${env.USERPROFILE}\\Zomboid\\Workshop\\PhunSprintersTest\\workshop.txt /Y /I /E /F"
-            }, 
+            },            
 
         ]
     },

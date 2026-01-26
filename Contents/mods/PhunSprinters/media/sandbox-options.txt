@@ -38,12 +38,13 @@ option PhunSprinters.Decorate
     translation = PhunSprinters_Decorate,
 }
 
-option PhunSprinters.NightOnly
+option PhunSprinters.Mode
 {
-    type = boolean, 
-    default = true,
+    type = enum,
+    numValues = 4,
+    default = 1, 
     page = PhunSprinters, 
-    translation = PhunSprinters_NightOnly,
+    translation = PhunSprinters_Mode,
 }
 
 option PhunSprinters.SlowInLight
@@ -108,8 +109,6 @@ option PhunSprinters.Debug
 { 
     type = boolean, 
     default = false,
-    min = 1,
-    max = 100,
     page=PhunSprinters,
     translation = PhunSprinters_Debug,
 }
@@ -124,22 +123,22 @@ option PhunSprinters.DarknessLevel
     translation = PhunSprinters_DarknessLevel,
 }
 
-option PhunSprinters.MinDistance
+option PhunSprinters.MinDistance2
 {
     type = integer, 
-    default = 400,
-    min = 0,
-    max = 10000,
+    default = 14,
+    min = 1,
+    max = 100,
     page=PhunSprinters,
     translation = PhunSprinters_MinDistance,
 }
 
-option PhunSprinters.MaxDistance
+option PhunSprinters.MaxDistance2
 {
     type = integer, 
-    default = 3000,
-    min = 0,
-    max = 10000,
+    default = 35,
+    min = 1,
+    max = 100,
     page=PhunSprinters,
     translation = PhunSprinters_MaxDistance,
 }
@@ -147,7 +146,7 @@ option PhunSprinters.MaxDistance
 option PhunSprinters.MaxQueue
 {
     type = integer,
-    default = 10,
+    default = 20,
     min = 1,
     max = 1000,
     page=PhunSprinters,

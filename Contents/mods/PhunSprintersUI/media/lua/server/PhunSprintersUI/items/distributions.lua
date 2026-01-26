@@ -97,8 +97,8 @@ if (SandboxVars.PhunSprintersUI or {}).AddToLoot then
     table.insert(ProceduralDistributions.list["GunStoreShelf"].items, 1);
 
     -- BedroomSideTable
-    table.insert(ProceduralDistributions.list["BedroomSideTable"].items, "Phun.WristWatch_Left_MilitaryX");
-    table.insert(ProceduralDistributions.list["BedroomSideTable"].items, 0.25);
+    -- table.insert(ProceduralDistributions.list["BedroomSideTable"].items, "Phun.WristWatch_Left_MilitaryX");
+    -- table.insert(ProceduralDistributions.list["BedroomSideTable"].items, 0.25);
 
     -- OfficeDrawers
     table.insert(ProceduralDistributions.list["OfficeDrawers"].items, "Phun.WristWatch_Left_MilitaryX");

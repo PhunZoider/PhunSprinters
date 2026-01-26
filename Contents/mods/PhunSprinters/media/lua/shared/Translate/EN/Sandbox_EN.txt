@@ -17,7 +17,7 @@ Sandbox_EN = {
     Sandbox_PhunSprinters_DarknessLevel_tooltip = "Adjusted light level where all sprinters will run"
 
     Sandbox_PhunSprinters_SlowInLight = "Slow in light"
-    Sandbox_PhunSprinters_SlowInLight_tooltip = "Experimental - if sprinter is running, light over your darkness level (eg a flashlight) can force them to walk (until its too dark again). Experimental "
+    Sandbox_PhunSprinters_SlowInLight_tooltip = "If sprinter is running, light over your darkness level (eg a flashlight) can force them to walk (until its too dark again). Note that this is basically included in the tile based mode above"
 
     Sandbox_PhunSprinters_FrequencyOfEnvUpdate = "Env Checks"
     Sandbox_PhunSprinters_FrequencyOfEnvUpdate_tooltip = "Number of seconds before recalculating enviromental changes like light and fog. Increase for improved performance"
@@ -27,9 +27,6 @@ Sandbox_EN = {
 
     Sandbox_PhunSprinters_Decorate = "Decorate"
     Sandbox_PhunSprinters_Decorate_tooltip = "Dress the sprinters up around the holidays (only works with certain additional mods active and installed)"
-
-    Sandbox_PhunSprinters_NightOnly = "Night Only"
-    Sandbox_PhunSprinters_NightOnly_tooltip = "Only run between dusk and dawn. Untick if you want sprinters during bad weather during the day"
 
     Sandbox_PhunSprinters_MoonPhaseNew = "Moon Phase (New Moon)"
     Sandbox_PhunSprinters_MoonPhaseNew_tooltip = "Adjust risk on nights with a new moon by this value. eg 50 would cut the risk by 50% while 200 would be 200% (double the risk). Leave blank or 0 for no adjustment."
@@ -56,7 +53,7 @@ Sandbox_EN = {
     Sandbox_PhunSprinters_MaxDistance_tooltip = "The maximum distance of player to zed must be to process the chance of being a sprinter (this is to improve performance trying to process zeds that are too far away)"
 
     Sandbox_PhunSprinters_Debug = "Debug"
-    Sandbox_PhunSprinters_Debug_tooltip = "Print verbosely (useful when diagnosing issues)"
+    Sandbox_PhunSprinters_Debug_tooltip = "Print verbosely (useful when diagnosing issues). Requires restart"
 
     Sandbox_PhunSprinters_MaxQueue = "Queue Size"
     Sandbox_PhunSprinters_MaxQueue_tooltip = "The max number of zeds to update per tick"
@@ -66,5 +63,13 @@ Sandbox_EN = {
 
     Sandbox_PhunSprinters_SprintingChangeNotificationVolume = "Night Change Volume"
     Sandbox_PhunSprinters_SprintingChangeNotificationVolume_tooltip = "Volume of the sound that notifies players that sprinters are no longer running (eg day) or that they have now started to run (eg night or bad weather). Set to 0 to disable"
+
+    Sandbox_PhunSprinters_Mode = "Sprinters run:"
+    Sandbox_PhunSprinters_Mode_tooltip = "This option determins when a sprinter will actually run. ** = low performance impact, *** = med-high performance impact depending on population"
+
+    Sandbox_PhunSprinters_Mode_option1 = "Between Dusk and Dawn",
+    Sandbox_PhunSprinters_Mode_option2 = "Always",
+    Sandbox_PhunSprinters_Mode_option3 = "When its too dark outside **",
+    Sandbox_PhunSprinters_Mode_option4 = "When its too dark around them ***",
 
 }
