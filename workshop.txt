@@ -164,6 +164,7 @@ description=[tr][td][b]Layout[/b][/td][td]Horizontal or vertical layout (horizon
 description=[/table]
 description=
 description=🧩 PT-BR translations by [url=https://steamcommunity.com/id/SIMBAproduz]SIMBAproduz[/url]
+description=🧩 FR translations by [url=https://steamcommunity.com/profiles/76561198144095229]F3niix[/url]
 description=
 description=[h2]More Phun Stuff[/h2]
 description=[url=https://steamcommunity.com/sharedfiles/filedetails/?id=3623897097][img]https://i.ibb.co/mCv5kDgy/preview.png[/img][/url] [url=https://steamcommunity.com/sharedfiles/filedetails/?id=3388867450][img]https://i.ibb.co/x8H5KRhs/preview.png[/img][/url] [url=https://steamcommunity.com/sharedfiles/filedetails/?id=3606988132][img]https://i.ibb.co/ZtQtmJd/preview.png[/img][/url] [url=https://steamcommunity.com/sharedfiles/filedetails/?id=3628843367][img]https://i.ibb.co/wrZbknjt/preview.png[/img][/url]

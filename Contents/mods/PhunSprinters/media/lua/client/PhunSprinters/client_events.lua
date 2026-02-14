@@ -134,12 +134,3 @@ Events[PL.events.OnDusk].Add(function()
     Core.lastRecalc = getTimestampMs()
 
 end)
-
--- if PZ and PZ.events and PZ.events.OnZonesUpdated then
---     Events[PZ.events.OnZonesUpdated].Add(function()
---         print("#################")
---         print("PhunSprinters: Zones Updated, recalculating sprinter percentages...")
---         print("#################")
---     end)
--- end
-

@@ -77,8 +77,8 @@ local function getSprinterDescription(player)
     table.insert(texts, "")
 
     table.insert(texts,
-        getText("IGUI_PhunSprinters_X_Risk", zoneName, getText("IGUI_PhunSprinters_Risk" .. pd.riskLevel),
-            PL.string.formatNumber(pd.risk, true)))
+        getText("IGUI_PhunSprinters_X_Risk", zoneName or "???",
+            getText("IGUI_PhunSprinters_Risk" .. (pd.riskLevel or "Low")), PL.string.formatNumber(pd.risk or 0, true)))
     table.insert(texts, "")
     if pd.hoursAdj and pd.hoursAdj ~= 1 then
         local hours = (pd.totalHours or 0) + player:getHoursSurvived()
@@ -272,19 +272,19 @@ function UI:updateLayout()
         self:setWidth(h + 2 * tools.FONT_SCALE)
         self:setHeight(height)
 
-        self.controls.moon:setHeight(h - 6 * tools.FONT_SCALE)
-        self.controls.moon:setWidth(h - 6 * tools.FONT_SCALE)
+        self.controls.moon:setHeight(h - 6) -- * tools.FONT_SCALE)
+        self.controls.moon:setWidth(h - 6) -- * tools.FONT_SCALE)
         self.controls.moon:setY(1)
         self.controls.moon:setX(3)
 
         self.controls.sprinter:setHeight(self.controls.moon.height)
         self.controls.sprinter:setWidth(self.controls.moon.width)
-        self.controls.sprinter:setY(self.controls.moon.y + self.controls.moon.height + 3 * tools.FONT_SCALE)
+        self.controls.sprinter:setY(self.controls.moon.y + self.controls.moon.height + 3) -- * tools.FONT_SCALE)
         self.controls.sprinter:setX(self.controls.moon.x)
 
-        self.controls.pips:setHeight(3 * tools.FONT_SCALE)
-        self.controls.pips:setWidth(self.width - 2 * tools.FONT_SCALE)
-        self.controls.pips:setY((self.height - self.controls.pips.height) / 2)
+        self.controls.pips:setHeight(3) -- * tools.FONT_SCALE)
+        self.controls.pips:setWidth(self.width - 2) -- * tools.FONT_SCALE)
+        self.controls.pips:setY(self.height - self.controls.pips.height - 2)
         self.controls.pips:setX(tools.FONT_SCALE)
 
         if clock and clock:isVisible() then

@@ -25,7 +25,7 @@ function Core:enqueueUpdate(zed)
     -- local distance = dx * dx + dy * dy
     local zs = zed:getSquare()
     local ps = player:getSquare()
-    local distance = ps and ps:DistToProper(zs) or 0
+    local distance = ps and ps.DistToProper and ps:DistToProper(zs) or 0
     if distance < (self.settings.MinDistance2 or 14) then
         -- too close
         if self.sprint and isSprinter then
@@ -74,7 +74,7 @@ function Core:processQueue()
     if self.settings.Debug and count == maxCount and #self.queue > 0 then
         if getTimestamp() - lastQueueFullMessage > 3 then
             lastQueueFullMessage = getTimestamp()
-            print("PhunSprinters: Queue full — " .. tostring(#self.queue) .. " more zombies waiting.")
+            -- print("PhunSprinters: Queue full — " .. tostring(#self.queue) .. " more zombies waiting.")
         end
     end
 end

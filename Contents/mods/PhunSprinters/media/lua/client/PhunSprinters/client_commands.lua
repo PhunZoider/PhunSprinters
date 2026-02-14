@@ -19,7 +19,6 @@ Commands.isSprinter = function(args)
             end
             Core.sprinterIds[id] = v
             Core.pendingIds[id] = v ~= nil
-            print("[PhunSprinters] Set sprinter ID " .. tostring(id) .. " to " .. tostring(v))
         end
     end
 

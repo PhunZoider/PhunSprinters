@@ -2,6 +2,6 @@ name=PhunSprintersUI
 id=phunsprintersui
 author=UburGeek
 description=PhunSprinters UI Components
-requires=\phunsprinters
+require=\phunsprinters
 poster=poster.png
 icon=icon.png

@@ -87,20 +87,26 @@ function UI:prerender()
 
     local modData = self.player:getModData();
 
+    -- self.backgroundColor = {
+    --     r = 1,
+    --     g = 0,
+    --     b = 0,
+    --     a = 0.8
+    -- }
     local count = 5
     if Core.settings.layout == 2 then
         count = 10
     end
 
-    local h = self.height - 2 * tools.FONT_SCALE
-    local w = self.width - 2 * tools.FONT_SCALE
+    local h = self.height - 2 -- * tools.FONT_SCALE
+    local w = self.width - 2 -- * tools.FONT_SCALE
 
-    local pipWidth = (w / count) - 2 * tools.FONT_SCALE
+    local pipWidth = (w / count) - 2 -- * tools.FONT_SCALE
 
     if Core.settings.layout == 2 then
         pipWidth = math.min(pipWidth, h)
     end
-    local x = self.width - (count * (pipWidth + 1)) - 1
+    local x = 2 -- self.width - (count * (pipWidth + 1)) - 1
     local y = (self.height - pipWidth) / 2
 
     local risk = modData.PhunSprinters and modData.PhunSprinters.risk or 0

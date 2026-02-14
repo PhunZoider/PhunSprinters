@@ -1,0 +1,74 @@
+Sandbox_FR = {
+    Sandbox_PhunSprinters = "PhunSprinters",
+    Sandbox_PhunSprinters_VersionKey = "Clé de version"
+    Sandbox_PhunSprinters_VersionKey_tooltip = "Paramètre avancé. À modifier pour réinitialiser les ModData des zombies si nécessaire."
+
+    Sandbox_PhunSprinters_ShowMoodle = "Afficher le moodle"
+    Sandbox_PhunSprinters_ShowMoodle_tooltip = "Affiche un moodle avec des informations sur le risque actuel de sprinters."
+
+    Sandbox_PhunSprinters_ShowMoodleOnlyWhenRunning = "Moodle uniquement en cas de risque"
+    Sandbox_PhunSprinters_ShowMoodleOnlyWhenRunning_tooltip = "Affiche le moodle uniquement lorsque des sprinters peuvent apparaître."
+
+    Sandbox_PhunSprinters_Volume = "Volume des sprinters (%)"
+    Sandbox_PhunSprinters_Volume_tooltip = "Volume des cris des sprinters. 0 pour désactiver."
+
+    Sandbox_PhunSprinters_DarknessLevel = "Niveau d’obscurité"
+    Sandbox_PhunSprinters_DarknessLevel_tooltip = "Niveau de luminosité ajusté à partir duquel tous les sprinters courent."
+
+    Sandbox_PhunSprinters_SlowInLight = "Ralentir à la lumière"
+    Sandbox_PhunSprinters_SlowInLight_tooltip = "Si un sprinter est en train de courir, une source de lumière au-dessus de votre seuil d’obscurité (ex. une lampe torche) peut le forcer à marcher (jusqu’à ce qu’il fasse à nouveau trop sombre). Notez que ce comportement est déjà inclus dans le mode basé sur les tuiles ci-dessus."
+
+    Sandbox_PhunSprinters_FrequencyOfEnvUpdate = "Vérifications de l’environnement""
+    Sandbox_PhunSprinters_FrequencyOfEnvUpdate_tooltip = "Nombre de secondes avant de recalculer les changements environnementaux comme la lumière et le brouillard. Augmentez pour de meilleures performances."
+
+    Sandbox_PhunSprinters_Skeletons = "Squelettes (VOIR INFO-BULLE)"
+    Sandbox_PhunSprinters_Skeletons_tooltip = "REMARQUE : Il existe un bug en B42.13.1 lors de la visée avec des armes à feu sur les squelettes. Il est peut-être préférable d’attendre un correctif avant de réactiver cette option si vous utilisez des armes."
+
+    Sandbox_PhunSprinters_Decorate = "Decorer"
+    Sandbox_PhunSprinters_Decorate_tooltip = "Habille les sprinters pour les fêtes (fonctionne uniquement avec certains mods supplémentaires actifs et installés)."
+
+    Sandbox_PhunSprinters_MoonPhaseNew = "Phase lunaire (Nouvelle lune)"
+    Sandbox_PhunSprinters_MoonPhaseNew_tooltip = "Ajuste le risque pendant les nuits correspondant à cette phase lunaire. Par exemple, 50 réduit le risque de 50 %, tandis que 200 correspond à 200 % (double le risque). Laisser vide ou à 0 pour ne pas appliquer d’ajustement."
+
+    Sandbox_PhunSprinters_MoonPhaseCrescent = "Phase lunaire (Lune croissante)"
+    Sandbox_PhunSprinters_MoonPhaseCrescent_tooltip = "Ajuste le risque pendant les nuits correspondant à cette phase lunaire. Par exemple, 50 réduit le risque de 50 %, tandis que 200 correspond à 200 % (double le risque). Laisser vide ou à 0 pour ne pas appliquer d’ajustement."
+
+    Sandbox_PhunSprinters_MoonPhaseQuarter = "Phase lunaire (Premier quartier)"
+    Sandbox_PhunSprinters_MoonPhaseQuarter_tooltip = "Ajuste le risque pendant les nuits correspondant à cette phase lunaire. Par exemple, 50 réduit le risque de 50 %, tandis que 200 correspond à 200 % (double le risque). Laisser vide ou à 0 pour ne pas appliquer d’ajustement."
+
+    Sandbox_PhunSprinters_MoonPhaseGibbous = "Phase lunaire (Lune gibbeuse)"
+    Sandbox_PhunSprinters_MoonPhaseGibbous_tooltip = "Ajuste le risque pendant les nuits correspondant à cette phase lunaire. Par exemple, 50 réduit le risque de 50 %, tandis que 200 correspond à 200 % (double le risque). Laisser vide ou à 0 pour ne pas appliquer d’ajustement."
+
+    Sandbox_PhunSprinters_MoonPhaseFull = "Phase lunaire (Pleine lune)"
+    Sandbox_PhunSprinters_MoonPhaseFull_tooltip = "Ajuste le risque pendant les nuits correspondant à cette phase lunaire. Par exemple, 50 réduit le risque de 50 %, tandis que 200 correspond à 200 % (double le risque). Laisser vide ou à 0 pour ne pas appliquer d’ajustement."
+
+    Sandbox_PhunSprinters_HoursDiscount = "Réduction selon les heures"
+    Sandbox_PhunSprinters_HoursDiscount_tooltip = "Nombre d’heures (tous personnages confondus) avant que le niveau de risque ne soit pleinement appliqué. Par exemple, si la valeur est de 240 (10 jours de jeu), alors au cinquième jour de jeu (peu importe le nombre de morts), le risque effectif pour le joueur est réduit de 50 %. Laisser vide ou à 0 pour ignorer."
+
+    Sandbox_PhunSprinters_MinDistance = "Distance minimale"
+    Sandbox_PhunSprinters_MinDistance_tooltip = "Distance minimale entre le joueur et un zombie pour calculer la probabilité qu’il soit un sprinter (afin d’éviter les apparitions soudaines)."
+
+    Sandbox_PhunSprinters_MaxDistance = "Distance maximale"
+    Sandbox_PhunSprinters_MaxDistance_tooltip = "Distance maximale entre le joueur et un zombie pour calculer la probabilité qu’il soit un sprinter (améliore les performances en ignorant les zombies trop éloignés)."
+
+    Sandbox_PhunSprinters_Debug = "Debug"
+    Sandbox_PhunSprinters_Debug_tooltip = "Affichage détaillé des logs (utile pour diagnostiquer des problèmes). Nécessite un redémarrage."
+
+    Sandbox_PhunSprinters_MaxQueue = "Taille de la file"
+    Sandbox_PhunSprinters_MaxQueue_tooltip = "Nombre maximal de zombies mis à jour par tick."
+
+    Sandbox_PhunSprinters_DefaultRisk = "Risque par défaut"
+    Sandbox_PhunSprinters_DefaultRisk_tooltip = "Pourcentage de chance qu’un zombie soit un sprinter. Cette valeur est utilisée lorsqu’aucune valeur PhunZones valide n’est disponible. Ex. : 0 = aucune chance, 50 = 50 %, 100 = toujours."
+
+    Sandbox_PhunSprinters_SprintingChangeNotificationVolume = "Volume de notification nuit/jour"
+    Sandbox_PhunSprinters_SprintingChangeNotificationVolume_tooltip = "Volume du son notifiant les joueurs que les sprinters ne courent plus (ex. le jour) ou qu’ils ont commencé à courir (ex. la nuit ou par mauvais temps). Mettre à 0 pour désactiver."
+
+    Sandbox_PhunSprinters_Mode = "Les sprinters courent :"
+    Sandbox_PhunSprinters_Mode_tooltip = "Cette option détermine quand un sprinter court réellement. ** = impact faible sur les performances, *** = impact moyen à élevé selon la population."
+
+    Sandbox_PhunSprinters_Mode_option1 = "Entre le crépuscule et l’aube",
+    Sandbox_PhunSprinters_Mode_option2 = "Toujours",
+    Sandbox_PhunSprinters_Mode_option3 = "Lorsqu’il fait trop sombre à l’extérieur **",
+    Sandbox_PhunSprinters_Mode_option4 = "Lorsqu’il fait trop sombre autour d’eux ***",
+
+}

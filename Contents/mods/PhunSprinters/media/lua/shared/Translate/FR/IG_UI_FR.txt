@@ -1,0 +1,53 @@
+IGUI_FR = {
+
+    IGUI_PhunSprinters_maxRisk = "Plafond de risque maximale des sprinters en %",
+    IGUI_PhunSprinters_maxRisk_Tooltip = "Le risque maximal d’apparition de sprinters dans cette zone. Laisser vide ou mettre 100 pour 100 %.",
+
+    IGUI_PhunSprinters_minRisk = "Risque minimum des sprinters en %",
+    IGUI_PhunSprinters_minRisk_Tooltip = "Le risque d’apparition de sprinters dans cette zone avant ajustement selon le temps de jeu du personnage ou la phase lunaire.",
+
+    IGUI_PhunSprinters_ZedsAreRestless = "Les zombies sont agités"
+    IGUI_PhunSprinters_ZedsAreSettling = "Les zombies sont calmes"
+
+    IGUI_PhunSprinters_MoonPhase0 = "Nouvelle Lune"
+    IGUI_PhunSprinters_MoonPhase1 = "Lune Croissante"
+    IGUI_PhunSprinters_MoonPhase2 = "Premier Quartier"
+    IGUI_PhunSprinters_MoonPhase3 = "Lune Gibbeuse"
+    IGUI_PhunSprinters_MoonPhase4 = "Pleine Lune"
+    IGUI_PhunSprinters_MoonPhase5 = "Lune Gibbeuse"
+    IGUI_PhunSprinters_MoonPhase6 = "Dernier Quartier"
+    IGUI_PhunSprinters_MoonPhase7 = "Dernier Croissant"
+
+    
+    IGUI_PhunSprinters_RiskNone = "Sûr"
+    IGUI_PhunSprinters_RiskLow = "Faible"
+    IGUI_PhunSprinters_RiskMedium = "Modéré"
+    IGUI_PhunSprinters_RiskHigh = "Élevé"
+    IGUI_PhunSprinters_RiskVeryHigh = "Très élevé"
+
+    IGUI_PhunSprinters_Risk_Percentage = "Risque : %1%"
+    IGUI_PhunSprinters_Risk_Area_Percentage = " - Zone à risque %1 : %2%"
+    IGUI_PhunSprinters_Risk_Moon_Percentage = " - Modificateur %1 : %2%"
+    IGUI_PhunSprinters_Risk_Hours_Discounted = " - Réduction de %1 heures : -%2%"
+    IGUI_PhunSprinters_Tomorrows_Forcast = "Prévisions pour demain"
+    IGUI_PhunSprinters_Moon_Reducing_Desc = "La %1 a un effet apaisant sur les zombies, réduisant le nombre de sprinters de %2%."
+    IGUI_PhunSprinters_Moon_Normal_Desc = "La %1 ne semble avoir aucun effet sur le nombre de sprinters présents."
+    IGUI_PhunSprinters_Moon_Increasing_Desc = "La %1 provoque une augmentation des sprinters de %2%."
+    IGUI_PhunSprinters_X_Risk = "La classification du risque pour %1 est : %2, car %3% des zombies peuvent être des sprinters enragés."
+    IGUI_PhunSprinters_Too_Light_Desc = "La luminosité extérieure apaise les sprinters enragés."
+    IGUI_PhunSprinters_Too_Dark_Desc = "L’obscurité ambiante rend les zombies enragés agités."
+
+    IGUI_PhunSprinters_ActiveMode1 = "Les zombies enragés sont agités jusqu’à l’aube."
+    IGUI_PhunSprinters_InactiveMode1 = "Les zombies enragés sont apaisés jusqu’au crépuscule."
+
+    IGUI_PhunSprinters_ActiveMode2 = "Les zombies enragés sont agités."
+    IGUI_PhunSprinters_InactiveMode2 = "Les zombies rapides sont agités à cause de l’obscurité ambiante."
+
+    IGUI_PhunSprinters_ActiveMode3 = "Les zombies rapides sont agités à cause de l’obscurité ambiante."
+    IGUI_PhunSprinters_InactiveMode3 = "Les zombies enragés sont apaisés grâce à la luminosité ambiante."
+
+    IGUI_PhunSprinters_ActiveMode4 = "Les zombies rapides sont agités dans l’obscurité."
+    IGUI_PhunSprinters_InactiveMode4 = "Les zombies enragés sont apaisés à la lumière."
+
+
+}

@@ -12,7 +12,6 @@ Commands.isSprinter = function(player, args)
     for k, v in pairs(args) do
         if k and Core.sprinterIds[k] ~= v then
             Core.addToSend(k, v)
-            print("[PhunSprinters] Set sprinter ID " .. tostring(k) .. " to " .. tostring(v))
         end
     end
 
