@@ -14,7 +14,11 @@ local getTimestamp = getTimestamp
 local getTimestampMs = getTimestampMs
 
 -- don't start calcing until we get ok from server
-Core.pendingCalcs = Core.isLocal and false or true
+if Core.isLocal then
+    Core.pendingCalcs = false
+else
+    Core.pendingCalcs = true
+end
 
 -- === Initialization ===
 local function setup()
