@@ -1,6 +1,5 @@
 version=1
-id=3623232173
-title=PhunSprinters TEST
+title=PhunSprinters 2 TEST
 description=development and testing version of [url=https://steamcommunity.com/sharedfiles/filedetails/?id=3532685233]PhunSprinters[/url]
 description=If you use this, be sure to remove phunsprinters from your modlist before adding phunsprinterstest
 visibility=unlisted

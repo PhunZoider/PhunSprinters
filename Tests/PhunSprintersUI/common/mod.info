@@ -1,7 +1,0 @@
-name=PhunSprintersUI
-id=phunsprintersuitest
-author=UburGeek
-description=PhunSprinters UI Components
-requires=\phunsprinterstest
-poster=poster.png
-icon=icon.png

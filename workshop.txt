@@ -1,6 +1,5 @@
 version=1
-id=3532685233
-title=PhunSprinters
+title=PhunSprinters 2
 description=Dynamic sprinter behaviour based on location, time survived, moon phase, darkness, and light exposure.
 description=
 description=PhunSprinters does [b]not[/b] simply add sprinters.
