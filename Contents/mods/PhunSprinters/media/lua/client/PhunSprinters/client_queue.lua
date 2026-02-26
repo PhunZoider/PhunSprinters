@@ -25,7 +25,10 @@ function Core:enqueueUpdate(zed)
     -- local distance = dx * dx + dy * dy
     local zs = zed:getSquare()
     local ps = player:getSquare()
-    local distance = ps and ps.DistToProper and ps:DistToProper(zs) or 0
+    local distance = 0
+    if ps and zs and ps.DistToProper then
+        distance = ps:DistToProper(zs)
+    end
     if distance < (self.settings.MinDistance2 or 14) then
         -- too close
         if self.sprint and isSprinter then
