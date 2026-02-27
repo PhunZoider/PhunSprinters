@@ -4,7 +4,6 @@ end
 
 -- === Shortcuts & Module Setup ===
 local Core = PhunSprinters
-local PZ = PhunZones
 local sandboxOptions = getSandboxOptions()
 local getWorld = getWorld
 local ZombRand = ZombRand
@@ -15,18 +14,24 @@ local getTimestampMs = getTimestampMs
 
 function Core.updateZed(zed)
 
+    local c = Core
+    local sprinters = c.sprinterIds
+    local zzz = zed:getModData()
+
     local zData = Core.getZedData(zed) or {}
     local id = zData.id
-    local isSprinter = Core.sprinterIds[tostring(id)]
+
+    local isSprinter = c.sprinterIds[id]
 
     if isSprinter == nil then
         -- Locally testing sprinter
         zData.modified = getTimestampMs()
-        isSprinter = Core:shouldSprint(zed, zData, getPlayer():getModData().PhunSprinters or {})
+        isSprinter = Core.shouldSprint(zed, zData, getPlayer():getModData().PhunSprinters or {})
         zData.sprinter = isSprinter
+        Core.sprinterIds[id] = isSprinter
         if not zData.sprinter then
             Core.applyZedVisualState(zed, zData)
-            Core.debugLn("PhunSprinters: " .. tostring(zData.id) .. " is not a sprinter")
+            Core.debugLn("PhunSprinters: " .. zData.id .. " is not a sprinter")
             Core.makeNormal(zed, zData)
             return
         else
@@ -126,37 +131,43 @@ function Core.getZedData(zed)
     if zed:isDead() then
         return
     end
-    local data = zed:getModData()
+    local md = zed:getModData()
 
-    if data.brain then
+    if md.brain then
         return
     end -- Skip special zeds like bandits
 
     local id = Core.getId(zed)
-    local verKey = Core.settings.VersionKey
 
-    local d = data[verKey]
+    if not md.PhunSprinters then
+        md.PhunSprinters = {}
+    end
 
-    if not d or d.id ~= id or (d.modified and d.modified < Core.startTime) or (d.exp or 0) < (Core.delta or 0) then
+    local d = md.PhunSprinters
+
+    if not d or d.id ~= id or (d.modified and d.modified < Core.startTime) then
 
         -- reset
         Core.addToSend(id, nil)
 
-        Core.makeNormal(zed, data)
+        Core.makeNormal(zed, d)
 
         if zed:isSkeleton() then
             zed:setSkeleton(false)
         end
 
-        data[verKey] = {
+        d = {
             exp = (Core.delta or 0) + (Core.settings.Exp or 300),
             id = id,
             originalSpeed = Core.getZedSpeedType(zed)
         }
-        zed:transmitModData()
+        md.PhunSprinters = d
+        if Core.tools.isLocal then
+            zed:transmitModData()
+        end
     end
 
-    return data[verKey]
+    return d
 end
 
 -- Determine if zombie should sprint based on player risk
@@ -164,14 +175,17 @@ function Core.shouldSprint(zed, zData, pData)
     local risk = pData.risk or 0
     if risk > 0 then
         local chance = ZombRand(100)
-        Core.debugLn("[PhunSprinters]: Testing Zed (" .. tostring(zData.id) .. "). Rolled " .. tostring(chance) ..
-                         " against risk " .. tostring(risk) .. " and is " ..
+        Core.debugLn("Testing Zed (" .. tostring(zData.id) .. "). Rolled " .. tostring(chance) .. " against risk " ..
+                         tostring(risk) .. " and is " ..
                          (chance <= risk and "now a sprinter" or "not going to be a sprinter "))
 
         Core.addToSend(zData.id, chance <= risk)
         return chance <= risk
+    else
+        Core.addToSend(zData.id, nil)
+        return false
     end
-    return false
+
 end
 
 -- Handle light-based slowdown/speedup for zeds

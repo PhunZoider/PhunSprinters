@@ -29,7 +29,7 @@ function Core.CalcPlayersSprinterPercentage()
         local modData = player:getModData()
 
         modData.PhunSprinters = modData.PhunSprinters or {}
-        modData.PhunZones = modData.PhunZones or {}
+        local pzdata = Core.getPlayerZoneData(player)
 
         local lastRisk = formatNumber(modData.PhunSprinters.risk or 0)
 
@@ -37,15 +37,15 @@ function Core.CalcPlayersSprinterPercentage()
         local discount = Core.getOption("HoursDiscount", 0)
         local defaultRisk = Core.getOption("DefaultRisk", 0)
         local hoursAdj = (discount > 0 and discount > totalHours) and (totalHours / discount) or 1
-        local minRisk = tonumber(modData.PhunZones.minSprinterRisk or defaultRisk or 0)
+        local minRisk = tonumber(pzdata.minSprinterRisk) or tonumber(defaultRisk) or 0
         local baseRisk = minRisk
         local risk = baseRisk * moon * hoursAdj
-        local maxRisk = tonumber(modData.PhunZones.maxSprinterRisk or 0)
+        local maxRisk = tonumber(pzdata.maxSprinterRisk) or 100
 
         if minRisk == nil then
-            print("PhunSprinters: missing Sprinter Risk value in zone " .. tostring(modData.PhunZones.region) .. ":" ..
-                      tostring(modData.PhunZones.zone) .. " for player " .. tostring(player:getDisplayName()) ..
-                      ". Defaulting to 0 risk")
+            Core.debugLn("missing Sprinter Risk value in zone " .. tostring(pzdata.region) .. ":" ..
+                             tostring(pzdata.zone) .. " for player " .. tostring(player:getDisplayName()) ..
+                             ". Defaulting to 0 risk")
         end
 
         if maxRisk > 0 and risk > maxRisk then
@@ -73,7 +73,7 @@ function Core.CalcPlayersSprinterPercentage()
             modData.PhunSprinters.riskLevel = "VeryHigh"
         end
         if Core.settings.Debug and lastRisk ~= formatNumber(risk) then
-            print("PhunSprinters: risk=" .. tostring(formatNumber(risk)) .. " (was " .. tostring(lastRisk) .. ")")
+            Core.debugLn("risk=" .. tostring(formatNumber(risk)) .. " (was " .. tostring(lastRisk) .. ")")
         end
 
     end

@@ -66,8 +66,8 @@ local function preDistributionMerge()
         table.insert(ProceduralDistributions.list["CrateCarpentry"].items, 1);
 
         -- CrateElectronics
-        table.insert(ProceduralDistributions.list["CrateCarpentry"].items, "Phun.WristWatch_Left_MilitaryX");
-        table.insert(ProceduralDistributions.list["CrateCarpentry"].items, 1);
+        table.insert(ProceduralDistributions.list["CrateElectronics"].items, "Phun.WristWatch_Left_MilitaryX");
+        table.insert(ProceduralDistributions.list["CrateElectronics"].items, 1);
 
         -- GarageTools
         table.insert(ProceduralDistributions.list["GarageTools"].items, "Phun.WristWatch_Left_MilitaryX");

@@ -21,11 +21,11 @@ Commands.isSprinter = function(args)
 end
 
 Commands.OnDusk = function()
-
+    Core:setIsNight(true)
 end
 
 Commands.OnDawn = function()
-
+    Core:setIsNight(false)
 end
 
 return Commands

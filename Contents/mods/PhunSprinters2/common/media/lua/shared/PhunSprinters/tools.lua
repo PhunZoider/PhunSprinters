@@ -2,7 +2,7 @@ local Core = PhunSprinters
 local getOnlinePlayers = getOnlinePlayers
 local tools = {}
 
-tools.isLocal = not isClient() and not isServer() and not isCoopHost()
+tools.isLocal = not isClient() and not isServer()
 
 function tools.debug(...)
 

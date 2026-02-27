@@ -13,9 +13,9 @@ function Core.enqueueUpdate(zed)
     if not zed or zed:isDead() then
         return
     end
-
-    local id = Core.getId(zed)
-    local isSprinter = Core.sprinterIds[tostring(id)]
+    local c = Core
+    local id = c.getId(zed)
+    local isSprinter = Core.sprinterIds[id]
     local player = getPlayer()
     if not player or Core.queueIds[id] then
         return

@@ -75,7 +75,7 @@ function Core.onDebugZedLabels()
             if ps and dist and dist < maxDistance then
 
                 local key = Core.getId(z)
-                local data = Core.getZedData(z)
+                local data = z:getModData().PhunSprinters
                 local isSprinter = Core.sprinterIds[key]
 
                 local label = {

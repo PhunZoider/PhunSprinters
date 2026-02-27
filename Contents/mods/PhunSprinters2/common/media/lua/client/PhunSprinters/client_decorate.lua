@@ -41,9 +41,9 @@ function Core:recalcOutfits()
     end
 end
 
-function Core:decorateZed(zed)
+function Core.decorateZed(zed)
     local visual = zed:getItemVisuals()
-    local outfits = self.outfit
+    local outfits = Core.outfit
     if not outfits then
         return
     end
@@ -114,7 +114,7 @@ function Core.applyZedVisualState(zed, zData)
     end
 
     if not zData.dressed and Core.settings.Decorate then
-        self:decorateZed(zed)
+        Core.decorateZed(zed)
     end
 
     if zData.sprinting and not zData.screamed and instanceof(zed:getTarget(), "IsoPlayer") then

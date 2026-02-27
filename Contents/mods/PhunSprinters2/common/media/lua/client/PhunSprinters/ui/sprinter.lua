@@ -48,7 +48,7 @@ function UI:prerender()
 
     local modData = self.player:getModData();
 
-    if PS.sprint then
+    if Core.sprint then
         self:drawTextureScaled(self.displayImage, 0, 0, self.width, self.height, self.displayColor.a,
             self.displayColor.r, self.displayColor.g, self.displayColor.b);
     else

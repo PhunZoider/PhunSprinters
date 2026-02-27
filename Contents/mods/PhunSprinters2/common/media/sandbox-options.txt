@@ -206,11 +206,3 @@ option PhunSprinters.SprintingChangeNotificationVolume
     translation = PhunSprinters_SprintingChangeNotificationVolume,
 }
 
-option PhunSprinters.VersionKey
-{ 
-    type = string,
-    default = PhunSprinters,
-    page = PhunSprinters,
-    translation = PhunSprinters_VersionKey,
-}
-

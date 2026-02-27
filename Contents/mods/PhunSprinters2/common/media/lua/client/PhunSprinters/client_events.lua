@@ -5,8 +5,6 @@ end
 
 -- === Module Shortcuts ===
 local Core = PhunSprinters
-local PZ = PhunZones
-
 local Commands = require("PhunSprinters/client_commands")
 
 -- === Timestamp Shortcuts ===
@@ -45,10 +43,10 @@ local function setup()
             if #Core.toSend > 0 then
                 local vars = {}
                 for _, v in ipairs(Core.toSend) do
-                    if Core.sprinterIds[tostring(v)] == nil then
+                    if Core.sprinterIds[v] == nil then
                         vars[v] = 0
                     else
-                        vars[v] = Core.sprinterIds[tostring(v)]
+                        vars[v] = Core.sprinterIds[v]
                     end
                 end
                 sendClientCommand(Core.name, Core.commands.isSprinter, vars)
@@ -101,10 +99,26 @@ Events.OnReceiveGlobalModData.Add(function(tableName, tableData)
 end)
 
 -- === Player Zone Changed ===
-if PZ then
-    Events[PZ.events.OnPhunZonesPlayerLocationChanged].Add(function(player, zone)
+if PhunZones then
+
+    local PZ = PhunZones
+    local getPhysicalZone = nil
+
+    Events[PZ.events.OnPhysicalZoneChanged].Add(function(player, zone)
         Core.lastRecalc = getTimestampMs()
         Core.CalcPlayersSprinterPercentage()
+    end)
+
+    Events[PZ.events.OnDataBuilt].Add(function()
+        if not getPhysicalZone then
+            -- PhunZones is built so we can replace the stub
+            getPhysicalZone = PZ.getPhysicalZone
+            function Core.getPlayerZoneData(player)
+
+                return getPhysicalZone(player)
+            end
+
+        end
     end)
 end
 

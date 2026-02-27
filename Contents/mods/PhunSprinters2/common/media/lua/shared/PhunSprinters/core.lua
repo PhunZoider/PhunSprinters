@@ -4,6 +4,7 @@ local getClassField = getClassField
 local getClassFieldVal = getClassFieldVal
 local climateManager = nil
 local gt = nil
+local PZ = PhunZones
 
 PhunSprinters = {
     name = "PhunSprinters",
@@ -190,7 +191,7 @@ PhunSprinters = {
 }
 
 local Core = PhunSprinters
-Core.isLocal = not isClient() and not isServer() and not isCoopHost()
+Core.isLocal = not isClient() and not isServer()
 Core.settings = SandboxVars[Core.name] or {}
 for _, event in pairs(Core.events) do
     if not Events[event] then
@@ -220,9 +221,9 @@ function Core.addToSend(id, value)
     if value == 0 then
         value = nil
     end
-    local update = Core.sprinterIds[tostring(id)] ~= value
-    Core.sprinterIds[tostring(id)] = value
-    if Core.isLocal then
+    local update = Core.sprinterIds[id] ~= value
+    Core.sprinterIds[id] = value
+    if Core.tools.isLocal then
         return
     end
     if update then
@@ -245,16 +246,16 @@ function Core.getOption(name, default)
     return val
 end
 
-function Core.getId(zedObj)
-    if zedObj then
-        if instanceof(zedObj, "IsoZombie") then
-            if zedObj:isZombie() then
-                if isClient() or isServer() then
-                    return tostring(zedObj:getOnlineID())
-                else
-                    return tostring(zedObj:getID())
-                end
-            end
+if isClient() or isServer() then
+    function Core.getId(zedObj)
+        if zedObj and instanceof(zedObj, "IsoZombie") and zedObj:isZombie() then
+            return tostring(zedObj:getOnlineID())
+        end
+    end
+else
+    function Core.getId(zedObj)
+        if zedObj and instanceof(zedObj, "IsoZombie") and zedObj:isZombie() then
+            return tostring(zedObj:getID())
         end
     end
 end
@@ -269,6 +270,10 @@ function Core.getZedSpeedType(zed)
                 break
             end
         end
+    end
+    if speedTypeIndex == nil then
+        -- couldn't find the field, return default
+        return
     end
     local field = tostring(getClassField(zed, speedTypeIndex))
     if field == speedTypeField then
@@ -289,29 +294,41 @@ function Core:setIsNight(value)
     triggerEvent(value and self.events.OnDusk or self.events.OnDawn)
 end
 
-function Core:testNight()
+if getActivatedMods():contains("phunserver") then
 
-    if not climateManager and getClimateManager then
-        climateManager = getClimateManager()
+    function Core:testNight()
+        -- let phunserver handle this if it's present
     end
-    if not gt and getGameTime then
-        gt = getGameTime()
-    end
-    if gt and climateManager and climateManager.getSeason then
 
-        local season = climateManager:getSeason()
-        if season and season.getDawn then
-            local time = gt:getTimeOfDay()
-            self.dawnTime = season:getDawn()
-            self.duskTime = season:getDusk()
+else
+
+    function Core:testNight()
+
+        if not climateManager and getClimateManager then
+            climateManager = getClimateManager()
         end
-    end
-    if self.duskTime and self.dawnTime then
-        local currentTime = gt:getTimeOfDay()
-        local night = currentTime > self.duskTime or currentTime < self.dawnTime
-        if night ~= self.isNight then
-            self:setIsNight(night)
+        if not gt and getGameTime then
+            gt = getGameTime()
+        end
+        if gt and climateManager and climateManager.getSeason then
+
+            local season = climateManager:getSeason()
+            if season and season.getDawn then
+                local time = gt:getTimeOfDay()
+                self.dawnTime = season:getDawn()
+                self.duskTime = season:getDusk()
+            end
+        end
+        if self.duskTime and self.dawnTime then
+            local currentTime = gt:getTimeOfDay()
+            local night = currentTime > self.duskTime or currentTime < self.dawnTime
+            if night ~= self.isNight then
+                self:setIsNight(night)
+            end
         end
     end
 end
 
+function Core.getPlayerZoneData(player)
+    return {}
+end

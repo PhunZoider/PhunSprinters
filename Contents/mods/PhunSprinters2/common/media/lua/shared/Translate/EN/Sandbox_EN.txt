@@ -1,8 +1,6 @@
 
 Sandbox_EN = {
     Sandbox_PhunSprinters = "PhunSprinters",
-    Sandbox_PhunSprinters_VersionKey = "Version Key"
-    Sandbox_PhunSprinters_VersionKey_tooltip = "Advanced setting. Change to reset zed ModData for some reason or another"
 
     Sandbox_PhunSprinters_ShowMoodle = "Display Moodle"
     Sandbox_PhunSprinters_ShowMoodle_tooltip = "Show moodle with information about current sprinter risks"
@@ -67,7 +65,7 @@ Sandbox_EN = {
     Sandbox_PhunSprinters_Mode = "Sprinters run:"
     Sandbox_PhunSprinters_Mode_tooltip = "This option determins when a sprinter will actually run. ** = low performance impact, *** = med-high performance impact depending on population"
 
-    Sandbox_PhunSprinters_Mode_option1 = "Between Dusk and Dawn",
+    Sandbox_PhunSprinters_Mode_option1 = "Dusk till dawn",
     Sandbox_PhunSprinters_Mode_option2 = "Always",
     Sandbox_PhunSprinters_Mode_option3 = "When its too dark outside **",
     Sandbox_PhunSprinters_Mode_option4 = "When its too dark around them ***",

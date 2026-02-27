@@ -18,12 +18,6 @@ end
 -- Reassess environment light/fog to determine sprint toggle
 function Core:testEnvironment()
 
-    if self.settings.Mode == 2 then
-        -- always sprint
-    elseif self.settings.Mode == 1 then
-        -- only during night
-    end
-
     local daylight = math.floor((getClimateManager():getDayLightStrength() or 0) * 100 + 0.5)
     local fog = math.floor((getClimateManager():getFogIntensity() or 0) * 100 + 0.5)
     local adjustedLight = daylight - (fog / 3)
