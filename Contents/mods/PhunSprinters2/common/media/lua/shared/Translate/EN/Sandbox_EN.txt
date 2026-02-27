@@ -2,12 +2,6 @@
 Sandbox_EN = {
     Sandbox_PhunSprinters = "PhunSprinters",
 
-    Sandbox_PhunSprinters_ShowMoodle = "Display Moodle"
-    Sandbox_PhunSprinters_ShowMoodle_tooltip = "Show moodle with information about current sprinter risks"
-
-    Sandbox_PhunSprinters_ShowMoodleOnlyWhenRunning = "Moodle only when at risk"
-    Sandbox_PhunSprinters_ShowMoodleOnlyWhenRunning_tooltip = "Only show moodle when sprinters can spawn"
-
     Sandbox_PhunSprinters_Volume = "Percentage Sprinters Volume"
     Sandbox_PhunSprinters_Volume_tooltip = "Volume of sprinter screech. 0 to disable"
 
@@ -20,10 +14,10 @@ Sandbox_EN = {
     Sandbox_PhunSprinters_FrequencyOfEnvUpdate = "Env Checks"
     Sandbox_PhunSprinters_FrequencyOfEnvUpdate_tooltip = "Number of seconds before recalculating enviromental changes like light and fog. Increase for improved performance"
 
-    Sandbox_PhunSprinters_Skeletons = "Skeletons (NOTE TOOLTIP)"
-    Sandbox_PhunSprinters_Skeletons_tooltip = "NOTE: There is a bug in B42.13.1 when aiming guns at skeletons, maybe best to wait until they fix it before re-enabling if you use guns"
+    Sandbox_PhunSprinters_Skeletons = "Sprinter Skeletons"
+    Sandbox_PhunSprinters_Skeletons_tooltip = "All sprinters appear as Skeletons"
 
-    Sandbox_PhunSprinters_Decorate = "Decorate"
+    Sandbox_PhunSprinters_Decorate = "Decorate Sprinters"
     Sandbox_PhunSprinters_Decorate_tooltip = "Dress the sprinters up around the holidays (only works with certain additional mods active and installed)"
 
     Sandbox_PhunSprinters_MoonPhaseNew = "Moon Phase (New Moon)"
@@ -56,14 +50,14 @@ Sandbox_EN = {
     Sandbox_PhunSprinters_MaxQueue = "Queue Size"
     Sandbox_PhunSprinters_MaxQueue_tooltip = "The max number of zeds to update per tick"
 
-    Sandbox_PhunSprinters_DefaultRisk = "Default Risk"
-    Sandbox_PhunSprinters_DefaultRisk_tooltip = "Percentage chance of a zed being a sprinter. This value is used when there is no valid PhunZones value to use. e.g. 0 = no chance. 50 = 50% chance and 100 = always"
+    Sandbox_PhunSprinters_DefaultRisk = "Default Risk %"
+    Sandbox_PhunSprinters_DefaultRisk_tooltip = "Percentage chance of a zed being a sprinter. If you use PhunZones, this is the fallback risk level when no other value is specified by a zone (or its parent). Examples: 0 = no chance. 50 = 50% chance and 100 = always"
 
     Sandbox_PhunSprinters_SprintingChangeNotificationVolume = "Night Change Volume"
     Sandbox_PhunSprinters_SprintingChangeNotificationVolume_tooltip = "Volume of the sound that notifies players that sprinters are no longer running (eg day) or that they have now started to run (eg night or bad weather). Set to 0 to disable"
 
-    Sandbox_PhunSprinters_Mode = "Sprinters run:"
-    Sandbox_PhunSprinters_Mode_tooltip = "This option determins when a sprinter will actually run. ** = low performance impact, *** = med-high performance impact depending on population"
+    Sandbox_PhunSprinters_Mode = "Mode"
+    Sandbox_PhunSprinters_Mode_tooltip = "This option governs when sprinters will run. ** = low performance impact, *** = med-high performance impact depending on population"
 
     Sandbox_PhunSprinters_Mode_option1 = "Dusk till dawn",
     Sandbox_PhunSprinters_Mode_option2 = "Always",
@@ -71,16 +65,13 @@ Sandbox_EN = {
     Sandbox_PhunSprinters_Mode_option4 = "When its too dark around them ***",
 
     Sandbox_PhunSprinters = "PhunSprintersUI",
-    Sandbox_PhunSprinters_AlwaysShowElements = "Always Show"
-    Sandbox_PhunSprinters_AlwaysShowElements_tooltip = "Always UI. This requires the PhunSprintersUI mod active. Probably makes sense to disable to moodle option if using this. Requires restart"
+    Sandbox_PhunSprinters_AlwaysShowElements = "Always Show UI"
+    Sandbox_PhunSprinters_AlwaysShowElements_tooltip = "Always display the UI component in the upper right screen. Requires restart"
 
     Sandbox_PhunSprinters_AddToLoot = "Lootable Sensor"
-    Sandbox_PhunSprinters_AddToLoot_tooltip = "If Always Show is disabled, tick this so that Military Issued sensor will appear in loot. Wearing these will show the UI. Requires restart"
+    Sandbox_PhunSprinters_AddToLoot_tooltip = "If Always Show UI is disabled, tick this so that Military Issued sensor will appear in loot. Wearing these will show the UI. Requires restart. If you do not want any UI, disable this and the Always Show UI option"
 
-    Sandbox_PhunSprinters_ShowRNCToolTip = "RNC Integration"
-    Sandbox_PhunSprinters_ShowRNCToolTip_tooltip = "If set to true (and you have Rewarding Night Combat mod installed), this will add their tooltip to the moon element, thereby enabling you to remove theirs"
-
-    Sandbox_PhunSprinters_option = "Layout",
+    Sandbox_PhunSprinters_option = "UI Layout",
     Sandbox_PhunSprinters_option_option1 = "Vertical",
     Sandbox_PhunSprinters_option_option2 = "Horizontal",
 

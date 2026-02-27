@@ -158,7 +158,6 @@ description=[table]
 description=[tr][th]Setting[/th][th]Description[/th][/tr]
 description=[tr][td][b]Elements[/b][/td][td]Always show UI widgets.[/td][/tr]
 description=[tr][td][b]Lootable Bands[/b][/td][td]Adds a wearable UV sensor band that enables UI when worn.[/td][/tr]
-description=[tr][td][b]RNC Integration[/b][/td][td]Integrates Rewarding Night Combat moon indicators into the UI.[/td][/tr]
 description=[tr][td][b]Layout[/b][/td][td]Horizontal or vertical layout (horizontal recommended).[/td][/tr]
 description=[/table]
 description=

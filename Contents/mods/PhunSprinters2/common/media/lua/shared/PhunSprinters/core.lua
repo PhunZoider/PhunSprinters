@@ -195,6 +195,7 @@ Core.isLocal = not isClient() and not isServer()
 Core.settings = SandboxVars[Core.name] or {}
 for _, event in pairs(Core.events) do
     if not Events[event] then
+        print("PhunSprinters: Adding event " .. event)
         LuaEventManager.AddEvent(event)
     end
 end
@@ -294,7 +295,7 @@ function Core:setIsNight(value)
     triggerEvent(value and self.events.OnDusk or self.events.OnDawn)
 end
 
-if getActivatedMods():contains("phunserver") then
+if getActivatedMods():contains("\\phunserver") or getActivatedMods():contains("\\phunservertest") then
 
     function Core:testNight()
         -- let phunserver handle this if it's present

@@ -66,25 +66,7 @@ end
 function UI:createChildren()
     ISPanelJoypad.createChildren(self)
 
-    local padding = 10 * tools.FONT_SCALE
-    local x = 0
-    local y = 0
-    local w = self.width
-    local h = self.height
-
     self.controls = {}
-
-    local t = textures
-    local moon = ISImage:new(x, y, self.height - 2 * tools.FONT_SCALE, self.height - 2 * tools.FONT_SCALE,
-        t.sprinting_on);
-
-    moon.scaledWidth = moon.width
-    moon.scaledHeight = moon.height
-
-    moon:initialise();
-    moon:instantiate();
-    self.controls.moon = moon
-    self:addChild(self.controls.moon);
 
     self.tooltip = ISToolTip:new();
     self.tooltip:initialise();
@@ -92,7 +74,7 @@ function UI:createChildren()
     self.tooltip:setName("");
     self.tooltip:setAlwaysOnTop(true)
     self.tooltip.description = "";
-    self.tooltip:setOwner(moon)
+    self.tooltip:setOwner(self)
 
 end
 

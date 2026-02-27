@@ -1,5 +1,21 @@
 VERSION = 1,
 
+option PhunSprinters.Mode
+{
+    type = enum,
+    numValues = 4,
+    default = 1, 
+    page = PhunSprinters, 
+    translation = PhunSprinters_Mode,
+}
+
+option PhunSprinters.SlowInLight
+{
+    type = boolean, 
+    default = false,
+    page = PhunSprinters, 
+    translation = PhunSprinters_SlowInLight,
+}
 
 option PhunSprinters.DefaultRisk
 { 
@@ -36,23 +52,6 @@ option PhunSprinters.Decorate
     default = true,
     page = PhunSprinters, 
     translation = PhunSprinters_Decorate,
-}
-
-option PhunSprinters.Mode
-{
-    type = enum,
-    numValues = 4,
-    default = 1, 
-    page = PhunSprinters, 
-    translation = PhunSprinters_Mode,
-}
-
-option PhunSprinters.SlowInLight
-{
-    type = boolean, 
-    default = false,
-    page = PhunSprinters, 
-    translation = PhunSprinters_SlowInLight,
 }
 
 option PhunSprinters.MoonPhaseMultiplierNew
@@ -119,14 +118,6 @@ option PhunSprinters.AddToLoot
     default = false,
     page=PhunSprinters,
     translation = PhunSprinters_AddToLoot,
-}
-
-option PhunSprinters.ShowRNCToolTip
-{ 
-    type = boolean, 
-    default = false,
-    page=PhunSprinters,
-    translation = PhunSprinters_ShowRNCToolTip,
 }
 
 option PhunSprinters.layout
