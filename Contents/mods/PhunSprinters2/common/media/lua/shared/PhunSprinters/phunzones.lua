@@ -1,10 +1,10 @@
-require "PhunZones/core"
 require "PhunSprinters/core"
 local Core = PhunSprinters
-local PZ = PhunZones
 
 local activeMods = getActivatedMods()
 if activeMods:contains("\\phunzones2") or activeMods:contains("\\phunzones2test") then
+    local PZ = PhunZones
+    require "PhunZones/core"
     Core.debugLn("PhunZones2 detected, adding zone fields for PhunSprinters")
     if PZ and PZ.fields then
         PZ.fields.minSprinterRisk = {

@@ -12,7 +12,16 @@ local moonMappings = {"MoonPhaseMultiplierNew", "MoonPhaseMultiplierCrescent", "
 
 function Core.CalcMoon()
     Core.moonPhase = getClimateMoon():getCurrentMoonPhase()
+
+    if not Core.settings[moonMappings[Core.moonPhase + 1]] then
+        print("[PhunSprinters]: Error. Missing moon multiplier setting for phase " .. tostring(Core.moonPhase) ..
+                  ". Defaulting to 100%")
+        Core.moon = 1
+        return
+    end
+
     Core.moon = (Core.settings[moonMappings[Core.moonPhase + 1]] or 100) * 0.01
+
 end
 
 -- Reassess environment light/fog to determine sprint toggle

@@ -17,7 +17,10 @@ local function getMoonDescription(player)
     local texts = {}
 
     local c = Core
-    local moon = c.moon
+    if Core.moonPhase == nil or Core.moon == nil then
+        Core.CalcMoon()
+    end
+    local moon = tonumber(c.moon) or 0
     if moon == 1 then
         table.insert(texts, getText("IGUI_PhunSprinters_Moon_Normal_Desc",
             getText("IGUI_PhunSprinters_MoonPhase" .. Core.moonPhase)))

@@ -41,7 +41,7 @@ option PhunSprinters.HoursDiscount
 option PhunSprinters.Skeletons
 {
     type = boolean, 
-    default = false,
+    default = true,
     page = PhunSprinters, 
     translation = PhunSprinters_Skeletons,
 }
