@@ -1,4 +1,5 @@
 version=1
+id=3676252110
 title=PhunSprinters 2
 description=[b]PhunSprinters 2[/b] the sequel to the Academy Award winning [url=https://steamcommunity.com/sharedfiles/filedetails/?id=3532685233]PhunSprinters[/url].
 description=
@@ -41,7 +42,7 @@ description=[*]Night travel becomes a risk vs reward decision
 description=[*]It brings some of the Phun of mode #4 to the other options (this option doesn't do anything if using Mode 4)
 description=[/list]
 description=
-description=⚠️ Some limits exist to prevent performance issues in dense areas. 
+description=⚠️ Some limits exist to prevent performance issues in dense areas.
 description=
 description=[h1]⏳Hours Discount (Difficulty Easing)[/h1]
 description=[hr]
@@ -85,8 +86,12 @@ description=[*]Reduce amount of "Why they no sprint" moments
 description=[/list]
 description=
 description=[h2]More Phun Stuff[/h2]
-description=[url=https://steamcommunity.com/sharedfiles/filedetails/?id=3388867450][img]https://i.ibb.co/3mQpB8ST/preview.png[/img][/url] [url=https://steamcommunity.com/sharedfiles/filedetails/?id=3628843367][img]https://i.ibb.co/fYNn5BLC/preview.png[/img][/url] [url=https://steamcommunity.com/sharedfiles/filedetails/?id=3623897097][img]https://i.ibb.co/mCv5kDgy/preview.png[/img][/url]
+description=[url=https://steamcommunity.com/sharedfiles/filedetails/?id=3676252660][img]https://i.ibb.co/3mQpB8ST/preview.png[/img][/url] [url=https://steamcommunity.com/sharedfiles/filedetails/?id=3676251425][img]https://i.ibb.co/fYNn5BLC/preview.png[/img][/url] 
+description=[url=https://steamcommunity.com/sharedfiles/filedetails/?id=3623897097][img]https://i.ibb.co/mCv5kDgy/preview.png[/img][/url] [url=https://steamcommunity.com/sharedfiles/filedetails/?id=3676250472][img]https://i.ibb.co/svW9sVvK/preview.png[/img][/url] 
 description=
 description=Coded with love for our awesome [url=https://discord.gg/v2USyAtP6q]PhunZoid[/url] community. [url=https://github.com/PhunZoider/PhunSprinters]GitHub repo and more info[/url]
-tags=Build 42;Items;Multiplayer;Gameplay
+description=
+Workshop ID: 3676252110
+Mod ID: phunsprinters2
+tags=Build 42;Items;Multiplayer
 visibility=public
