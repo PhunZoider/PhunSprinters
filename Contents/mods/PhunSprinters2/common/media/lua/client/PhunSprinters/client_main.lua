@@ -21,6 +21,10 @@ function Core.updateZed(zed)
     local zData = Core.getZedData(zed) or {}
     local id = zData.id
 
+    if not id then
+        return
+    end
+
     local isSprinter = c.sprinterIds[id]
 
     if isSprinter == nil then
@@ -31,7 +35,7 @@ function Core.updateZed(zed)
         Core.sprinterIds[id] = isSprinter
         if not zData.sprinter then
             Core.applyZedVisualState(zed, zData)
-            Core.debugLn("PhunSprinters: " .. zData.id .. " is not a sprinter")
+            Core.debugLn("PhunSprinters: " .. tostring(zData.id) .. " is not a sprinter")
             Core.makeNormal(zed, zData)
             return
         else

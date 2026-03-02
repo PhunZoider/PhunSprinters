@@ -55,9 +55,9 @@ function UI:prerender()
 
     local modData = self.player:getModData();
 
-    if modData.PhunSprinters and modData.PhunSprinters.moonPhase then
-        self:drawTextureScaled(t[modData.PhunSprinters.moonPhase + 1], 0, 0, self.width, self.height,
-            self.displayColor.a, self.displayColor.r, self.displayColor.g, self.displayColor.b);
+    if modData.PhunSprinters and Core.moonPhase then
+        self:drawTextureScaled(t[Core.moonPhase + 1], 0, 0, self.width, self.height, self.displayColor.a,
+            self.displayColor.r, self.displayColor.g, self.displayColor.b);
     end
 
     self:updateTooltip()
@@ -93,8 +93,7 @@ function UI:updateTooltip()
         self.tooltip:setVisible(true)
         self.tooltip:addToUIManager()
         self.tooltip:setX(self:getAbsoluteX() - self.tooltip:getWidth())
-        self.tooltip:setName(getText("IGUI_PhunSprinters_MoonPhase" ..
-                                         (self.player:getModData().PhunSprinters.moonPhase or 0)))
+        self.tooltip:setName(getText("IGUI_PhunSprinters_MoonPhase" .. (Core.moonPhase or 0)))
         local txt = self.desc and self.desc(self.player) or ""
         self.tooltip.description = txt
     else

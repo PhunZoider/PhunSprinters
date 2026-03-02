@@ -74,12 +74,20 @@ function tools.formatGameTime(decimalHours, use12h)
     return string.format("%02d:%02d", hour, minutes)
 end
 
-function tools.isAdmin(player, ignoreLocal)
-
-    if isAdmin() or getDebug() or (Core.isLocal and not ignoreLocal) then
-        return true
+function tools.isAdmin(player)
+    if not player then
+        return (getAccessLevel and (getAccessLevel() == "moderator" or getAccessLevel() == "admin")) or false
     end
-    return (getAccessLevel and (getAccessLevel() == "moderator" or getAccessLevel() == "admin")) or false
+    if tools.isLocal then
+        if isAdmin() then
+            return true
+        end
+        if isDebugEnabled() then
+            return true
+        end
+    end
+    local level = player:getAccessLevel()
+    return level == "admin" or level == "moderator"
 
 end
 

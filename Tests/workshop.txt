@@ -2,5 +2,8 @@ version=1
 title=PhunSprinters 2 [DEV]
 id=3674596402
 description=⚠️ DEV BRANCH - This version is for previewing, testing and feedback on new features for [url=https://steamcommunity.com/sharedfiles/filedetails/?id=3676252110]PhunSprinters 2[/url], it may break and be updated frequently
+description=
+description=do not use with phunsprinters2
+description=
 tags=Build 42;Items;Multiplayer;Gameplay
 visibility=unlisted

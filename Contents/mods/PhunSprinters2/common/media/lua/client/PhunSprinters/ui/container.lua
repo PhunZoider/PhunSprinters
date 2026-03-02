@@ -23,15 +23,16 @@ local function getMoonDescription(player)
     local moon = c.moon or 0
     if moon == 1 then
         table.insert(texts, getText("IGUI_PhunSprinters_Moon_Normal_Desc",
-            getText("IGUI_PhunSprinters_MoonPhase" .. Core.moonPhase)))
+            getText("IGUI_PhunSprinters_MoonPhase" .. (Core.moonPhase or 0))))
     elseif moon < 1 then
         table.insert(texts,
-            getText("IGUI_PhunSprinters_Moon_Reducing_Desc", getText("IGUI_PhunSprinters_MoonPhase" .. Core.moonPhase),
+            getText("IGUI_PhunSprinters_Moon_Reducing_Desc",
+                getText("IGUI_PhunSprinters_MoonPhase" .. (Core.moonPhase or 0)),
                 100 - Core.tools.formatNumber(moon * 100)))
     else
         table.insert(texts,
             getText("IGUI_PhunSprinters_Moon_Increasing_Desc",
-                getText("IGUI_PhunSprinters_MoonPhase" .. Core.moonPhase), Core.tools.formatNumber(moon * 100)))
+                getText("IGUI_PhunSprinters_MoonPhase" .. (Core.moonPhase or 0)), Core.tools.formatNumber(moon * 100)))
     end
 
     if Core.env.adjustedLightIntensity <= Core.settings.DarknessLevel then
