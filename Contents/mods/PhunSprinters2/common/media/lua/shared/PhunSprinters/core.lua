@@ -297,8 +297,12 @@ end
 
 if getActivatedMods():contains("\\phunserver") or getActivatedMods():contains("\\phunservertest") then
 
+    local PS = PhunServer
     function Core:testNight()
         -- let phunserver handle this if it's present
+        self.dawnTime = PS.dawnTime
+        self.duskTime = PS.duskTime
+        self:setIsNight(PS.isNight)
     end
 
 else

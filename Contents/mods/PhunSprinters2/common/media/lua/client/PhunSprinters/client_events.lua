@@ -73,6 +73,10 @@ end
 
 Events.OnTick.Add(setup)
 
+Events.EveryOneMinute.Add(function()
+    Core:testNight()
+end)
+
 Events.OnClothingUpdated.Add(function(player)
     if player:isLocalPlayer() then
         Core.validatePlayerSensor(player)

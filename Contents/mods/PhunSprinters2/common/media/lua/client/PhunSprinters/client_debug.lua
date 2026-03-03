@@ -43,7 +43,7 @@ function Core.onDebugZedLabels()
     if not Core.getOption("Debug") then
         return
     end
-    if not Core.tools.isAdmin() then
+    if not Core.tools.isAdmin(getPlayer()) then
         return
     end
 
