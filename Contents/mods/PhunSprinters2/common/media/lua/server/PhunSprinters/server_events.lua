@@ -10,9 +10,11 @@ local emptyServerCalculate = false
 local emptyServerTickCount = 0
 
 Events.OnServerStarted.Add(function()
+    Core:ini()
     ModData.add(Core.name, {})
     Core.sprinterIds = ModData.get(Core.name)
     Core:testNight()
+
 end)
 
 Events.EveryOneMinute.Add(function()

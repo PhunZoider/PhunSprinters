@@ -235,6 +235,19 @@ end
 function Core:ini()
     self.inied = true
     Core.startTime = getTimestampMs()
+    print("[PhunSprinters] Initializing Core")
+    if getActivatedMods():contains("\\phunserver") or getActivatedMods():contains("\\phunservertest") or
+        getActivatedMods():contains("\\phunserver2") or getActivatedMods():contains("\\phunserver2test") then
+        print("[PhunSprinters] PhunServer detected, using its night system")
+        local PS = PhunServer
+        function Core:testNight()
+            -- let phunserver handle this if it's present
+            self.dawnTime = PS.dawnTime
+            self.duskTime = PS.duskTime
+            self:setIsNight(PS.isNight)
+        end
+    end
+
     triggerEvent(self.events.OnReady, self)
 end
 
@@ -295,41 +308,28 @@ function Core:setIsNight(value)
     triggerEvent(value and self.events.OnDusk or self.events.OnDawn)
 end
 
-if getActivatedMods():contains("\\phunserver") or getActivatedMods():contains("\\phunservertest") then
+function Core:testNight()
 
-    local PS = PhunServer
-    function Core:testNight()
-        -- let phunserver handle this if it's present
-        self.dawnTime = PS.dawnTime
-        self.duskTime = PS.duskTime
-        self:setIsNight(PS.isNight)
+    if not climateManager and getClimateManager then
+        climateManager = getClimateManager()
     end
+    if not gt and getGameTime then
+        gt = getGameTime()
+    end
+    if gt and climateManager and climateManager.getSeason then
 
-else
-
-    function Core:testNight()
-
-        if not climateManager and getClimateManager then
-            climateManager = getClimateManager()
+        local season = climateManager:getSeason()
+        if season and season.getDawn then
+            local time = gt:getTimeOfDay()
+            self.dawnTime = season:getDawn()
+            self.duskTime = season:getDusk()
         end
-        if not gt and getGameTime then
-            gt = getGameTime()
-        end
-        if gt and climateManager and climateManager.getSeason then
-
-            local season = climateManager:getSeason()
-            if season and season.getDawn then
-                local time = gt:getTimeOfDay()
-                self.dawnTime = season:getDawn()
-                self.duskTime = season:getDusk()
-            end
-        end
-        if self.duskTime and self.dawnTime then
-            local currentTime = gt:getTimeOfDay()
-            local night = currentTime > self.duskTime or currentTime < self.dawnTime
-            if night ~= self.isNight then
-                self:setIsNight(night)
-            end
+    end
+    if self.duskTime and self.dawnTime then
+        local currentTime = gt:getTimeOfDay()
+        local night = currentTime > self.duskTime or currentTime < self.dawnTime
+        if night ~= self.isNight then
+            self:setIsNight(night)
         end
     end
 end
