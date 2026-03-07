@@ -15,7 +15,7 @@ Sandbox_EN = {
     Sandbox_PhunSprinters_FrequencyOfEnvUpdate_tooltip = "Number of seconds before recalculating enviromental changes like light and fog. Increase for improved performance"
 
     Sandbox_PhunSprinters_Skeletons = "Sprinter Skeletons"
-    Sandbox_PhunSprinters_Skeletons_tooltip = "All sprinters appear as Skeletons"
+    Sandbox_PhunSprinters_Skeletons_tooltip = "All sprinters appear as Skeletons. CURRENTLY DISABLED DUE TO BUG IN VANILLA THAT COULD CRASH CLIENT WHEN AIMING AT SKELETON"
 
     Sandbox_PhunSprinters_Decorate = "Decorate Sprinters"
     Sandbox_PhunSprinters_Decorate_tooltip = "Dress the sprinters up around the holidays (only works with certain additional mods active and installed)"
