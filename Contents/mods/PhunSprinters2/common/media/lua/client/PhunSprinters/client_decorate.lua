@@ -110,9 +110,9 @@ function Core.applyZedVisualState(zed, zData)
     end
 
     -- Aiming at skeletons = CTD in vanilla
-    -- if Core.settings.Skeletons and not zed:isSkeleton() then
-    --     zed:setSkeleton(true)
-    -- end
+    if Core.settings.Skeletons and not zed:isSkeleton() then
+        zed:setSkeleton(true)
+    end
 
     if not zData.dressed and Core.settings.Decorate then
         Core.decorateZed(zed)
