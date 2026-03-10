@@ -162,8 +162,8 @@ function Core.getZedData(zed)
 
         d = {
             exp = (Core.delta or 0) + (Core.settings.Exp or 300),
-            id = id,
-            originalSpeed = Core.getZedSpeedType(zed)
+            id = id
+            -- originalSpeed = Core.getZedSpeedType(zed)
         }
         md.PhunSprinters = d
         if Core.tools.isLocal then

@@ -277,6 +277,11 @@ end
 local speedTypeIndex = nil
 local speedTypeField = "public int zombie.characters.IsoZombie.speedType"
 function Core.getZedSpeedType(zed)
+    local speedType = zed.speedType
+    local speedType2 = zed.getVariable and zed:getVariable("speedType")
+    local speedType3 = zed.getSpeedType and zed:getSpeedType()
+    local test = zed.DoZombieSpeeds and zed:DoZombieSpeeds()
+
     if speedTypeIndex == nil then
         for i = 0, getNumClassFields(zed) - 1 do
             if tostring(getClassField(zed, i)) == speedTypeField then
