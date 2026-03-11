@@ -86,13 +86,12 @@ function Core.onDebugZedLabels()
                 local color = {0, 1, 0, 1}
                 if data then
                     if data.sprinter then
-                        local speedText = Core.getZedSpeedType(z) or "?";
                         local fog = env.fogIntensity and string.format("%.2f", env.fogIntensity) or "?"
                         local light = string.format("%.2f", z:getCurrentSquare():getLightLevel(0))
 
                         local txt = string.format("%.2f", Core.env.adjustedLightIntensity) .. "/" .. light .. "/" ..
                                         threshold .. " " .. tostring(data.sprinting == true) .. ") " ..
-                                        tostring(speedText) .. "/" .. tostring(data.originalSpeed or "?")
+                                        tostring(data.originalSpeed or "?")
                         color = data.sprinting and {1, 0, 0, 1} or {1, 1, 0, 1}
 
                         label = {

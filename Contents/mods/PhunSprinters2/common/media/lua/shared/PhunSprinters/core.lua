@@ -1,7 +1,4 @@
 local getSandboxOptions = getSandboxOptions
-local getNumClassFields = getNumClassFields
-local getClassField = getClassField
-local getClassFieldVal = getClassFieldVal
 local climateManager = nil
 local gt = nil
 local PZ = PhunZones
@@ -271,32 +268,6 @@ else
         if zedObj and instanceof(zedObj, "IsoZombie") and zedObj:isZombie() then
             return tostring(zedObj:getID())
         end
-    end
-end
-
-local speedTypeIndex = nil
-local speedTypeField = "public int zombie.characters.IsoZombie.speedType"
-function Core.getZedSpeedType(zed)
-    local speedType = zed.speedType
-    local speedType2 = zed.getVariable and zed:getVariable("speedType")
-    local speedType3 = zed.getSpeedType and zed:getSpeedType()
-    local test = zed.DoZombieSpeeds and zed:DoZombieSpeeds()
-
-    if speedTypeIndex == nil then
-        for i = 0, getNumClassFields(zed) - 1 do
-            if tostring(getClassField(zed, i)) == speedTypeField then
-                speedTypeIndex = i
-                break
-            end
-        end
-    end
-    if speedTypeIndex == nil then
-        -- couldn't find the field, return default
-        return
-    end
-    local field = tostring(getClassField(zed, speedTypeIndex))
-    if field == speedTypeField then
-        return getClassFieldVal(zed, getClassField(zed, speedTypeIndex))
     end
 end
 

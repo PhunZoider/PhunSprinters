@@ -12,6 +12,16 @@ local getTimestampMs = getTimestampMs
 -- Risk & Environment Evaluation
 -- ============================================================
 
+local _defaultSpeed = nil
+
+local function getDefaultSpeed()
+    if _defaultSpeed == nil then
+        _defaultSpeed = sandboxOptions:getOptionByName("ZombieLore.Speed") and
+                            sandboxOptions:getOptionByName("ZombieLore.Speed"):getValue() or 2
+    end
+    return _defaultSpeed
+end
+
 function Core.updateZed(zed)
 
     local c = Core
@@ -162,8 +172,8 @@ function Core.getZedData(zed)
 
         d = {
             exp = (Core.delta or 0) + (Core.settings.Exp or 300),
-            id = id
-            -- originalSpeed = Core.getZedSpeedType(zed)
+            id = id,
+            originalSpeed = getDefaultSpeed()
         }
         md.PhunSprinters = d
         if Core.tools.isLocal then
@@ -253,24 +263,15 @@ function Core.testPlayers(player, zed, zData, pData)
     end
 end
 
-local _defaultSpeed = nil
-
-local function getDefaultSpeed()
-    if _defaultSpeed == nil then
-        _defaultSpeed = sandboxOptions:getOptionByName("ZombieLore.Speed") and
-                            sandboxOptions:getOptionByName("ZombieLore.Speed"):getValue() or 2
-    end
-    return _defaultSpeed
-end
-
 -- Force zed back to normal speed
 function Core.makeNormal(zed, zData)
     zed:makeInactive(true)
     local defaultSpeed = getDefaultSpeed()
-    sandboxOptions:set("ZombieLore.Speed", zData.originalSpeed or 2)
+    local restoreSpeed = zData.originalSpeed or defaultSpeed
+    sandboxOptions:set("ZombieLore.Speed", restoreSpeed)
     zData.sprinting = false
     zed:makeInactive(false)
-    if (zData.originalSpeed or 2) ~= defaultSpeed then
+    if restoreSpeed ~= defaultSpeed then
         sandboxOptions:set("ZombieLore.Speed", defaultSpeed)
     end
 end
