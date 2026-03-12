@@ -281,7 +281,12 @@ function Core:setIsNight(value)
     if isServer() then
         sendServerCommand(Core.name, value and Core.commands.OnDusk or Core.commands.OnDawn, {})
     end
-    triggerEvent(value and self.events.OnDusk or self.events.OnDawn)
+    local event = value and self.events.OnDusk or self.events.OnDawn
+    local function fireEvent()
+        Events.OnTick.Remove(fireEvent)
+        triggerEvent(event)
+    end
+    Events.OnTick.Add(fireEvent)
 end
 
 function Core:testNight()
