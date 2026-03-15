@@ -7,3 +7,4 @@ xclude
 .xcf
 CLAUDE.md
 .claude
+.gitignore
