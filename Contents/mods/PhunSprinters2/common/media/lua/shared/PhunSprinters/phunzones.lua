@@ -7,7 +7,7 @@ if activeMods:contains("phunzones2") or activeMods:contains("phunzones2test") th
     require "PhunZones/core"
     local PZ = PhunZones
 
-    print("[PhunSprinters2]:PhunZones2 detected, adding zone fields for PhunSprinters")
+    print("[PhunSprinters2]: PhunZones2 detected, adding zone fields for PhunSprinters")
     if PZ and PZ.fields then
         PZ.fields.minSprinterRisk = {
             label = "IGUI_PhunSprinters_minRisk",
