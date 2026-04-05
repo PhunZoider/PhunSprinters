@@ -2,7 +2,7 @@ module Phun
 {
     item WristWatch_Right_MilitaryX
     {
-        DisplayName=Military Watch,
+        DisplayName=Military Sensor,
         DisplayCategory = Accessory,
         ItemType = base:clothing,
         Type = AlarmClockClothing,
@@ -23,7 +23,7 @@ module Phun
 
     item WristWatch_Left_MilitaryX
     {
-        DisplayName=Military Watch,
+        DisplayName=Military Sensor,
         DisplayCategory = Accessory,
         ItemType = base:clothing,
         Type = AlarmClockClothing,

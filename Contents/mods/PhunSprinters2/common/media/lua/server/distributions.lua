@@ -2,9 +2,9 @@ require 'Items/ProceduralDistributions'
 
 local function preDistributionMerge()
 
-    if (SandboxVars.PhunSprintersUI or {}).AddToLoot then
+    if (SandboxVars.PhunSprinters or {}).AddToLoot then
 
-        print("Adding PhunSprintersUI items to loot spawns...")
+        print("[PhunSprinters] Sensors being added to loot spawns...")
 
         -- ArmySurplusOutfit
         table.insert(ProceduralDistributions.list["ArmySurplusOutfit"].items, "Phun.WristWatch_Left_MilitaryX");
@@ -116,7 +116,7 @@ local function preDistributionMerge()
         table.insert(SuburbsDistributions["all"]["inventoryfemale"].items, 0.05);
     else
         print(
-            "PhunSprintersUI items will NOT be added to loot spawns. Enable 'Add To Loot' in the mod options to add them.")
+            "[PhunSprinters] Sensors will NOT be added to loot spawns. Enable 'Add To Loot' in the mod options to add them.")
     end
 end
 Events.OnPreDistributionMerge.Add(preDistributionMerge);

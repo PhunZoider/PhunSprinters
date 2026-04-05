@@ -42,7 +42,6 @@ Sandbox_EN = {
     Sandbox_PhunSprinters_Mode_option2 = "Always",
     Sandbox_PhunSprinters_Mode_option3 = "When its too dark outside **",
     Sandbox_PhunSprinters_Mode_option4 = "When its too dark around them ***",
-    Sandbox_PhunSprintersUI = "PhunSprintersUI",
     Sandbox_PhunSprinters_AlwaysShowElements = "Always Show UI",
     Sandbox_PhunSprinters_AlwaysShowElements_tooltip = "Always display the UI component in the upper right screen. Requires restart",
     Sandbox_PhunSprinters_AddToLoot = "Lootable Sensor",
