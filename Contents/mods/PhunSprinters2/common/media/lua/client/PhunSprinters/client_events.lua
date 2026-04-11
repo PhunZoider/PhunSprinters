@@ -132,6 +132,9 @@ Events.EveryOneMinute.Add(function()
 end)
 
 -- === Track Player Death (Save Sprinter Hours) ===
+-- player:getModData() changes may not persist across character death/respawn,
+-- so we write the total into ModData as a transfer buffer. On the next character
+-- creation, CalcPlayersSprinterPercentage picks it up and migrates it into modData.
 Events.OnPlayerDeath.Add(function(player)
     if not player or not player:isLocalPlayer() then
         return
@@ -140,8 +143,10 @@ Events.OnPlayerDeath.Add(function(player)
     local modData = player:getModData()
     modData.PhunSprinters = modData.PhunSprinters or {}
 
-    local hours = player:getHoursSurvived()
-    modData.PhunSprinters.totalHours = (modData.PhunSprinters.totalHours or 0) + hours
+    local total = (modData.PhunSprinters.totalHours or 0) + player:getHoursSurvived()
+
+    local localData = ModData.getOrCreate("PhunSprinters_Local")
+    localData[player:getPlayerNum()] = { hours = total }
 end)
 
 -- === Update Zombie State on Every Zombie Tick ===

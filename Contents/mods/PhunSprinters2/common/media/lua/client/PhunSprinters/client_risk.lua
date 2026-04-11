@@ -33,7 +33,20 @@ function Core.CalcPlayersSprinterPercentage()
 
         local lastRisk = formatNumber(modData.PhunSprinters.risk or 0)
 
-        local totalHours = (modData.PhunSprinters.totalHours or 0) + player:getHoursSurvived()
+        -- On a fresh character, totalHours will be nil. Check ModData for hours
+        -- carried over from a previous death, otherwise default to 0.
+        if modData.PhunSprinters.totalHours == nil then
+            local localData = ModData.getOrCreate("PhunSprinters_Local")
+            local playerNum = player:getPlayerNum()
+            if localData[playerNum] then
+                modData.PhunSprinters.totalHours = localData[playerNum].hours
+                localData[playerNum] = nil
+            else
+                modData.PhunSprinters.totalHours = 0
+            end
+        end
+
+        local totalHours = modData.PhunSprinters.totalHours + player:getHoursSurvived()
         local discount = Core.getOption("HoursDiscount", 0)
         local defaultRisk = Core.getOption("DefaultRisk", 0)
         local hoursAdj = (discount > 0 and discount > totalHours) and (totalHours / discount) or 1
