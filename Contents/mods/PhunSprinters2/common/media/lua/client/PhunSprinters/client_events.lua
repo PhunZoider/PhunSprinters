@@ -146,7 +146,9 @@ Events.OnPlayerDeath.Add(function(player)
     local total = (modData.PhunSprinters.totalHours or 0) + player:getHoursSurvived()
 
     local localData = ModData.getOrCreate("PhunSprinters_Local")
-    localData[player:getPlayerNum()] = { hours = total }
+    localData[player:getPlayerNum()] = {
+        hours = total
+    }
 end)
 
 -- === Update Zombie State on Every Zombie Tick ===

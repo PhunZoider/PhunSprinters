@@ -245,6 +245,11 @@ function Core:ini()
         end
     end
 
+    -- re-cache settings as they are not guaranteed to be loaded prior
+    for k, v in pairs(Core.settings) do
+        Core.settings[k] = Core.getOption(k, v)
+    end
+
     triggerEvent(self.events.OnReady, self)
 end
 
