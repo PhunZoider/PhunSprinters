@@ -19,6 +19,7 @@ module Phun
         SoundRadius = 7,
         WorldStaticModel = DigitalWatchBlack,
         Tags = Digital;HasMetal;MoreWhenNoZombies,
+        OBSOLETE = true,
     }
 
     item WristWatch_Left_MilitaryX
@@ -40,5 +41,38 @@ module Phun
         SoundRadius = 7,
         WorldStaticModel = DigitalWatchBlack,
         Tags = Digital;HasMetal;MoreWhenNoZombies,
+        OBSOLETE = true,
+    }
+
+    item Military_Sensor_Left
+    {
+        DisplayName=Military Sensor,
+        DisplayCategory = Accessory,
+        ItemType = base:clothing,
+        Weight = 0.1,
+        Icon = Necklace_Choker,
+        BodyLocation = base:leftwrist,
+        ClothingExtraSubmenu = LeftWrist,
+        ClothingItem = Necklace_Choker,
+        ClothingItemExtra = Phun.Military_Sensor_Right,
+        ClothingItemExtraOption = RightWrist,
+        Cosmetic = true,
+        WorldStaticModel = Choker_Ground,
+    }  
+
+    item Military_Sensor_Right
+    {
+        DisplayName=Military Sensor,
+        DisplayCategory = Accessory,
+        ItemType = base:clothing,
+        Weight = 0.1,
+        Icon = Necklace_Choker,
+        BodyLocation = base:rightwrist,
+        ClothingExtraSubmenu = RightWrist,
+        ClothingItem = Necklace_Choker,
+        ClothingItemExtra = Phun.Military_Sensor_Left,
+        ClothingItemExtraOption = LeftWrist,
+        Cosmetic = true,
+        WorldStaticModel = Choker_Ground,
     }       
 }

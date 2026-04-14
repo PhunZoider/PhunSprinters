@@ -1,4 +1,6 @@
 ItemName_EN = {
     ItemName_Phun.WristWatch_Right_MilitaryX = "Special Military Issued Sensor",
     ItemName_Phun.WristWatch_Left_MilitaryX = "Special Military Issued Sensor",
+    ItemName_Military_Sensor_Left = "Special Military Issued Sensor",
+    ItemName_Military_Sensor_Right = "Special Military Issued Sensor",    
 }

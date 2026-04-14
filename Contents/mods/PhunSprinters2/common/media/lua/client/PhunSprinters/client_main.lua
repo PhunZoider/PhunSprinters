@@ -288,6 +288,9 @@ function Core.makeSprint(zed, zData)
     sandboxOptions:set("ZombieLore.Speed", defaultSpeed)
 end
 
+local sensorList = {"WristWatch_Right_MilitaryX", "WristWatch_Left_MilitaryX", "Military_Sensor_Left",
+                    "Military_Sensor_Right"}
+
 function Core.validatePlayerSensor(player)
 
     if not Core.ui.instances then
@@ -300,8 +303,13 @@ function Core.validatePlayerSensor(player)
     for count = 0, items:size() - 1 do
         local clothingItem = items:getItemByIndex(count)
         local clothingItemType = clothingItem:getType()
-        if clothingItemType == "WristWatch_Right_MilitaryX" or clothingItemType == "WristWatch_Left_MilitaryX" then
-            found = true
+        for _, sensorType in ipairs(sensorList) do
+            if clothingItemType == sensorType then
+                found = true
+                break
+            end
+        end
+        if found then
             break
         end
     end
