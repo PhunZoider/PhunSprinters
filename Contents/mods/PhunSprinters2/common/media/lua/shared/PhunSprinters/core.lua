@@ -262,16 +262,21 @@ function Core.getOption(name, default)
     return val
 end
 
-if isClient() or isServer() then
-    function Core.getId(zedObj)
-        if zedObj and instanceof(zedObj, "IsoZombie") and zedObj:isZombie() then
-            return tostring(zedObj:getOnlineID())
-        end
-    end
-else
-    function Core.getId(zedObj)
-        if zedObj and instanceof(zedObj, "IsoZombie") and zedObj:isZombie() then
-            return tostring(zedObj:getID())
+-- I suppose getOnlineID is no longer a thing in B42.17
+local testForOnlineId = getCore():getGameVersion():getMajor() == 42 and getCore():getGameVersion():getMinor() < 17 and
+                            (isClient() or isServer() or isCoopHost())
+
+function Core.getId(zed)
+    if zed then
+        if instanceof(zed, "IsoZombie") then
+            if zed:isZombie() then
+                if testForOnlineId then
+                    return tostring(zed:getOnlineID())
+                else
+                    return tostring(zed:getID())
+                end
+
+            end
         end
     end
 end
