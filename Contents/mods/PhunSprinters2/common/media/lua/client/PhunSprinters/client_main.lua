@@ -204,6 +204,9 @@ end
 
 -- Handle light-based slowdown/speedup for zeds
 function Core.adjustForLight(zed, zData, player)
+    if not zData then
+        return
+    end
 
     local threshold = (Core.settings.DarknessLevel or 74)
 
