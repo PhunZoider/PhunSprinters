@@ -118,8 +118,8 @@ function Core.applyZedVisualState(zed, zData)
         Core.decorateZed(zed)
     end
 
-    if zData.sprinting and not zData.screamed and instanceof(zed:getTarget(), "IsoPlayer") then
-        Core.scream(zed, zData)
-    end
+    -- NOTE: screaming is handled in Core.updateZed / Core.enqueueUpdate. This function
+    -- always runs before the zed has been made to sprint, so zData.sprinting is never
+    -- true here.
     zData.dressed = true
 end

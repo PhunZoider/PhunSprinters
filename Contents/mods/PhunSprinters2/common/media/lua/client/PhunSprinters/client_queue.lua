@@ -28,11 +28,20 @@ function Core.enqueueUpdate(zed)
         distance = ps:DistToProper(zs)
     end
     if distance < (Core.settings.MinDistance2 or 14) then
-        -- too close
+        -- too close to queue, but still needs light adjustment and a scream on approach
         if Core.sprint and isSprinter then
-            if Core.settings.Mode == 4 or Core.settings.SlowInLight then
-                -- adjust for light
-                Core.adjustForLight(zed, Core.getZedData(zed), zed:getTarget(), distance)
+            local zData = Core.getZedData(zed)
+            if zData then
+                if Core.settings.Mode == 4 or Core.settings.SlowInLight then
+                    -- adjust for light
+                    Core.adjustForLight(zed, zData, zed:getTarget(), distance)
+                end
+                if zData.sprinting and not zData.screamed then
+                    local target = zed:getTarget()
+                    if target and instanceof(target, "IsoPlayer") then
+                        Core.scream(zed, zData)
+                    end
+                end
             end
         end
 

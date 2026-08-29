@@ -84,6 +84,13 @@ function Core.updateZed(zed)
 
     end
 
+    if zData.sprinting and not zData.screamed then
+        local target = zed:getTarget()
+        if target and instanceof(target, "IsoPlayer") then
+            Core.scream(zed, zData)
+        end
+    end
+
 end
 
 function Core.enableSprinting(value)
@@ -118,7 +125,8 @@ function Core.scream(zed, zData)
     -- Check for TheySEEyou mod to avoid conflicts
     if SIMBA_TheySEEyouTest == nil then
         SIMBA_TheySEEyouTest = getActivatedMods():contains("SIMBA_TheySEEyou")
-    elseif SIMBA_TheySEEyouTest then
+    end
+    if SIMBA_TheySEEyouTest then
         -- TheySEEyou is active, skip screaming
         return
     end
