@@ -24,8 +24,8 @@ description=[hr]
 description=There are four different modes that determine when sprinters will run
 description=[table]
 description=[tr][th]Mode[/th][th]Description[/th][/tr]
-description=[tr][td][b]Always [/b][/td][td]Sprinters will always run[/td][/tr]
 description=[tr][td][b]Dusk till Dawn[/b][/td][td]Sprinters will walk during daytime, but when the sun goes down, they run[/td][/tr]
+description=[tr][td][b]Always [/b][/td][td]Sprinters will always run[/td][/tr]
 description=[tr][td][b]When its too dark outside[/b][/td][td]During the night or when weather reduces visibility, zeds will run (even if its daytime).[/td][/tr]
 description=[tr][td][b]When its too dark around them[/b][/td][td]This is the phunest option, but least performant. In this mode, sprinters will run if it ever gets too dark around them. In this mode, your flashlight becomes a critical part of gameplay.[/td][/tr]
 description=[/table]
@@ -89,7 +89,7 @@ description=[img]https://i.ibb.co/DZ7Vffn/Thumbs-Up.png[/img]
 description=
 description=[h2]More Phun Stuff[/h2]
 description=[url=https://steamcommunity.com/sharedfiles/filedetails/?id=3689006725][img]https://i.ibb.co/4ZLgMZ4m/preview.png[/img][/url] [url=https://steamcommunity.com/sharedfiles/filedetails/?id=3676252660][img]https://i.ibb.co/3mQpB8ST/preview.png[/img][/url] [url=https://steamcommunity.com/sharedfiles/filedetails/?id=3676251425][img]https://i.ibb.co/fYNn5BLC/preview.png[/img][/url] 
-description=[url=https://steamcommunity.com/sharedfiles/filedetails/?id=3623897097][img]https://i.ibb.co/mCv5kDgy/preview.png[/img][/url] [url=https://steamcommunity.com/sharedfiles/filedetails/?id=3676250472][img]https://i.ibb.co/svW9sVvK/preview.png[/img][/url] 
+description=[url=https://steamcommunity.com/sharedfiles/filedetails/?id=3792193021][img]https://i.ibb.co/vCBcKtp8/preview.png[/img][/url] [url=https://steamcommunity.com/sharedfiles/filedetails/?id=3676250472][img]https://i.ibb.co/svW9sVvK/preview.png[/img][/url] [url=https://steamcommunity.com/sharedfiles/filedetails/?id=3793624522][img]https://i.ibb.co/k2k39f8w/preview.png[/img][/url]
 description=
 description=Coded with love for our awesome [url=https://discord.gg/v2USyAtP6q]PhunZoid[/url] community. [url=https://github.com/PhunZoider/PhunSprinters]GitHub repo and more info[/url]
 description=

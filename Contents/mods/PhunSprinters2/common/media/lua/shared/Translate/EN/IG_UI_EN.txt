@@ -1,6 +1,6 @@
 IG_UI_EN = {
-    IGUI_PhunSprinters_maxRisk = "Cap Sprinter Risk %",
-    IGUI_PhunSprinters_maxRisk_Tooltip = "The maximum risk of sprinters appearing in this zone. Leave blank or 100 for 100%",
+    IGUI_PhunSprinters_maxRisk = "Cap Sprinter Risk %%",
+    IGUI_PhunSprinters_maxRisk_Tooltip = "The maximum risk of sprinters appearing in this zone. Leave blank or 100 for 100%%",
     IGUI_PhunSprinters_minRisk = "Sprinter Risk",
     IGUI_PhunSprinters_minRisk_Tooltip = "The risk of sprinters appearing in this zone before being adjusted for character playtime or moon phase",
     IGUI_PhunSprinters_ZedsAreRestless = "Sprinters are restless",
