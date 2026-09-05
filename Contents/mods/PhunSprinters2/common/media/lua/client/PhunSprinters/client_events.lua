@@ -16,6 +16,14 @@ local function setup()
     Events.OnTick.Remove(setup)
 
     Core:ini()
+
+    -- Establish the day/night phase before the first testEnvironment tick, which is a
+    -- second away and reconciles Core.sprint from Core.isNight. Without this the client
+    -- starts with isNight nil, testEnvironment reads that as day and switches sprinting
+    -- off, and a client logging in at night has no sprinters until the first minute tick
+    -- corrects it. The server already does this in OnServerStarted.
+    Core:testNight()
+
     Core:recalcOutfits()
 
     local players = Core.tools.onlinePlayers()

@@ -151,6 +151,7 @@ Small, easy to forget, and two of them were live bugs.
 |---|---|---|
 | G1 | Server start | No Lua errors. `Initializing Core`, then the settings dump when Debug is on. |
 | G2 | Client start, SP and MP | Same, no errors. |
+| G5 | Log in **at night**, Mode `Dusk till dawn` | Sprinters are active immediately, not after a delay, and no spurious chime a minute in. The client used to start with `isNight` unset, which read as day. |
 | G3 | Play a session on `Zombie Speed = Sprinters`, quit | The save's sandbox file **still says Sprinters**. Our neuter is in-memory only and must never persist. |
 | G4 | Remove the mod, load the save | Zeds behave per the sandbox. No leftovers. |
 
