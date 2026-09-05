@@ -145,20 +145,36 @@ end
 function Core.enableSprinting(value)
 
     if Core.sprint == value then
+        -- Nothing to change, but we have now reconciled at least once. Whatever comes
+        -- next is a transition the player actually lives through, and should be heard.
+        Core.sprintInitialised = true
         return
     end
+
     Core.sprint = value
     Core.lastRecalc = getTimestampMs()
-    local now = getTimestamp()
-    if not Core.lastChangeSound then
-        Core.lastChangeSound = now
-    elseif now - (Core.lastChangeSound or 0) > 5 then
-        Core.lastChangeSound = now
-        local vol = (Core.settings.SprintingChangeNotificationVolume or 15) * .01
-        if vol > 0 then
-            getSoundManager():PlaySound(value and "PhunSprinters_Start" or "PhunSprinters_End", false, 0):setVolume(vol);
+
+    if not Core.sprintInitialised then
+        -- First reconciliation after login. This is establishing the baseline, not a
+        -- dusk or dawn anyone witnessed, so take the state and stay quiet.
+        --
+        -- This used to key off lastChangeSound being unset, which is not the same
+        -- thing: logging in at night hits the early return above, leaves it unset, and
+        -- the first genuine transition of the session was then swallowed instead.
+        Core.sprintInitialised = true
+    else
+        local now = getTimestamp()
+        -- Guard against a double chime if something toggles twice in quick succession.
+        if now - (Core.lastChangeSound or 0) > 5 then
+            Core.lastChangeSound = now
+            local vol = (Core.settings.SprintingChangeNotificationVolume or 15) * .01
+            if vol > 0 then
+                getSoundManager():PlaySound(value and "PhunSprinters_Start" or "PhunSprinters_End", false, 0)
+                    :setVolume(vol)
+            end
         end
     end
+
     if Core.settings.Debug then
         print("PhunSprinters: Environment changed - " .. (value and "sprinting" or "normal"))
     end

@@ -25,6 +25,9 @@ PhunSprinters = {
     queue = {},
     tools = require "PhunSprinters/tools",
     sprint = true,
+    -- Set once enableSprinting has reconciled at least once, so the startup baseline
+    -- stays silent but every real transition after it is heard.
+    sprintInitialised = false,
     daytime = true,
     baseOutfits = {
         christmas = {
@@ -370,6 +373,17 @@ end
 --     ConnectToServerState receiveSandboxOptions -- an admin editing sandbox options
 --     in-game re-pushes them and wipes this. Hence the re-run on a timer; the function
 --     is written to be safe to call repeatedly.
+-- The re-assert runs every minute, so only say something when the answer changes.
+-- Otherwise a server that needs no adjustment repeats the same line forever.
+local lastNeuterOutcome = nil
+
+local function neuterLn(message)
+    if lastNeuterOutcome ~= message then
+        lastNeuterOutcome = message
+        Core.debugLn(message)
+    end
+end
+
 function Core.neuterVanillaSprinters()
 
     local sandboxOptions = getSandboxOptions()
@@ -384,8 +398,8 @@ function Core.neuterVanillaSprinters()
         -- Fast shamblers or shamblers. Vanilla was never going to roll a sprinter, so
         -- leave the admin's setting completely alone. Also the no-op path for a re-run
         -- after we have already changed it.
-        Core.debugLn("Zombie Speed is " .. tostring(speed) ..
-                         ": no vanilla sprinters to replace, sandbox left alone")
+        neuterLn("Zombie Speed is " .. tostring(speed) ..
+                     ": no vanilla sprinters to replace, sandbox left alone")
         return
     end
 
@@ -396,12 +410,12 @@ function Core.neuterVanillaSprinters()
         local pct = sandboxOptions:getOptionByName("ZombieLore.SprinterPercentage")
         if pct and pct:getValue() ~= 0 then
             sandboxOptions:set("ZombieLore.SprinterPercentage", 0)
-            Core.debugLn("Vanilla sprinters disabled: SprinterPercentage set to 0. " ..
-                             "Zombie Speed stays Random, so the existing fast shambler / " ..
-                             "shambler mix is kept and 'Replace vanilla sprinters with' is not used")
+            neuterLn("Vanilla sprinters disabled: SprinterPercentage set to 0. " ..
+                         "Zombie Speed stays Random, so the existing fast shambler / " ..
+                         "shambler mix is kept and 'Replace vanilla sprinters with' is not used")
         else
-            Core.debugLn("Zombie Speed is Random with SprinterPercentage already 0: " ..
-                             "nothing to replace, sandbox left alone")
+            neuterLn("Zombie Speed is Random with SprinterPercentage already 0: " ..
+                         "nothing to replace, sandbox left alone")
         end
         return
     end
@@ -416,7 +430,7 @@ function Core.neuterVanillaSprinters()
     else
         sandboxOptions:set("ZombieLore.Speed", choice == 2 and 3 or 2)
     end
-    Core.debugLn("Vanilla sprinters disabled: ZombieLore.Speed was 1, now " .. tostring(option:getValue()))
+    neuterLn("Vanilla sprinters disabled: ZombieLore.Speed was 1, now " .. tostring(option:getValue()))
 
 end
 
