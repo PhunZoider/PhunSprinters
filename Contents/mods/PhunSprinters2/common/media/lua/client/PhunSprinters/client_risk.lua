@@ -5,15 +5,8 @@ end
 local Core = PhunSprinters
 local getClimateManager = getClimateManager
 
-local function formatNumber(number, decimals)
-    number = number or 0
-    -- Round the number to remove the decimal part
-    local roundedNumber = math.floor(number + (decimals and 0.005 or 0.5))
-    -- Convert to string and format with commas
-    local formattedNumber = tostring(roundedNumber):reverse():gsub("(%d%d%d)", "%1,")
-    formattedNumber = formattedNumber:reverse():gsub("^,", "")
-    return formattedNumber
-end
+-- Byte-identical to Core.tools.formatNumber; use the one implementation.
+local formatNumber = Core.tools.formatNumber
 
 -- Calculate per-player sprinter risk based on hours, zone, moon phase, etc.
 function Core.CalcPlayersSprinterPercentage()

@@ -105,7 +105,7 @@ function tools.getListbox(x, y, w, h, columns, fns)
     box.onRightMouseUp = f.rightClick or box.onRightMouseUp;
     box.itemheight = tools.FONT_HGT_SMALL + 6 * 2
     box.selected = 0;
-    box.joypadParent = self;
+    -- (no joypadParent: this is a module function, so 'self' here was always nil)
     box.font = UIFont.NewSmall;
     box:setAnchorRight(true);
     box:setAnchorBottom(true);

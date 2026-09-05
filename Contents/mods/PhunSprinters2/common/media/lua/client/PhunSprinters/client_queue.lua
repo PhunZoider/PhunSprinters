@@ -48,7 +48,7 @@ function Core.enqueueUpdate(zed)
             if Core.sprint then
                 if Core.settings.Mode == 4 or Core.settings.SlowInLight then
                     -- adjust for light
-                    Core.adjustForLight(zed, data, zed:getTarget(), distance)
+                    Core.adjustForLight(zed, data, zed:getTarget())
                 end
                 if data.sprinting and not data.screamed then
                     local target = zed:getTarget()
@@ -81,7 +81,7 @@ end
 local lastQueueFullMessage = 0
 function Core.processQueue()
     local count = 0
-    local maxCount = Core.settings.MaxQueue or 10
+    local maxCount = Core.settings.MaxQueue or 20
 
     while #Core.queue > 0 and count < maxCount do
         local zed = table.remove(Core.queue, 1)

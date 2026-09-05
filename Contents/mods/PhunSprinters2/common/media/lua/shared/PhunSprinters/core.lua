@@ -417,8 +417,12 @@ function Core:ini()
     self.inied = true
     Core.startTime = getTimestampMs()
     print("[PhunSprinters] Initializing Core")
-    if getActivatedMods():contains("\\phunserver") or getActivatedMods():contains("\\phunservertest") or
-        getActivatedMods():contains("\\phunserver2") or getActivatedMods():contains("\\phunserver2test") then
+    -- Mod ids, no leading backslash: the ids really are "phunserver2" and
+    -- "phunserver2test" (see PhunServer's mod.info). The backslash prefix was dropped
+    -- between 42.14/phunzones.lua and common/phunzones.lua and this check never caught
+    -- up, so PhunServer detection has been silently failing.
+    if getActivatedMods():contains("phunserver") or getActivatedMods():contains("phunservertest") or
+        getActivatedMods():contains("phunserver2") or getActivatedMods():contains("phunserver2test") then
         print("[PhunSprinters] PhunServer detected, using its night system")
         local PS = PhunServer
         function Core:testNight()

@@ -72,7 +72,13 @@ function Core.updateZed(zed)
         -- Risk is per player and computed on a timer. Until it exists there is nothing
         -- to test against, so leave the zed untested and come back next update rather
         -- than recording a "no" we would be stuck with.
-        local pData = getPlayer():getModData().PhunSprinters
+        -- The player this zed is actually after, where that is one of ours: risk is per
+        -- player, and getPlayer() is only ever player one on splitscreen.
+        local target = zed:getTarget()
+        local player = (target and instanceof(target, "IsoPlayer") and target:isLocalPlayer()) and target or
+                           getPlayer()
+
+        local pData = player:getModData().PhunSprinters
         if not pData or pData.risk == nil then
             return
         end
@@ -165,7 +171,10 @@ function Core.scream(zed, zData)
     local soundName = "PhunSprinters_" .. (ZombRand(5) + 1)
 
     if not zed:getEmitter():isPlaying(soundName) then
-        local vol = (Core.settings.SprintingChangeNotificationVolume or 15) * .01
+        -- Volume, not SprintingChangeNotificationVolume: this is the zed screech, and
+        -- the sandbox option for it ("Percentage Sprinters Volume", 0 to disable) was
+        -- never being read. The other option governs the day/night change chime.
+        local vol = (Core.settings.Volume or 10) * .01
         if vol <= 0 then
             return
         end
@@ -214,13 +223,14 @@ function Core.getZedData(zed)
         -- baseSpeedType is recorded by makeSprint, at the moment before we override
         -- the zed's own speed.
         d = {
-            exp = (Core.delta or 0) + (Core.settings.Exp or 300),
             id = id
         }
         md.PhunSprinters = d
-        if Core.tools.isLocal then
-            zed:transmitModData()
-        end
+
+        -- No transmitModData. Zed modData is deliberately not replicated: the verdict
+        -- lives here and dies with the zed. The old call was inert anyway -- it fired
+        -- only when isLocal, i.e. single player, where both GameClient.client and
+        -- GameServer.server are false so it did nothing but flagForHotSave.
     end
 
     return d
@@ -309,32 +319,6 @@ function Core.adjustForLight(zed, zData, player)
         end
     end
 
-end
-
--- Handle light-based behavior tests for targeted player
-function Core.testPlayers(player, zed, zData, pData)
-
-    zData = zData or Core.getZedData(zed)
-    if zData == nil then
-        return
-    end
-
-    pData = pData or player:getModData().PhunSprinters or {}
-
-    if zData.sprinter == nil then
-        zData.sprinter = Core.shouldSprint(zed, zData, pData)
-    end
-
-    if zData.sprinter and zed:getTarget() == player then
-        if not zData.screamed and zData.sprinting then
-            Core.scream(zed, zData)
-        end
-        if Core.sprint then
-            Core.adjustForLight(zed, zData, player)
-        elseif zData.sprinting then
-            Core.makeNormal(zed, zData)
-        end
-    end
 end
 
 -- Put the zed back at its own speed. Covers both "light or mode says not right now"

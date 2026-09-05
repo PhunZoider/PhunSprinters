@@ -404,6 +404,43 @@ Ordered roughly by impact.
   paths (`client_main.lua:108`, `:138`, per scream). Use cached `Core.settings`.
 - `MaxQueue` code fallback is 10, sandbox default is 20.
 
+### Step 5 cleanup — done 2026-09-05
+
+Two of these turned out to be live bugs rather than dead code:
+
+- **The zed screech read the wrong sandbox option.** `Core.scream` used
+  `SprintingChangeNotificationVolume` (the day/night chime), so
+  `PhunSprinters.Volume` — "Percentage Sprinters Volume, 0 to disable" — was never
+  read at all. Setting it to 0 did not silence anything. Now reads `Volume`.
+- **PhunServer detection has been failing silently.** `core.lua` tested
+  `getActivatedMods():contains("\\phunserver…")` with a leading backslash. The real ids
+  are `phunserver2` / `phunserver2test` (see PhunServer's `mod.info`). Backslashes
+  removed, all four variants kept.
+
+Genuinely dead, removed:
+
+- `Core.testPlayers` — no callers anywhere
+- `zData.exp` / `Core.delta` / `settings.Exp` — never set, never read
+- `zed:transmitModData()` — inverted *and* inert. It fired only when `isLocal`, i.e.
+  single player, where both `GameClient.client` and `GameServer.server` are false, so
+  it did nothing but `flagForHotSave`. Removing it is also the correct call under the
+  ephemeral model: zed modData is deliberately not replicated.
+- `formatNumber` in `client_risk.lua` — byte-identical to `Core.tools.formatNumber`
+- `box.joypadParent = self` in `ui/tools.lua` — `tools.getListbox` is a module
+  function with no `self`, so this always assigned nil
+- the 4th `distance` argument passed to `adjustForLight`, which takes three
+
+Also: `MaxQueue` code fallback 10 → 20 to match the sandbox default, and
+`shouldSprint`'s player is now the zed's target where that is a local player, rather
+than always `getPlayer()` (which is only ever player one on splitscreen).
+
+**Not done, deliberately:**
+
+- `42.15/` is byte-identical to `common/` but **must stay** — without it the `42.14/`
+  folder takes precedence over `common/`.
+- No files are deleted anywhere. Deleting one trips a false positive in the Lua
+  checksum check, so dead code is emptied or edited in place instead.
+
 ### Dead code
 
 - `Core.pendingIds` — written in `client_commands.lua:17`, never read
@@ -436,8 +473,8 @@ write-up. `mod.info` has no `versionMin` or `modversion`.
 
 ## Suggested order
 
-*Status: 1 and 2 done. 3 dropped as moot. 4 mostly dissolved — the identity model is
-now "the zed's modData, and it dies with the zed". 5 outstanding.*
+*Status: 1, 2 and 5 done. 3 dropped as moot. 4 mostly dissolved — the identity model is
+now "the zed's modData, and it dies with the zed".*
 
 1. ~~Direct-speed refactor — kills the sandbox toggling, the `DoZombieStats` cost, the
    fake-shambler nondeterminism, the `originalSpeed` staleness and the `Speed = 4` bug
