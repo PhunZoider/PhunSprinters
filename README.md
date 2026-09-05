@@ -2,9 +2,9 @@
 
 A dynamic sprinter system for Project Zomboid B42.
 
-Vanilla gives you a fixed percentage of sprinters, everywhere, forever. PhunSprinters
-makes it situational: risk changes with where you are, how long you have survived, the
-moon phase, and the light around each zombie.
+While vanilla gives you a fixed percentage of sprinters, everywhere, forever,
+PhunSprinters makes it situational: risk changes with where you are, how long you have
+survived, the moon phase, and the light around each zombie.
 
 [Workshop page](https://steamcommunity.com/sharedfiles/filedetails/?id=3676252110) ·
 [Discord](https://discord.gg/v2USyAtP6q)
@@ -24,12 +24,12 @@ risk   =  capped at the zone's maxSprinterRisk   (100 if the zone does not set o
 risk   =  clamped to 0-100
 ```
 
-| Term | Where it comes from |
-|---|---|
-| `base` | The zone's `minSprinterRisk`, falling back to the **Default Risk** setting |
-| `moon multiplier` | The **Moon Phase Multiplier** for tonight's phase, divided by 100 |
-| `hours factor` | `hours survived / Hours Discount`, capped at 1. Always 1 if Hours Discount is 0 |
-| cap | The zone's `maxSprinterRisk` |
+| Term              | Where it comes from                                                             |
+| ----------------- | ------------------------------------------------------------------------------- |
+| `base`            | The zone's `minSprinterRisk`, falling back to the **Default Risk** setting      |
+| `moon multiplier` | The **Moon Phase Multiplier** for tonight's phase, divided by 100               |
+| `hours factor`    | `hours survived / Hours Discount`, capped at 1. Always 1 if Hours Discount is 0 |
+| cap               | The zone's `maxSprinterRisk`                                                    |
 
 A worked example. Default Risk 40, full moon (multiplier 200), 30 hours survived with an
 Hours Discount of 100, in a zone with no overrides:
@@ -60,12 +60,12 @@ different zombie with its own roll, not the same one changing its mind.
 
 ## Modes
 
-| Mode | When sprinters run |
-|---|---|
-| 1. Dusk till dawn | Walk during the day, run once the sun goes down |
-| 2. Always | Always run, the way vanilla sprinters do |
-| 3. When it is too dark outside | Run at night, and during weather that drops visibility, even in daytime |
-| 4. When it is too dark around them | Run whenever the light on their own tile drops below your Darkness Level |
+| Mode                               | When sprinters run                                                                                                                                           |
+| ---------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| 1. Dusk till dawn                  | Walk during the day, run once the sun goes down                                                                                                              |
+| 2. Always                          | Always run, the way vanilla sprinters do                                                                                                                     |
+| 3. When it is too dark outside     | Run at night, and during weather that drops visibility, even in daytime                                                                                      |
+| 4. When it is too dark around them | Run whenever the light on their own tile drops below your Darkness Level. Even if it's bright outside, turn the lights off in a room and watch it come alive! |
 
 Mode 4 is the most interesting and the most expensive. It is evaluated per zombie per
 tile, so your torch matters moment to moment.
@@ -91,9 +91,9 @@ The light figure compared against Darkness Level is 0-100:
 These need [PhunZones 2](https://steamcommunity.com/sharedfiles/filedetails/?id=3676252660).
 PhunSprinters reads two values off whatever zone the player is standing in:
 
-| Key | Effect |
-|---|---|
-| `minSprinterRisk` | Replaces Default Risk as the base for this zone |
+| Key               | Effect                                                             |
+| ----------------- | ------------------------------------------------------------------ |
+| `minSprinterRisk` | Replaces Default Risk as the base for this zone                    |
 | `maxSprinterRisk` | Caps the final risk in this zone, after moon and hours are applied |
 
 Both are optional. Leave one unset and the global setting applies.
@@ -132,12 +132,12 @@ hours factor = hours survived / Hours Discount     (capped at 1)
 With Hours Discount at `100` and an area risk of 50%:
 
 | Hours survived | Effective risk |
-|---|---|
-| 0 | 0% |
-| 25 | 12.5% |
-| 50 | 25% |
-| 75 | 37.5% |
-| 100 and beyond | 50% |
+| -------------- | -------------- |
+| 0              | 0%             |
+| 25             | 12.5%          |
+| 50             | 25%            |
+| 75             | 37.5%          |
+| 100 and beyond | 50%            |
 
 Set it to `0` to disable the ramp entirely. Hours carry across death, so a player who
 dies at hour 90 does not restart the ease-in.
@@ -152,13 +152,13 @@ server where the veterans want full risk.
 The moon **multiplies** risk. It does not replace it, so a zone with 0 risk stays at 0
 however full the moon is.
 
-| Phase | Setting | Default |
-|---|---|---|
-| New | `MoonPhaseMultiplierNew` | 50 |
-| Crescent | `MoonPhaseMultiplierCrescent` | 75 |
-| Quarter | `MoonPhaseMultiplierQuarter` | 90 |
-| Gibbous | `MoonPhaseMultiplierGibbous` | 100 |
-| Full | `MoonPhaseMultiplierFull` | 200 |
+| Phase    | Setting                       | Default |
+| -------- | ----------------------------- | ------- |
+| New      | `MoonPhaseMultiplierNew`      | 50      |
+| Crescent | `MoonPhaseMultiplierCrescent` | 75      |
+| Quarter  | `MoonPhaseMultiplierQuarter`  | 90      |
+| Gibbous  | `MoonPhaseMultiplierGibbous`  | 100     |
+| Full     | `MoonPhaseMultiplierFull`     | 200     |
 
 Values are percentages: `200` doubles the risk, `50` halves it, `100` leaves it alone.
 Waxing and waning phases share a setting, so the eight game phases map onto these five.
@@ -172,24 +172,24 @@ moons a genuine window to travel in.
 
 ## Settings reference
 
-| Setting | Default | What it does |
-|---|---|---|
-| Mode | Dusk till dawn | When sprinters run. See above |
-| Slow in light | off | Light drops a running sprinter back to a walk |
-| Darkness Level | 74 | The 0-100 light level sprinting is gated on |
-| Default Risk | 1 | Base sprinter chance where no zone overrides it |
-| Hours Discount | 0 | Hours of survival before full risk applies. 0 disables |
-| Moon Phase Multipliers | 50-200 | Per-phase risk multipliers |
-| Replace vanilla sprinters with | Fast shamblers | What the game's own sprinters become. See below |
-| Percentage Sprinters Volume | 10 | Volume of the sprinter screech. 0 silences it |
-| Sprinting Change Volume | 15 | Volume of the sound when conditions change. 0 silences it |
-| Decorate Sprinters | on | Dress sprinters up around the holidays, if the relevant mods are installed |
-| Always Show UI | on | Show the sensor panel without needing the wearable |
-| Lootable Sensor | off | Put the military sensor into loot, for when the UI is not always shown |
-| UI Layout | Vertical | Sensor panel orientation |
-| Min / Max Distance | 14 / 35 | The band, in tiles, where zombies are tested |
-| Max Queue | 20 | Zombies evaluated per tick. Lower it if you see stutter in hordes |
-| Debug | off | Verbose logging and the per-zombie overlay |
+| Setting                        | Default        | What it does                                                               |
+| ------------------------------ | -------------- | -------------------------------------------------------------------------- |
+| Mode                           | Dusk till dawn | When sprinters run. See above                                              |
+| Slow in light                  | off            | Light drops a running sprinter back to a walk                              |
+| Darkness Level                 | 74             | The 0-100 light level sprinting is gated on                                |
+| Default Risk                   | 1              | Base sprinter chance where no zone overrides it                            |
+| Hours Discount                 | 0              | Hours of survival before full risk applies. 0 disables                     |
+| Moon Phase Multipliers         | 50-200         | Per-phase risk multipliers                                                 |
+| Replace vanilla sprinters with | Fast shamblers | What the game's own sprinters become. See below                            |
+| Percentage Sprinters Volume    | 10             | Volume of the sprinter screech. 0 silences it                              |
+| Sprinting Change Volume        | 15             | Volume of the sound when conditions change. 0 silences it                  |
+| Decorate Sprinters             | on             | Dress sprinters up around the holidays, if the relevant mods are installed |
+| Always Show UI                 | on             | Show the sensor panel without needing the wearable                         |
+| Lootable Sensor                | off            | Put the military sensor into loot, for when the UI is not always shown     |
+| UI Layout                      | Vertical       | Sensor panel orientation                                                   |
+| Min / Max Distance             | 14 / 35        | The band, in tiles, where zombies are tested                               |
+| Max Queue                      | 20             | Zombies evaluated per tick. Lower it if you see stutter in hordes          |
+| Debug                          | off            | Verbose logging and the per-zombie overlay                                 |
 
 ---
 
@@ -198,12 +198,12 @@ moons a genuine window to travel in.
 PhunSprinters has to own who runs, so it takes vanilla's sprinters off the board when the
 world loads.
 
-| Your Zombie Speed | What happens |
-|---|---|
-| Sprinters | Converted to whatever **Replace vanilla sprinters with** says. PhunSprinters decides which of them run from there |
-| Random | Only the sprinter share is removed. Your fast shambler and shambler mix is untouched |
-| Fast Shamblers | Nothing changes. There were no vanilla sprinters to replace |
-| Shamblers | Nothing changes |
+| Your Zombie Speed | What happens                                                                                                      |
+| ----------------- | ----------------------------------------------------------------------------------------------------------------- |
+| Sprinters         | Converted to whatever **Replace vanilla sprinters with** says. PhunSprinters decides which of them run from there |
+| Random            | Only the sprinter share is removed. Your fast shambler and shambler mix is untouched                              |
+| Fast Shamblers    | Nothing changes. There were no vanilla sprinters to replace                                                       |
+| Shamblers         | Nothing changes                                                                                                   |
 
 This is what makes the rest of the mod work. A vanilla sprinter used to ignore light
 suppression, dusk till dawn and zone limits entirely, because there was no way to slow
@@ -223,8 +223,8 @@ happened.
 ## Multiplayer
 
 Sprinter verdicts are **not** synced, deliberately. Each client tests the zombies near it
-against its own risk, which means the zombie coming at you reflects *your* zone, *your*
-survival time and *your* moon, rather than whoever happened to see it first.
+against its own risk, which means the zombie coming at you reflects _your_ zone, _your_
+survival time and _your_ moon, rather than whoever happened to see it first.
 
 Speed itself replicates natively, so everyone sees the same thing. If another player has
 already made a zombie sprint, your client adopts that verdict rather than second-guessing
@@ -245,12 +245,12 @@ Each zombie within 25 tiles gets a label:
 <id> <state> [L<light>] <base>><live>
 ```
 
-| Colour | State | Meaning |
-|---|---|---|
-| grey | `untested` | Has not entered the test band yet |
-| green | `no` | Tested, not a sprinter |
-| yellow | `walk` | One of ours, not running right now |
-| red | `run` | One of ours, running |
+| Colour | State      | Meaning                            |
+| ------ | ---------- | ---------------------------------- |
+| grey   | `untested` | Has not entered the test band yet  |
+| green  | `no`       | Tested, not a sprinter             |
+| yellow | `walk`     | One of ours, not running right now |
+| red    | `run`      | One of ours, running               |
 
 `L<light>` only appears in the modes where light decides anything, and is directly
 comparable with your Darkness Level. `base>live` is the speed the zombie returns to when
@@ -268,10 +268,9 @@ when a value does not look like what you configured.
 
 - [PhunZones 2](https://steamcommunity.com/sharedfiles/filedetails/?id=3676252660) for
   per-zone risk. Optional.
-- PhunServer 2 Day/Night, if installed, drives dusk and dawn instead of our own
-  calculation. Optional, detected automatically.
-- **TheySEEyou**: sprinter screams are suppressed when it is active, to avoid two mods
-  shouting at once.
+- [PhunServer 2](https://steamcommunity.com/sharedfiles/filedetails/?id=3792193021)
+  Day/Night, if installed, drives dusk and dawn instead of our own calculation. Optional,
+  detected automatically.
 
 B42 only. B41 users should stay on
 [PhunSprinters 1](https://steamcommunity.com/sharedfiles/filedetails/?id=3532685233).

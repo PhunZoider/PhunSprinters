@@ -19,7 +19,7 @@ description=Sprinter behaviour is determined by stacking modifiers in this order
 description=[list]
 description=[*]Global Base Risk (in your settings)
 description=[*]Zone Override (when [url=https://steamcommunity.com/sharedfiles/filedetails/?id=3676252660]PhunZones 2[/url] is installed)
-description=[*]How long you've played for (Ease-In)
+description=[*]How long you've played for
 description=[*]What phase the moon is in
 description=[*]The mode you use (see below)
 description=[*]Light Suppression (enable to slow sprinters in light)
@@ -33,7 +33,7 @@ description=[tr][th]Mode[/th][th]Description[/th][/tr]
 description=[tr][td][b]1- Dusk till Dawn[/b][/td][td]Sprinters will walk during daytime, but when the sun goes down, they run[/td][/tr]
 description=[tr][td][b]2- Always[/b][/td][td]Sprinters will always run (like vanilla)[/td][/tr]
 description=[tr][td][b]3- When its too dark outside[/b][/td][td]During the night or when weather reduces visibility, zeds will run (even if its daytime).[/td][/tr]
-description=[tr][td][b]4- When its too dark around them[/b][/td][td]This is the phunest option, but least performant. In this mode, sprinters will run if it ever gets too dark around them. In this mode, your flashlight becomes a critical part of gameplay.[/td][/tr]
+description=[tr][td][b]4- When its too dark around them[/b][/td][td]This is the phunest option, but can be the most demanding performance wise. In this mode, sprinters will run if it ever gets too dark around them. In this mode, your flashlight becomes a critical part of gameplay.[/td][/tr]
 description=[/table]
 description=
 description=[h1]Light suppression[/h1]
