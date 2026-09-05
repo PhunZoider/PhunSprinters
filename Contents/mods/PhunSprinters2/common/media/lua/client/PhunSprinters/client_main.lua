@@ -312,6 +312,30 @@ function Core.shouldSprint(zed, zData, pData)
 
 end
 
+-- The light level this zed is judged on, 0-100, directly comparable with the
+-- DarknessLevel setting.
+--
+-- Its own function so the debug overlay can show the number the decision actually used.
+-- It used to print the raw local light, which is not the same value outdoors in daylight
+-- and made the overlay disagree with the behaviour it was supposed to explain.
+function Core.effectiveLight(zed, player)
+
+    local sq = zed and zed:getCurrentSquare()
+    local playerNum = (player and player.getPlayerNum and player:getPlayerNum()) or 0
+
+    local isOutdoor = sq and not sq:getRoom()
+    if isOutdoor and not Core.isNight then
+        -- Daytime outdoor: getLightLevel() is always ~1.0 and does not reflect fog.
+        -- Use the fog-adjusted global value, the actual perceived outdoor brightness.
+        return (Core.env and Core.env.adjustedLightIntensity) or 100
+    end
+
+    -- Indoor: raw local light (fog does not affect indoor squares).
+    -- Outdoor nighttime: raw local light correctly reflects flashlight contribution.
+    return (sq and sq:getLightLevel(playerNum) or 0) * 100
+
+end
+
 -- Handle light-based slowdown/speedup for zeds
 function Core.adjustForLight(zed, zData, player)
     if not zData then
@@ -319,22 +343,7 @@ function Core.adjustForLight(zed, zData, player)
     end
 
     local threshold = (Core.settings.DarknessLevel or 74)
-
-    local sq = zed and zed:getCurrentSquare()
-    local playerNum = (player and player.getPlayerNum and player:getPlayerNum()) or 0
-    local rawLight = (sq and sq:getLightLevel(playerNum) or 0) * 100
-
-    local light
-    local isOutdoor = sq and not sq:getRoom()
-    if isOutdoor and not Core.isNight then
-        -- Daytime outdoor: getLightLevel() is always ~1.0 and does not reflect fog.
-        -- Use the fog-adjusted global value, which is the actual perceived outdoor brightness.
-        light = (Core.env and Core.env.adjustedLightIntensity) or 100
-    else
-        -- Indoor: raw local light (fog does not affect indoor squares).
-        -- Outdoor nighttime: raw local light correctly reflects flashlight contribution.
-        light = rawLight
-    end
+    local light = Core.effectiveLight(zed, player)
 
     if zData.sprinting then
         if light >= threshold then

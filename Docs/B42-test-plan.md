@@ -21,23 +21,30 @@ Design and rationale live in `B42-speed-refactor.md`. This is only how to check 
 Each zed within 25 tiles is labelled:
 
 ```
-<getID>/<onlineId> (<state>) <adjLight>/<light>/<threshold> <base>><live> [SKEL]
+<id> <state> [L<light>] <base>><live> [SKEL]
 ```
 
 | Colour | State | Meaning |
 |---|---|---|
-| grey | `untested` | never entered the 14–35 tile test band |
+| grey | `untested` | never entered the 14-35 tile test band |
 | green | `no` | tested, failed the roll |
 | yellow | `walk` | one of ours, not running right now |
 | red | `run` | one of ours, running |
 
-`base>live` is the speed it returns to, then its actual `speedType` right now.
-**`live` showing `nil` means the speedType read is broken — stop and report that.**
+- `id` is `Core.getId` -- `getID()` on 42.17+, `getOnlineID()` below it in MP. Stable
+  within a session, and reused across zeds after that, so use it to follow one zed for
+  a few minutes, not to identify it across a chunk reload.
+- `L<light>` appears only under Mode 4 or Slow in light, where light actually decides
+  anything. It is 0-100, directly comparable with the **Darkness Level** setting, and it
+  is the same value the decision used -- not the raw local light, which differs outdoors
+  in daylight.
+- `base>live` is the speed it returns to, then its actual `speedType` right now. A zed
+  that is not one of ours shows just its live speed.
+  **`live` showing `nil` means the speedType read is broken -- stop and report that.**
 
-`getID` is per-client and will differ between clients; `onlineId` is the network
-identity and must match. Use `onlineId` to line up the same zed across two clients —
-**but only in multiplayer. In single player `onlineId` is `-1` for every zed**, so use
-`getID` there. It is stable within a session, and reused across zeds after that.
+Global values -- adjusted light, fog, the darkness threshold, the mode, whether sprinting
+is on at all, dawn and dusk -- are in the sensor UI's debug tooltip, once, rather than
+repeated on every label.
 
 `PhunSprinters.dumpSettings("check")` from the console prints every setting three ways
 if a value ever looks wrong.

@@ -63,9 +63,7 @@ function Core.onDebugZedLabels()
     if maxDistance > 25 then
         maxDistance = 25
     end
-    local threshold = string.format("%.2f", (Core.settings.DarknessLevel or 74) * 0.01)
     local ps = player:getSquare()
-    local env = Core.env
     for i = 0, zeds:size() - 1 do
         local z = zeds:get(i)
         if z then
@@ -94,21 +92,29 @@ function Core.onDebugZedLabels()
                     color, state = {1, 1, 0, 1}, "walk"
                 end
 
-                -- key is Core.getId = IsoMovingObject.getID(), a PER-CLIENT object
-                -- handle. That is fine now: nothing it keys crosses the wire any more.
-                -- onlineId is the network identity (what ZombiePacket.id carries), shown
-                -- so two clients can still be lined up against the same zed by eye.
-                local onlineId = z.getOnlineID and z:getOnlineID()
-                local text = key .. "/" .. tostring(onlineId) .. " (" .. state .. ")"
+                -- Only what varies per zed. The global light, the fog, the darkness
+                -- threshold, the mode and whether sprinting is on at all are all in the
+                -- sensor UI's debug tooltip already, once, instead of repeated on every
+                -- label. Only one id too: Core.getId is what the mod keys on, and the
+                -- onlineId was diagnostic residue from the MP sync investigation.
+                local text = key .. " " .. state
+
+                local live = Core.speedTypeOf(z)
 
                 if data and data.sprinter then
-                    local sq = z:getCurrentSquare()
-                    local light = sq and string.format("%.2f", sq:getLightLevel(playerNum)) or "?"
-                    -- "base>live": recorded base speed, then what the zed actually reads
-                    -- as right now. live showing nil means the speedType read is broken.
-                    text = text .. " " .. string.format("%.2f", env.adjustedLightIntensity or 0) .. "/" .. light ..
-                               "/" .. threshold .. " " .. tostring(data.baseSpeedType or "?") .. ">" ..
-                               tostring(Core.speedTypeOf(z)) .. (z:isSkeleton() and " SKEL" or "")
+                    -- Light only matters to the decision in these two modes; anywhere
+                    -- else it is a number that explains nothing.
+                    if Core.settings.Mode == 4 or Core.settings.SlowInLight then
+                        text = text .. " L" .. string.format("%.0f", Core.effectiveLight(z, player))
+                    end
+                    -- "base>live": the speed it returns to, then what it reads as now.
+                    text = text .. " " .. tostring(data.baseSpeedType or "?") .. ">" .. tostring(live)
+                else
+                    text = text .. " " .. tostring(live)
+                end
+
+                if z:isSkeleton() then
+                    text = text .. " SKEL"
                 end
 
                 -- "Above head": bump Z a bit.
