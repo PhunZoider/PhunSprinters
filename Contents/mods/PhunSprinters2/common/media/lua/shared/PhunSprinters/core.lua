@@ -211,16 +211,53 @@ function Core.debug(...)
     end
 end
 
+-- Refresh Core.settings from the live sandbox options.
+--
+-- Reads the SandboxOption objects directly rather than walking SandboxVars or our own
+-- cache, because both of those are timing-dependent in ways that have bitten before:
+--
+--   * Core.settings is seeded when this file loads. On a server the saved values are
+--     not necessarily in place that early, so the seed can be nothing but defaults --
+--     and anything that iterates the seed can therefore only refresh keys it already
+--     had, never discover a missing one or correct a defaulted one.
+--   * SandboxVars is rebuilt wholesale by toLua(), so its contents depend on when you
+--     look, and a stale reference to a sub-table keeps values that no longer apply.
+--
+-- Walking getOptionByIndex sidesteps both: the option objects are the values. Falls
+-- back to the SandboxVars walk if the enumeration API is not exposed to Lua.
 function Core:updateSettings()
+
     -- On a multiplayer client the server's values are authoritative and are pushed to
-    -- us. Re-reading the local sandbox here would overwrite them with this client's
-    -- defaults, which is the whole bug applyServerSettings exists to fix.
+    -- us; re-reading the local sandbox would overwrite them.
     if self.settingsFromServer then
         return
     end
+
+    local sandboxOptions = getSandboxOptions()
+    local count = sandboxOptions.getNumOptions and sandboxOptions:getNumOptions() or 0
+    local found = 0
+
+    for i = 0, count - 1 do
+        local option = sandboxOptions:getOptionByIndex(i)
+        if option and option.getTableName and option:getTableName() == Core.name then
+            -- Enumeration gives us the authoritative key list. Read the value through
+            -- getOption, which goes via getOptionByName: getValue() is not on the
+            -- SandboxOption interface, only on the concrete config option behind it.
+            local key = option:getShortName()
+            self.settings[key] = self.getOption(key, self.settings[key])
+            found = found + 1
+        end
+    end
+
+    if found > 0 then
+        return found
+    end
+
     for k, v in pairs(SandboxVars[Core.name] or {}) do
         self.settings[k] = self.getOption(k, v)
     end
+    return 0
+
 end
 
 -- Dump every PhunSprinters option from all three places it can be read, so a
@@ -258,8 +295,8 @@ function Core.dumpSettings(tag)
         local opt = sandboxOptions:getOptionByName(Core.name .. "." .. k)
         local live = opt and opt:getValue()
         local flag = (live ~= vars[k] or live ~= Core.settings[k]) and "   <-- MISMATCH" or ""
-        print("[PhunSprinters]   " .. k .. ": SandboxVars=" .. tostring(vars[k]) .. " option=" ..
-                  tostring(live) .. " cached=" .. tostring(Core.settings[k]) .. flag)
+        print("[PhunSprinters]   " .. k .. ": SandboxVars=" .. tostring(vars[k]) .. " option=" .. tostring(live) ..
+                  " cached=" .. tostring(Core.settings[k]) .. flag)
     end
 
     -- The two we actually write, so their state is on the record too.
@@ -293,8 +330,8 @@ function Core.applyServerSettings(settings)
     local changed = 0
     for k, v in pairs(settings) do
         if Core.settings[k] ~= v then
-            print("[PhunSprinters] server setting " .. tostring(k) .. ": " ..
-                      tostring(Core.settings[k]) .. " -> " .. tostring(v))
+            print("[PhunSprinters] server setting " .. tostring(k) .. ": " .. tostring(Core.settings[k]) .. " -> " ..
+                      tostring(v))
             Core.settings[k] = v
             changed = changed + 1
         end
@@ -410,8 +447,7 @@ function Core.neuterVanillaSprinters()
     else
         sandboxOptions:set("ZombieLore.Speed", choice == 2 and 3 or 2)
     end
-    Core.debugLn("Vanilla sprinters disabled: ZombieLore.Speed was 1, now " ..
-                     tostring(option:getValue()))
+    Core.debugLn("Vanilla sprinters disabled: ZombieLore.Speed was 1, now " .. tostring(option:getValue()))
 
 end
 
@@ -431,10 +467,11 @@ function Core:ini()
         end
     end
 
-    -- re-cache settings as they are not guaranteed to be loaded prior
-    for k, v in pairs(Core.settings) do
-        Core.settings[k] = Core.getOption(k, v)
-    end
+    -- Re-cache settings: they are not guaranteed to be loaded when this file was. Go
+    -- through updateSettings so there is exactly one way settings are read -- this used
+    -- to iterate Core.settings, i.e. the seed taken at file-load time, which on a server
+    -- can be nothing but defaults.
+    Core:updateSettings()
 
     Core.dumpSettings("after ini")
 
