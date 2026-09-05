@@ -99,11 +99,23 @@ function Core.updateZed(zed)
         return
     end
 
+    Core.applySprintState(zed, zData)
+
+end
+
+-- Should this zed be running right now, and make it so.
+--
+-- Shared deliberately. Zeds inside MinDistance2 never reach updateZed, so enqueueUpdate
+-- has to make the same decision for them -- and when that was a second copy it drifted:
+-- the close-range one could only ever call adjustForLight, so under Mode 1 a close zed
+-- could not start sprinting, and at dawn it could not stop. reassertSpeed then held it
+-- running indefinitely. One decision, one place.
+function Core.applySprintState(zed, zData)
+
     if Core.sprint then
 
         if Core.settings.Mode == 4 or Core.settings.SlowInLight then
             -- adjust for light
-
             Core.adjustForLight(zed, zData, zed:getTarget())
 
         elseif not zData.sprinting then
@@ -113,7 +125,7 @@ function Core.updateZed(zed)
         end
 
     elseif zData.sprinting then
-        -- zed is sprinting, make normal
+        -- dusk/dawn or mode says stop
         Core.makeNormal(zed, zData)
 
     end
@@ -125,6 +137,7 @@ function Core.updateZed(zed)
         end
     end
 
+    -- Vanilla re-rolls speedType on every inactive -> active cycle, so hold what we set.
     Core.reassertSpeed(zed, zData)
 
 end

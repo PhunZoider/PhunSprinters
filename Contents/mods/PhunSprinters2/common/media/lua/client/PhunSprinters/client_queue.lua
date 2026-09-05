@@ -42,24 +42,11 @@ function Core.enqueueUpdate(zed)
     Core.adoptIfSprinting(zed, data)
 
     if distance < (Core.settings.MinDistance2 or 14) then
-        -- Too close to queue, but a zed we already own still needs light adjustment, a
-        -- scream on approach, and its speed held against vanilla's re-rolls.
+        -- Too close to queue, but a zed we already own still has to start, stop, react
+        -- to light, scream, and hold its speed. Same decision as updateZed makes, so it
+        -- is the same function -- this used to be a second copy and they drifted apart.
         if data.sprinter then
-            if Core.sprint then
-                if Core.settings.Mode == 4 or Core.settings.SlowInLight then
-                    -- adjust for light
-                    Core.adjustForLight(zed, data, zed:getTarget())
-                end
-                if data.sprinting and not data.screamed then
-                    local target = zed:getTarget()
-                    if target and instanceof(target, "IsoPlayer") then
-                        Core.scream(zed, data)
-                    end
-                end
-            end
-            -- These zeds never reach updateZed, so hold their speed here: vanilla
-            -- re-rolls speedType on every inactive -> active cycle.
-            Core.reassertSpeed(zed, data)
+            Core.applySprintState(zed, data)
         end
         return
     end

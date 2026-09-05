@@ -35,7 +35,9 @@ Each zed within 25 tiles is labelled:
 **`live` showing `nil` means the speedType read is broken — stop and report that.**
 
 `getID` is per-client and will differ between clients; `onlineId` is the network
-identity and must match. Use `onlineId` to line up the same zed across two clients.
+identity and must match. Use `onlineId` to line up the same zed across two clients —
+**but only in multiplayer. In single player `onlineId` is `-1` for every zed**, so use
+`getID` there. It is stable within a session, and reused across zeds after that.
 
 `PhunSprinters.dumpSettings("check")` from the console prints every setting three ways
 if a value ever looks wrong.
@@ -75,6 +77,7 @@ no-op and vanilla was never going to roll a sprinter anyway.
 | B3 | `SlowInLight = true`, night | Shine a torch at a red zed → drops to yellow, `live` becomes its `base`. Kill the light → back to red. |
 | B4 | Mode `When its too dark around them` (4) | Same as B3 but per-tile, without needing `SlowInLight`. |
 | B5 | Walk a sprinter between lit and dark repeatedly | `base` never changes. Only `live` moves. |
+| B6 | Mode `Dusk till dawn`. Stand **inside 14 tiles** of a known sprinter across a dusk *and* a dawn | It starts at dusk and stops at dawn without you moving. Regressed once: the close-range path could hold a sprint but never start or stop one, so close zeds stayed red through the day. |
 
 B5 is the one that catches a regression in `captureBaseSpeed` — a `base` that drifts
 means we are re-reading our own output.
@@ -88,9 +91,9 @@ this, and it is easy to break without noticing.
 
 | # | Steps | Expect |
 |---|---|---|
-| C1 | Get a zed sprinting, walk out past ~50 tiles, come back | Still sprinting. Note the `onlineId` before leaving. |
+| C1 | Get a zed sprinting, walk out past ~50 tiles, come back | Still sprinting. Note `getID` before leaving (SP) or `onlineId` (MP). |
 | C2 | Get a sprinter within 14 tiles (`MinDistance2`) and stay there a while | Stays red. These zeds never reach `updateZed`, so they are held by the separate path in `enqueueUpdate`. |
-| C3 | Leave the area entirely so the chunk unloads, return | Different zeds, fresh verdicts, all fine. **A different `getID`/`onlineId` means it is simply a different zombie — not a bug.** |
+| C3 | Leave the area entirely so the chunk unloads, return | Different zeds, fresh verdicts, all fine. **A different id means it is simply a different zombie — not a bug.** |
 
 ---
 
