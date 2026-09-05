@@ -384,6 +384,8 @@ function Core.neuterVanillaSprinters()
         -- Fast shamblers or shamblers. Vanilla was never going to roll a sprinter, so
         -- leave the admin's setting completely alone. Also the no-op path for a re-run
         -- after we have already changed it.
+        Core.debugLn("Zombie Speed is " .. tostring(speed) ..
+                         ": no vanilla sprinters to replace, sandbox left alone")
         return
     end
 
@@ -394,7 +396,12 @@ function Core.neuterVanillaSprinters()
         local pct = sandboxOptions:getOptionByName("ZombieLore.SprinterPercentage")
         if pct and pct:getValue() ~= 0 then
             sandboxOptions:set("ZombieLore.SprinterPercentage", 0)
-            Core.debugLn("Vanilla sprinters disabled: SprinterPercentage set to 0")
+            Core.debugLn("Vanilla sprinters disabled: SprinterPercentage set to 0. " ..
+                             "Zombie Speed stays Random, so the existing fast shambler / " ..
+                             "shambler mix is kept and 'Replace vanilla sprinters with' is not used")
+        else
+            Core.debugLn("Zombie Speed is Random with SprinterPercentage already 0: " ..
+                             "nothing to replace, sandbox left alone")
         end
         return
     end

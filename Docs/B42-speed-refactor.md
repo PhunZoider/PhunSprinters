@@ -350,6 +350,15 @@ them rather than answering them.
    On `Speed = 4` the option is unused: only `SprinterPercentage` is zeroed and the
    admin's mix is preserved. On `Speed = 2`/`3` nothing is touched at all.
 
+   **Kept narrow, reworded 2026-09-05.** In-game testing raised the obvious question:
+   should it just always set the world base speed? No — installing this mod should not
+   silently convert a Shambler server, and flattening `Speed = 4`'s distribution is
+   exactly what demote-on-sight was rejected for. But the label read as a live setting
+   being ignored when the two disagreed, so the option is now "Replace vanilla sprinters
+   with", the tooltip spells out all four Zombie Speed cases, and
+   `neuterVanillaSprinters` logs every branch including the two that deliberately do
+   nothing. Conditional behaviour, stated conditionally.
+
    **Implemented.**
 3. **Does mode/light gating apply to inherited sprinters, or only mod-promoted ones?**
    ~~Sandbox option?~~ **Moot.** Every sprinter is mod-promoted, so everything is
