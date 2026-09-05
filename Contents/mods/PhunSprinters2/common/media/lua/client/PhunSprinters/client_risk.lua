@@ -55,13 +55,11 @@ function Core.CalcPlayersSprinterPercentage()
         local risk = baseRisk * moon * hoursAdj
         local maxRisk = tonumber(pzdata.maxSprinterRisk) or 100
 
-        if minRisk == nil then
-            Core.debugLn("missing Sprinter Risk value in zone " .. tostring(pzdata.region) .. ":" ..
-                             tostring(pzdata.zone) .. " for player " .. tostring(player:getDisplayName()) ..
-                             ". Defaulting to 0 risk")
-        end
-
-        if maxRisk > 0 and risk > maxRisk then
+        -- No 'maxRisk > 0' guard here. A zone that sets maxSprinterRisk = 0 means a safe
+        -- haven, and the guard made exactly that case a no-op -- the one value an admin
+        -- is most likely to set deliberately. "Unspecified" is already handled by the
+        -- 'or 100' above, so there is nothing for the guard to protect against.
+        if risk > maxRisk then
             risk = maxRisk
         end
 

@@ -378,6 +378,13 @@ Ordered roughly by impact.
 - **PhunServer detection is probably dead.** `core.lua:236` still uses
   `getActivatedMods():contains("\\phunserver")`. That backslash prefix was
   deliberately dropped between `42.14/phunzones.lua` and `common/phunzones.lua`.
+- ~~**Zone `maxSprinterRisk = 0` did nothing.**~~ **Fixed 2026-09-05.**
+  `client_risk.lua` guarded the cap with `if maxRisk > 0 and risk > maxRisk`, so a zone
+  capping risk at 0 -- a safe haven, the one value an admin is most likely to set
+  deliberately -- was skipped entirely. "Unspecified" was already handled by the
+  `or 100` above it, so the guard protected against nothing. This is also what settled
+  **design decision 1** actually requires, and it was quietly not happening.
+
 - **`shouldSprint` risk-0 asymmetry.** At risk 0 it publishes `nil` (correct — leaves
   the zed untested for others) but still sets `zData.sprinter = false` locally, which
   permanently excludes the zed from that client's queue.
