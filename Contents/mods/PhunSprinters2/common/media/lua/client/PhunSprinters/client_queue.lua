@@ -36,6 +36,11 @@ function Core.enqueueUpdate(zed)
         return
     end
 
+    -- Another controller may have promoted this zed since we last looked. Do this
+    -- before either branch below, so a zed we previously tested as "no" is not skipped
+    -- while it is visibly sprinting.
+    Core.adoptIfSprinting(zed, data)
+
     if distance < (Core.settings.MinDistance2 or 14) then
         -- Too close to queue, but a zed we already own still needs light adjustment, a
         -- scream on approach, and its speed held against vanilla's re-rolls.

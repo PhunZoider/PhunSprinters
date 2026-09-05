@@ -60,6 +60,10 @@ function Core.updateZed(zed)
         return
     end
 
+    -- Another controller may have promoted this zed. Its speed is the evidence, and it
+    -- arrives by native replication, so check before testing or acting.
+    Core.adoptIfSprinting(zed, zData)
+
     -- The verdict lives here, in this zed's own modData, and nowhere else. It is not
     -- published, not synced and not persisted -- see "Identity is already ephemeral"
     -- in Docs/B42-speed-refactor.md.
@@ -220,6 +224,33 @@ function Core.getZedData(zed)
     end
 
     return d
+end
+
+-- Adopt a zed that some other controller has already promoted.
+--
+-- Once neuterVanillaSprinters has run, vanilla cannot roll a sprinter at all, so a zed
+-- reading speedType 1 was made that way by a mod -- this client earlier, or whichever
+-- client owned it before us. Speed replicates natively, so that evidence arrives on its
+-- own with no mod networking.
+--
+-- Without this, a zed promoted by another player and then handed to us stays recorded
+-- as "not a sprinter" here: we never suppress it in light, never stop it at dawn, and
+-- if the player who promoted it walks away it runs forever with nobody managing it.
+-- That is the orphaned-sprinter case.
+function Core.adoptIfSprinting(zed, zData)
+
+    if zData.sprinter == true or Core.speedTypeOf(zed) ~= 1 then
+        return false
+    end
+
+    zData.sprinter = true
+    zData.sprinting = true
+    zData.appliedSpeed = 1
+    zData.modified = getTimestampMs()
+    Core.debugLn("Adopting sprinter " .. tostring(zData.id) .. " promoted by another controller")
+    Core.applyZedVisualState(zed, zData)
+    return true
+
 end
 
 -- Determine if zombie should sprint based on player risk.

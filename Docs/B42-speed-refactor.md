@@ -612,11 +612,25 @@ recycled disposes of it.
   `pData.risk` exists. Previously the gate was "the server has sent us the table",
   which is not the thing that actually needs to be ready.
 
-**Consequence to watch.** Each client now tests independently against its own risk. On
-handover of a *suppressed* sprinter the new owner may reach a different verdict — see
-the MP section. An actively sprinting zed carries its own evidence (`speedType == 1`
-cannot occur without a mod having caused it), so the visible case is covered; adopting
-that signal explicitly is not yet implemented.
+**Adoption (added after the first two-client test).** Each client tests independently
+against its own risk, so two clients can legitimately disagree. That is harmless until
+one of them has actually *promoted* the zed: the other still had it recorded as "no", so
+it never suppressed it in light, never stopped it at dawn, and if the promoting player
+walked away the zed ran on with nobody managing it.
+
+Observed in-game: client 1 had a zed sprinting; client 2 showed it green `no`
+throughout, including after client 1 left the area.
+
+`Core.adoptIfSprinting` closes it. A `speedType` of 1 cannot occur once vanilla
+sprinters are disabled, so it is proof that some client promoted the zed — and it
+arrives by native replication with no mod networking. Called from `enqueueUpdate` before
+either distance branch, so a zed previously tested `no` is not skipped while it is
+visibly sprinting.
+
+The remaining gap is a *suppressed* sprinter changing controller: it reads as its base
+speed, so there is no evidence to adopt and the new owner tests it fresh. Invisible by
+construction — the zed is walking either way — and it resolves in favour of the player
+actually next to it.
 
 **Step 3 (`testedAtRisk`) is dropped, not deferred.** It existed to stop a permanent
 false verdict depressing an area. Verdicts are not permanent.
