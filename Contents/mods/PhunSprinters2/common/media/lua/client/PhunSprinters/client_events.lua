@@ -16,11 +16,6 @@ local function setup()
     Events.OnTick.Remove(setup)
 
     Core:ini()
-    -- Ask the server for its settings. A joining client's own copy of every
-    -- PhunSprinters.* option has been reset to its default by this point.
-    if not Core.tools.isLocal then
-        sendClientCommand(Core.name, Core.commands.playerSetup, {})
-    end
     Core:recalcOutfits()
 
     local players = Core.tools.onlinePlayers()

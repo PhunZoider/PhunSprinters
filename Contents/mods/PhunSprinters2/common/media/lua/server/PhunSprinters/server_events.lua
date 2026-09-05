@@ -11,22 +11,6 @@ Events.OnServerStarted.Add(function()
 
 end)
 
--- Cheap signature of the settings we hand to clients, so an admin edit can be noticed
--- and pushed without sending the table every minute.
-local function settingsSignature()
-    local keys = {}
-    for k in pairs(Core.settings) do
-        table.insert(keys, k)
-    end
-    table.sort(keys)
-    local parts = {}
-    for _, k in ipairs(keys) do
-        table.insert(parts, k .. "=" .. tostring(Core.settings[k]))
-    end
-    return table.concat(parts, ",")
-end
-
-local lastSignature = nil
 local dumpedLate = false
 
 Events.EveryOneMinute.Add(function()
@@ -41,16 +25,8 @@ Events.EveryOneMinute.Add(function()
     -- so re-assert it. No-ops when nothing needs doing.
     Core.neuterVanillaSprinters()
 
-    -- Pick up admin edits, and pass them on. Clients cannot read these for themselves.
+    -- Pick up admin edits. Previously nothing refreshed settings on the server at all.
     Core:updateSettings()
-    local signature = settingsSignature()
-    if lastSignature == nil then
-        lastSignature = signature
-    elseif lastSignature ~= signature then
-        lastSignature = signature
-        Core.debugLn("Settings changed, pushing to clients")
-        sendServerCommand(Core.name, Core.commands.settings, Core.settings)
-    end
 end)
 
 -- Gone with the sprinter verdict table: the per-second batched send to clients, the
