@@ -17,6 +17,16 @@ option PhunSprinters.SlowInLight
     translation = PhunSprinters_SlowInLight,
 }
 
+option PhunSprinters.VanillaSprinters
+{
+    type = enum,
+    numValues = 3,
+    default = 1,
+    page = PhunSprinters,
+    translation = PhunSprinters_VanillaSprinters,
+    valueTranslation = PhunSprinters_VanillaSprinters,
+}
+
 option PhunSprinters.DefaultRisk
 { 
     type = integer, 
@@ -37,14 +47,6 @@ option PhunSprinters.HoursDiscount
     translation = PhunSprinters_HoursDiscount,
 }
 
-
-option PhunSprinters.Skeletons
-{
-    type = boolean, 
-    default = true,
-    page = PhunSprinters, 
-    translation = PhunSprinters_Skeletons,
-}
 
 option PhunSprinters.Decorate
 {

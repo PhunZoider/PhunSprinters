@@ -19,6 +19,9 @@ end)
 
 Events.EveryOneMinute.Add(function()
     Core:testNight()
+    -- An admin editing sandbox options in-game re-pushes them and wipes our change,
+    -- so re-assert it. No-ops when nothing needs doing.
+    Core.neuterVanillaSprinters()
 end)
 
 if not Core.isLocal then

@@ -71,45 +71,56 @@ function Core.onDebugZedLabels()
         if z then
 
             local zs = z:getSquare()
-            local dist = ps and ps:DistToProper(zs)
-            if ps and dist and dist < maxDistance then
+            local dist = (ps and zs) and ps:DistToProper(zs)
+            if dist and dist < maxDistance then
 
                 local key = Core.getId(z)
                 local data = z:getModData().PhunSprinters
                 local isSprinter = Core.sprinterIds[key]
 
-                local label = {
-                    text = key .. " (" .. (tostring(isSprinter) or "?") .. ")",
-                    color = {0, 1, 0, 1}
-                }
-
-                local color = {0, 1, 0, 1}
-                if data then
-                    if data.sprinter then
-                        local fog = env.fogIntensity and string.format("%.2f", env.fogIntensity) or "?"
-                        local light = string.format("%.2f", z:getCurrentSquare():getLightLevel(0))
-
-                        local txt = string.format("%.2f", Core.env.adjustedLightIntensity) .. "/" .. light .. "/" ..
-                                        threshold .. " " .. tostring(data.sprinting == true) .. ") " ..
-                                        tostring(data.originalSpeed or "?")
-                        color = data.sprinting and {1, 0, 0, 1} or {1, 1, 0, 1}
-
-                        label = {
-                            text = label.text .. " " .. txt,
-                            color = color or {1, 1, 1, 1}
-                        }
-                    end
+                -- Colour is driven by sprinterIds, the authoritative verdict, rather
+                -- than by local modData. Green used to be the default and so meant
+                -- three different things at once -- never tested, tested and failed,
+                -- and "a sprinter whose local data is missing" -- which made ordinary
+                -- first-time testing look exactly like re-rolling.
+                local color, state
+                if isSprinter == nil then
+                    color, state = {0.7, 0.7, 0.7, 1}, "untested"
+                elseif isSprinter ~= true then
+                    color, state = {0, 1, 0, 1}, "no"
+                elseif not (data and data.sprinter) then
+                    -- Verdict says sprinter, but this client has no local state for it:
+                    -- modData wiped by resetForReuse, or not re-established yet. This is
+                    -- the case worth watching when testing identity across chunk loads.
+                    color, state = {1, 0, 1, 1}, "SPRINTER/nodata"
+                elseif data.sprinting then
+                    color, state = {1, 0, 0, 1}, "run"
+                else
+                    color, state = {1, 1, 0, 1}, "walk"
                 end
-                if label then
 
-                    -- "Above head": bump Z a bit.
-                    local wx, wy, wz = z:getX(), z:getY(), z:getZ() + 1.2
-                    local sx, sy = worldToScreen(playerNum, wx, wy, wz)
+                -- key is Core.getId, which on 42.17+ is IsoMovingObject.getID() -- a
+                -- PER-CLIENT object handle, so it cannot match between clients. onlineId
+                -- is the network identity (it is what ZombiePacket.id carries). Show both
+                -- so two clients side by side can be compared directly.
+                local onlineId = z.getOnlineID and z:getOnlineID()
+                local text = key .. "/" .. tostring(onlineId) .. " (" .. state .. ")"
 
-                    local c = label.color
-                    getTextManager():DrawStringCentre(UIFont.Small, sx, sy, label.text, c[1], c[2], c[3], c[4])
-
+                if data and data.sprinter then
+                    local sq = z:getCurrentSquare()
+                    local light = sq and string.format("%.2f", sq:getLightLevel(playerNum)) or "?"
+                    -- "base>live": recorded base speed, then what the zed actually reads
+                    -- as right now. live showing nil means the speedType read is broken.
+                    text = text .. " " .. string.format("%.2f", env.adjustedLightIntensity or 0) .. "/" .. light ..
+                               "/" .. threshold .. " " .. tostring(data.baseSpeedType or "?") .. ">" ..
+                               tostring(Core.speedTypeOf(z)) .. (z:isSkeleton() and " SKEL" or "")
                 end
+
+                -- "Above head": bump Z a bit.
+                local wx, wy, wz = z:getX(), z:getY(), z:getZ() + 1.2
+                local sx, sy = worldToScreen(playerNum, wx, wy, wz)
+                getTextManager():DrawStringCentre(UIFont.Small, sx, sy, text, color[1], color[2], color[3], color[4])
+
             end
 
         end

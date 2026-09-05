@@ -4,22 +4,53 @@ end
 
 -- === Shortcuts & Module Setup ===
 local Core = PhunSprinters
-local sandboxOptions = getSandboxOptions()
 local getWorld = getWorld
 local ZombRand = ZombRand
 local getTimestampMs = getTimestampMs
+
 -- ============================================================
--- Risk & Environment Evaluation
+-- Speed
 -- ============================================================
 
-local _defaultSpeed = nil
-
-local function getDefaultSpeed()
-    if _defaultSpeed == nil then
-        _defaultSpeed = sandboxOptions:getOptionByName("ZombieLore.Speed") and
-                            sandboxOptions:getOptionByName("ZombieLore.Speed"):getValue() or 2
+-- B42 sets speed per zombie. speedType: 1 sprinter, 2 fast shambler, 3 shambler.
+-- None of these four read ZombieLore.Speed, so they never fight the sandbox (which
+-- Core.neuterVanillaSprinters in core.lua adjusts separately).
+-- doZombieSpeed() is deliberately not used: it consults the sandbox and has a
+-- 2-in-3 chance of landing in doFakeShambler instead.
+local applySpeedType = {
+    [1] = function(zed)
+        zed:doSprinter()
+    end,
+    [2] = function(zed)
+        zed:doFastShambler()
+    end,
+    [3] = function(zed)
+        zed:doShambler()
     end
-    return _defaultSpeed
+}
+
+local function applySpeed(zed, zData, target)
+    zData.appliedSpeed = target
+    -- makeInactive(true) pins speedType to 3 and re-activation re-rolls it, so a
+    -- write to an inactive zed is wasted. The re-assert in updateZed catches it.
+    if zed.inactive or Core.speedTypeOf(zed) == target then
+        return false
+    end
+    local fn = applySpeedType[target]
+    if not fn then
+        return false
+    end
+    fn(zed)
+    return true
+end
+
+-- A directly-set speed does not stay set: cycling inactive -> active sets speedType
+-- to -1 and re-rolls it from the sandbox. Re-assert whatever we last applied.
+-- zed.speedType is a plain field read, so this costs nothing when nothing drifted.
+function Core.reassertSpeed(zed, zData)
+    if zData.appliedSpeed then
+        applySpeed(zed, zData, zData.appliedSpeed)
+    end
 end
 
 function Core.updateZed(zed)
@@ -90,6 +121,8 @@ function Core.updateZed(zed)
             Core.scream(zed, zData)
         end
     end
+
+    Core.reassertSpeed(zed, zData)
 
 end
 
@@ -172,16 +205,20 @@ function Core.getZedData(zed)
         -- reset
         Core.addToSend(id, nil)
 
-        Core.makeNormal(zed, d)
+        -- Only undo what we did. A zed we never touched keeps whatever speed it has.
+        if d.appliedSpeed then
+            Core.makeNormal(zed, d)
+        end
 
         if zed:isSkeleton() then
             zed:setSkeleton(false)
         end
 
+        -- baseSpeedType is recorded by makeSprint, at the moment before we override
+        -- the zed's own speed.
         d = {
             exp = (Core.delta or 0) + (Core.settings.Exp or 300),
-            id = id,
-            originalSpeed = getDefaultSpeed()
+            id = id
         }
         md.PhunSprinters = d
         if Core.tools.isLocal then
@@ -274,29 +311,22 @@ function Core.testPlayers(player, zed, zData, pData)
     end
 end
 
--- Force zed back to normal speed
+-- Put the zed back at its own speed. Covers both "light or mode says not right now"
+-- and "this zed is not one of ours": with vanilla sprinters disabled at startup a
+-- zed's own speed is never sprinter, so both cases have the same answer.
 function Core.makeNormal(zed, zData)
-    zed:makeInactive(true)
-    local defaultSpeed = getDefaultSpeed()
-    local restoreSpeed = zData.originalSpeed or defaultSpeed
-    sandboxOptions:set("ZombieLore.Speed", restoreSpeed)
     zData.sprinting = false
-    zed:makeInactive(false)
-    if restoreSpeed ~= defaultSpeed then
-        sandboxOptions:set("ZombieLore.Speed", defaultSpeed)
-    end
+    applySpeed(zed, zData, zData.baseSpeedType or Core.neuteredSpeedType())
 end
 
 -- Force zed to sprint
 function Core.makeSprint(zed, zData)
-
-    local defaultSpeed = getDefaultSpeed()
-
-    zed:makeInactive(true)
-    sandboxOptions:set("ZombieLore.Speed", 1)
-    zData.sprinting = true
-    zed:makeInactive(false)
-    sandboxOptions:set("ZombieLore.Speed", defaultSpeed)
+    if not zData.sprinting then
+        -- Remember what to come back to, in the moment before we overwrite it.
+        Core.captureBaseSpeed(zed, zData)
+        zData.sprinting = true
+    end
+    applySpeed(zed, zData, 1)
 end
 
 local sensorList = {"WristWatch_Right_MilitaryX", "WristWatch_Left_MilitaryX", "Military_Sensor_Left",

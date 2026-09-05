@@ -229,6 +229,114 @@ function Core.addToSend(id, value)
     end
 end
 
+-- speedType is a public int field on IsoZombie, but PZ's Lua binding does not reliably
+-- expose public fields, and getSpeedType() is a real accessor. Prefer the accessor.
+function Core.speedTypeOf(zed)
+    if zed.getSpeedType then
+        return zed:getSpeedType()
+    end
+    return zed.speedType
+end
+
+-- What vanilla would roll for a zed now that sprinters are off. Used when a zed has no
+-- readable speed of its own -- see captureBaseSpeed.
+function Core.neuteredSpeedType()
+    local choice = Core.settings.VanillaSprinters or 1
+    if choice == 2 then
+        return 3
+    elseif choice == 3 then
+        return ZombRand(2) + 2
+    end
+    return 2
+end
+
+-- Record what this zed goes back to when it is not running. Normally that is simply
+-- what vanilla rolled it as.
+--
+-- The awkward case is a zed that was already in the world when we neutered the
+-- sandbox: neutering changes what vanilla rolls *next*, so an existing zed keeps
+-- speedType 1 until its next activation cycle. On a Sprinter server that is every zed
+-- we meet at first. There is no honest "own speed" to recover for those, so give them
+-- what the neutered sandbox would have produced. Always records something, so a zed
+-- that has sprinted never has a nil base.
+function Core.captureBaseSpeed(zed, zData)
+    if not zData.baseSpeedType then
+        local st = Core.speedTypeOf(zed)
+        if st == 2 or st == 3 then
+            zData.baseSpeedType = st
+        else
+            -- 1 (rolled before the neuter, or another client's doing) or -1 (mid
+            -- activation cycle) or nil (binding failure).
+            zData.baseSpeedType = Core.neuteredSpeedType()
+        end
+    end
+    return zData.baseSpeedType
+end
+
+-- Take vanilla's ability to roll sprinters away, so this mod is the only thing in the
+-- world that makes anything sprint. Shared: the server's ZombiePopulationManager rolls
+-- speed for zeds it spawns and NetworkZombieSimulator broadcasts it, so a client-only
+-- call would leave server-simulated sprinters uncorrected.
+--
+-- This is NOT the per-transition sandbox toggling this mod used to do. That ran dozens
+-- of times a second inside a makeInactive bracket; this runs at init and on a slow
+-- timer, and never touches a zed.
+--
+-- Verified against projectzomboid.jar (B42), not recalled:
+--   * SandboxOptions.set() is a HashMap lookup plus ConfigOption.setValueFromObject().
+--     No disk write, no packet, nothing else.
+--   * saveGameFile / saveCurrentGameBinFile have no callers outside SandboxOptions,
+--     and the only internal one is the legacy handleOldZombiesFile2() migration, so
+--     nothing here writes itself into a single-player save.
+--   * determineZombieSpeed() reads the live singleton, so it takes effect at once.
+--   * BUT SandboxOptions.load(ByteBuffer) IS called from GameClient and
+--     ConnectToServerState receiveSandboxOptions -- an admin editing sandbox options
+--     in-game re-pushes them and wipes this. Hence the re-run on a timer; the function
+--     is written to be safe to call repeatedly.
+function Core.neuterVanillaSprinters()
+
+    local sandboxOptions = getSandboxOptions()
+    local option = sandboxOptions:getOptionByName("ZombieLore.Speed")
+    if not option then
+        return
+    end
+
+    local speed = option:getValue()
+
+    if speed == 2 or speed == 3 then
+        -- Fast shamblers or shamblers. Vanilla was never going to roll a sprinter, so
+        -- leave the admin's setting completely alone. Also the no-op path for a re-run
+        -- after we have already changed it.
+        return
+    end
+
+    if speed == 4 then
+        -- Random already rolls Rand.Next(2) + 2 for everything that is not a sprinter.
+        -- Zeroing the sprinter share keeps the admin's exact fast shambler / shambler
+        -- mix intact and removes only the sprinters.
+        local pct = sandboxOptions:getOptionByName("ZombieLore.SprinterPercentage")
+        if pct and pct:getValue() ~= 0 then
+            sandboxOptions:set("ZombieLore.SprinterPercentage", 0)
+            Core.debugLn("Vanilla sprinters disabled: SprinterPercentage set to 0")
+        end
+        return
+    end
+
+    -- speed == 1: every zed would be a sprinter, so there is no distribution worth
+    -- preserving and the admin picks what they are instead.
+    local choice = Core.settings.VanillaSprinters or 1
+    if choice == 3 then
+        -- Random: hand it back to vanilla's own 2-or-3 roll.
+        sandboxOptions:set("ZombieLore.Speed", 4)
+        sandboxOptions:set("ZombieLore.SprinterPercentage", 0)
+    else
+        sandboxOptions:set("ZombieLore.Speed", choice == 2 and 3 or 2)
+    end
+    Core.debugLn("Vanilla sprinters disabled: ZombieLore.Speed was 1, now " ..
+                     tostring(option:getValue()))
+
+end
+
 function Core:ini()
     self.inied = true
     Core.startTime = getTimestampMs()
@@ -249,6 +357,8 @@ function Core:ini()
     for k, v in pairs(Core.settings) do
         Core.settings[k] = Core.getOption(k, v)
     end
+
+    Core.neuterVanillaSprinters()
 
     triggerEvent(self.events.OnReady, self)
 end

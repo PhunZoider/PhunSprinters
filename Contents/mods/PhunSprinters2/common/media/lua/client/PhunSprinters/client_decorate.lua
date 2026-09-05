@@ -101,18 +101,30 @@ end
 -- ============================================================
 
 function Core.applyZedVisualState(zed, zData)
+
+    -- SKELETON SPRINTERS ARE DISABLED. The vanilla crash is REAL and still present:
+    -- reproduced on B42 on 2026-09-05, aiming at a skeleton, outside debug mode. The
+    -- sandbox option was removed rather than defaulted off, so a player cannot switch
+    -- a known client crash back on.
+    --
+    -- The mechanism itself is sound if vanilla is ever fixed: setSkeleton(Z) exists,
+    -- and IsSkeleton is a NetworkZombieVariables$Flag carried in ZombiePacket's
+    -- booleanVariables bitfield, so it replicates without any mod networking. To
+    -- reinstate: restore the PhunSprinters.SkeletonSprinters option and its
+    -- translations, and make this
+    --     (Core.settings.SkeletonSprinters and zData.sprinter) == true
+    -- instead of the unconditional false below.
+    --
+    -- The clearing path stays live and unconditional so a zed still carrying a
+    -- skeleton -- from an earlier session, or another mod -- is put back to normal.
+    if zed:isSkeleton() then
+        zed:setSkeleton(false)
+    end
+
     if not zData.sprinter then
-        if zed:isSkeleton() then
-            zed:setSkeleton(false)
-        end
         zData.dressed = true
         return
     end
-
-    -- Aiming at skeletons = CTD in vanilla
-    -- if Core.settings.Skeletons and not zed:isSkeleton() then
-    --     zed:setSkeleton(true)
-    -- end
 
     if not zData.dressed and Core.settings.Decorate then
         Core.decorateZed(zed)

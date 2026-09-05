@@ -75,6 +75,9 @@ Events.OnTick.Add(setup)
 
 Events.EveryOneMinute.Add(function()
     Core:testNight()
+    -- An admin editing sandbox options in-game re-pushes them to every client and
+    -- wipes our change, so re-assert it. No-ops when nothing needs doing.
+    Core.neuterVanillaSprinters()
 end)
 
 Events.OnClothingUpdated.Add(function(player)

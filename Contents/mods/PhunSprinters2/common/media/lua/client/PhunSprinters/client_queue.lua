@@ -29,19 +29,24 @@ function Core.enqueueUpdate(zed)
     end
     if distance < (Core.settings.MinDistance2 or 14) then
         -- too close to queue, but still needs light adjustment and a scream on approach
-        if Core.sprint and isSprinter then
+        if isSprinter then
             local zData = Core.getZedData(zed)
             if zData then
-                if Core.settings.Mode == 4 or Core.settings.SlowInLight then
-                    -- adjust for light
-                    Core.adjustForLight(zed, zData, zed:getTarget(), distance)
-                end
-                if zData.sprinting and not zData.screamed then
-                    local target = zed:getTarget()
-                    if target and instanceof(target, "IsoPlayer") then
-                        Core.scream(zed, zData)
+                if Core.sprint then
+                    if Core.settings.Mode == 4 or Core.settings.SlowInLight then
+                        -- adjust for light
+                        Core.adjustForLight(zed, zData, zed:getTarget(), distance)
+                    end
+                    if zData.sprinting and not zData.screamed then
+                        local target = zed:getTarget()
+                        if target and instanceof(target, "IsoPlayer") then
+                            Core.scream(zed, zData)
+                        end
                     end
                 end
+                -- These zeds never reach updateZed, so hold their speed here: vanilla
+                -- re-rolls speedType on every inactive -> active cycle.
+                Core.reassertSpeed(zed, zData)
             end
         end
 
