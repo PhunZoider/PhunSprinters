@@ -180,44 +180,49 @@ Do not spend time on these:
 
 ## Run log — 2026-09-05
 
-First full pass, single player plus a two-client MP session.
+Full pass in single player plus a two-client MP session. **Everything runnable passed.**
 
-**Passed:** A1–A5, B1, B3, B4, B5, C1–C3, D1–D5, E1, E4, E5, E6, F1, F2, F4.
+**Passed:** A1–A5, B1–B6, C1–C3, D1–D5, E1, E4, E5, E6, F1, F2, F3, F3c, F4, G1–G6.
 
-**Failed, fixed, re-passed:** B2 and B6 — the close-range path could hold a sprint but
-never start or stop one (`d5ecb08`).
+**Failed, fixed, re-passed:**
 
-**Fixed as a result of a note rather than a failure:**
+- B2 / B6 — the close-range path could hold a sprint but never start or stop one
+  (`d5ecb08`).
+- F3 — fixing the PhunServer mod-id check exposed dead code behind it that then threw
+  on every call. Rewritten to follow `PhunServer2DayNight`'s events (`6e44359`,
+  `81646f8`, `7547fed`).
+- G5 / G6 — the first real dusk or dawn of each session was silent, and the client never
+  established the phase at startup (`67dabd5`, `5e90c68`).
 
-- B3/B4 wording. The dusk chime and the `VanillaSprinters` label both read as claiming
-  more than they did (`50f36e5`).
-- F4. The `Debug` tooltip still said "Requires restart" (`6e44359`).
-- D4 turned up a PhunZones-side issue: clearing a zone's risk or cap saves `""` rather
-  than nil. PhunSprinters is already safe against it — `tonumber("")` is nil, so both
-  fall back correctly — so this is cosmetic from here and belongs in the PhunZones editor.
+**Raised as notes, fixed:** the B3 chime wording and the `VanillaSprinters` label
+(`50f36e5`), the `Debug` "requires restart" tooltip (`6e44359`), and the neuter log
+repeating every minute (`5e90c68`).
 
-**Outstanding.** In priority order:
+**Not runnable here:**
 
-| # | Why it is outstanding |
-|---|---|
-| F3, F3b, F3c | Rewritten twice since the failure. Now event-driven, so the transition should land immediately rather than on the minute tick — that timing *is* the test. |
-| G5 | New. Client-side `testNight` at startup (`67dabd5`). |
-| G3 | Never run, and it is the one that matters for shipping: the save's sandbox must still say Sprinters after a session. |
-| G1, G2, G4 | Never run. |
-| B2, B6 | Passed, but before the day/night rework. `calcNight` itself is unchanged and standalone should be unaffected — a quick re-confirm, not a full re-run. |
-| E2, E3 | Reported as "I think this passes". See below for the decisive version. |
+- **F3b** — the deprecated PhunLib path. That library is gone and will not be supported;
+  the upgrade path is PhunServer 2. Code path retained as a fallback, untested.
+- **F5** — splitscreen, needs a second controller. `shouldSprint` falls back to
+  `getPlayer()` whenever the zed's target is not a local player, so the new branch only
+  ever fires with two local players and cannot regress SP or MP. Benefit unverified,
+  risk is not. Acceptable to ship.
 
-**E2/E3, done decisively.** Have A promote a zed to **red**, then A walks well clear of
-it, then watch it turn **yellow at dawn on B's screen**. Yellow is the pass — it means B
-adopted the zed and is suppressing it, not merely rendering A's state. Red in daylight,
-or green while A had it running, is the failure.
+**Still soft:**
 
-**F5 (splitscreen) cannot be tested here** — it needs a second controller. The change it
-covers is `shouldSprint` preferring the zed's target over `getPlayer()`. Note that
-neither SP nor MP exercises it: in both, `getPlayer()` *is* the relevant local player, so
-the new branch only ever triggers with two local players. It falls back to `getPlayer()`
-whenever the target is not a local player, so it cannot regress SP or MP — the benefit is
-unverified, the risk is not. Acceptable to ship untested; revisit if a controller appears.
+- **E2 / E3** were reported as "I think this passes". The decisive version: A promotes a
+  zed to **red**, A walks well clear, then watch it turn **yellow at dawn on B's
+  screen**. Yellow is the pass — B adopted it and is suppressing it, not merely
+  rendering A's state.
+
+**Behaviours confirmed correct that look wrong:**
+
+- **No chime when logging in at night.** Nothing transitioned; the world was already
+  night. Announcing an event that did not happen would be the bug.
+- **G3's admin UI showing Fast Shamblers while `VanillaSprinters` says Random.** The
+  setting is read once, when the world loads. It was at its default then and changed
+  afterwards; by then Zombie Speed was already 2 and there was nothing left to replace.
+  Documented in the tooltip rather than made live — a mid-session change is a rare
+  enough case that a restart is a fair ask.
 
 ---
 
