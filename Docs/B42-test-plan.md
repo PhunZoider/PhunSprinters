@@ -177,6 +177,49 @@ Do not spend time on these:
 
 ---
 
+## Run log — 2026-09-05
+
+First full pass, single player plus a two-client MP session.
+
+**Passed:** A1–A5, B1, B3, B4, B5, C1–C3, D1–D5, E1, E4, E5, E6, F1, F2, F4.
+
+**Failed, fixed, re-passed:** B2 and B6 — the close-range path could hold a sprint but
+never start or stop one (`d5ecb08`).
+
+**Fixed as a result of a note rather than a failure:**
+
+- B3/B4 wording. The dusk chime and the `VanillaSprinters` label both read as claiming
+  more than they did (`50f36e5`).
+- F4. The `Debug` tooltip still said "Requires restart" (`6e44359`).
+- D4 turned up a PhunZones-side issue: clearing a zone's risk or cap saves `""` rather
+  than nil. PhunSprinters is already safe against it — `tonumber("")` is nil, so both
+  fall back correctly — so this is cosmetic from here and belongs in the PhunZones editor.
+
+**Outstanding.** In priority order:
+
+| # | Why it is outstanding |
+|---|---|
+| F3, F3b, F3c | Rewritten twice since the failure. Now event-driven, so the transition should land immediately rather than on the minute tick — that timing *is* the test. |
+| G5 | New. Client-side `testNight` at startup (`67dabd5`). |
+| G3 | Never run, and it is the one that matters for shipping: the save's sandbox must still say Sprinters after a session. |
+| G1, G2, G4 | Never run. |
+| B2, B6 | Passed, but before the day/night rework. `calcNight` itself is unchanged and standalone should be unaffected — a quick re-confirm, not a full re-run. |
+| E2, E3 | Reported as "I think this passes". See below for the decisive version. |
+
+**E2/E3, done decisively.** Have A promote a zed to **red**, then A walks well clear of
+it, then watch it turn **yellow at dawn on B's screen**. Yellow is the pass — it means B
+adopted the zed and is suppressing it, not merely rendering A's state. Red in daylight,
+or green while A had it running, is the failure.
+
+**F5 (splitscreen) cannot be tested here** — it needs a second controller. The change it
+covers is `shouldSprint` preferring the zed's target over `getPlayer()`. Note that
+neither SP nor MP exercises it: in both, `getPlayer()` *is* the relevant local player, so
+the new branch only ever triggers with two local players. It falls back to `getPlayer()`
+whenever the target is not a local player, so it cannot regress SP or MP — the benefit is
+unverified, the risk is not. Acceptable to ship untested; revisit if a controller appears.
+
+---
+
 ## Still unverified
 
 - **Whether the server rolls speed for zeds no client owns.** `neuterVanillaSprinters`
