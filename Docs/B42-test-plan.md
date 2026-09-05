@@ -137,9 +137,9 @@ Small, easy to forget, and two of them were live bugs.
 |---|---|---|
 | F1 | `Volume = 0` | Zed screech **silenced**. It never was before — the screech was reading the wrong option. |
 | F2 | `Volume = 100`, `SprintingChangeNotificationVolume = 0` | Screech loud, day/night chime silent. The two are now independent. |
-| F3 | Run with `phunserver2` + `phunserver2daynight` | Console: `PhunServer2DayNight detected, deferring day/night to it`. Dusk/dawn follow its offsets, not our own climate read. |
+| F3 | Run with `phunserver2` + `phunserver2daynight` | Console: `PhunServer2DayNight detected, following its day/night events`. Dusk/dawn follow its offsets, and the transition lands **immediately**, not up to a minute later. |
 | F3b | Run with the deprecated PhunLib and no PhunServer2DayNight | Console names `PhunLib` instead. Legacy path still works. |
-| F3c | Run with **neither** | No such line, no errors, dusk/dawn still work from `Core:calcNight`. |
+| F3c | Run with **neither** | No such line, no errors, dusk/dawn still work from `Core:calcNight` on the minute tick. |
 | F4 | Toggle `Debug` off mid-session, then on | Overlay stops, then starts. Previously it only wired if Debug was on at startup. |
 | F5 | Splitscreen, two local players in different zones | Each zed tests against the player it is targeting, not always player one. |
 

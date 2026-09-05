@@ -519,41 +519,78 @@ end
 -- PhunServer2DayNight still bridges to for older mods -- but only when PhunLib is
 -- actually installed, so it cannot be relied on as the single read.
 --
--- Neither is a dependency. We take whichever is present and work the phase out
+-- Neither is a dependency. We follow whichever is present and work the phase out
 -- ourselves when neither is.
 --
 -- What was here before: a getActivatedMods() test for "\\phunserver" that never matched,
 -- because the ids are phunserver2 / phunserver2test with no backslash. Fixing the ids
 -- exposed the code it guarded -- it captured "local PS = PhunServer" at ini time and
 -- redefined this function around it, and PhunServer 2's global is PhunServer2DayNight,
--- so PS was nil and every call threw. Hence: resolved per call rather than captured,
--- since load order is not guaranteed, and guarded field by field.
+-- so PS was nil and every call threw. Hence: nothing is captured at load, and every
+-- field is guarded.
 local nightSources = {{
     name = "PhunServer2DayNight",
     get = function()
         return PhunServer2DayNight
-    end
+    end,
+    dusk = "OnPhunServer2Dusk",
+    dawn = "OnPhunServer2Dawn"
 }, {
     name = "PhunLib",
     get = function()
         return PhunLib
-    end
+    end,
+    dusk = "OnPhunLibDusk",
+    dawn = "OnPhunLibDawn"
 }}
 
-local nightSourceLogged = nil
+-- Name of the source we are following, or nil while we are still doing it ourselves.
+Core.nightSource = nil
+
+-- Subscribe to a source's dusk/dawn events and stop working the phase out.
+--
+-- Events rather than polling: the owner of the cycle knows the moment it changes, and
+-- polling would report it up to a minute late *and* keep looking correct if the
+-- integration were broken. Once subscribed there is nothing left to poll.
+local function followNightSource(source)
+
+    local function sync()
+        local t = source.get()
+        if not t then
+            return
+        end
+        Core.dawnTime = t.dawnTime or Core.dawnTime
+        Core.duskTime = t.duskTime or Core.duskTime
+        if t.isNight ~= nil then
+            Core:setIsNight(t.isNight)
+        end
+    end
+
+    Events[source.dusk].Add(sync)
+    Events[source.dawn].Add(sync)
+
+    Core.nightSource = source.name
+    print("[PhunSprinters] " .. source.name .. " detected, following its day/night events")
+
+    -- Those events only fire on a transition, so take the current state now.
+    sync()
+
+end
 
 function Core:testNight()
 
+    -- Already following someone else's cycle. Nothing to work out, nothing to poll.
+    if Core.nightSource then
+        return
+    end
+
     for _, source in ipairs(nightSources) do
         local t = source.get()
-        if t and t.isNight ~= nil and t.dawnTime and t.duskTime then
-            if nightSourceLogged ~= source.name then
-                nightSourceLogged = source.name
-                print("[PhunSprinters] " .. source.name .. " detected, deferring day/night to it")
-            end
-            self.dawnTime = t.dawnTime
-            self.duskTime = t.duskTime
-            self:setIsNight(t.isNight)
+        -- Needs both the values and its events registered, or there is nothing to
+        -- subscribe to and we would be adopting a source that can never tell us anything.
+        if t and t.isNight ~= nil and t.dawnTime and t.duskTime and Events[source.dusk] and
+            Events[source.dawn] then
+            followNightSource(source)
             return
         end
     end
