@@ -261,8 +261,16 @@ end
 -- registered but never given the saved value. option disagreeing with cached means we
 -- cached too early, or something overwrote it afterwards.
 --
--- Deliberately uses print, not debugLn: this is for diagnosing the case where the Debug
--- setting itself may not have loaded.
+-- Uses print rather than debugLn on purpose: one of the things this is for is the case
+-- where the Debug setting itself did not load, and debugLn would then swallow its own
+-- diagnosis. Call it by hand from the console when a setting looks wrong:
+--
+--     PhunSprinters.dumpSettings("check")
+--
+-- Written after a long hunt for DefaultRisk reading 1 while the server's vars file said
+-- 59, with every other option correct. It turned out to be that world's saved state --
+-- a fresh world with the same code and the same declaration loads it fine -- but the
+-- three-way comparison is what ruled out the mod, so it stays.
 function Core.dumpSettings(tag)
 
     local sandboxOptions = getSandboxOptions()
@@ -427,7 +435,9 @@ function Core:ini()
     -- can be nothing but defaults.
     Core:updateSettings()
 
-    Core.dumpSettings("after ini")
+    if Core.settings.Debug then
+        Core.dumpSettings("after ini")
+    end
 
     Core.neuterVanillaSprinters()
 

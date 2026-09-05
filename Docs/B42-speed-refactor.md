@@ -644,6 +644,57 @@ false verdict depressing an area. Verdicts are not permanent.
 
 ---
 
+## The DefaultRisk hunt (2026-09-05) — resolved as world state, not the mod
+
+Recorded because it burned an afternoon and the elimination is worth not repeating.
+
+**Symptom.** On a long-lived MP test server, `PhunSprinters.DefaultRisk` read as its
+default of 1 while the server's own `_SandboxVars.lua` said 59. Every other option in
+the same file loaded correctly, including non-defaults `Mode = 4`, `Debug = true` and
+`VanillaSprinters = 3`. Settings appeared to "reset" across restarts.
+
+**Ruled out, in order:**
+
+| Theory | Killed by |
+|---|---|
+| Our option churn broke the file | `readLuaFile` is declaration-driven; unknown keys in the file are ignored |
+| Mod options registered after the load | `CustomSandboxOptions.init`/`initInstance` run well before `loadServerLuaFile` |
+| Client rejected the value on join | No `unknown SandboxOption` line in any client log |
+| `Core.ResetLua` wiped mod options on connect | Real mechanism, wrong bug — the *server* had the bad value |
+| Integer options do not load | `DarknessLevel`, `MaxQueue`, `Volume` are integers and all load |
+| Our settings caching | Three-way dump showed `SandboxVars = option = cached = 1`; no mismatch |
+| A malformed declaration | Byte-level check of `sandbox-options.txt`: clean ASCII, no BOM |
+| Another Phun mod writing it | Nothing in the family references `DefaultRisk` or writes a PhunSprinters option |
+| A stale `<server>_zombies.ini` | No such file present |
+
+**Resolution.** A wiped world fixed it. Same code, same declaration, hand-edited fresh
+vars file: `DefaultRisk = 77` and `DarknessLevel = 70` both load, and a subsequent UI
+edit to 78 survives a restart. So the fault was in that world's saved sandbox chain,
+upstream of this mod, and it is **not reproducible on a clean world**.
+
+**Not fully explained**, and worth remembering if it recurs: `doMinimumInit` does
+load → save, so a live value of 1 should have written 1 back over the file's 59 — and
+it never did. Either the file being read was not the file being written, or something
+restored the value after the save. If this comes back, that is the thread to pull.
+
+`Core.dumpSettings(tag)` survives from the hunt, gated on `Debug` at `ini` and callable
+by hand as `PhunSprinters.dumpSettings("check")`. The three-way comparison is what
+eliminated the mod, so it is worth keeping.
+
+**Fixed along the way, both real and unrelated to the above:**
+
+- Zone `maxSprinterRisk = 0` was ignored (`if maxRisk > 0 and ...`), so safe havens did
+  nothing — the one value an admin is most likely to set deliberately.
+- `Core:ini` refreshed settings by iterating the file-load-time seed of `Core.settings`
+  while `updateSettings` iterated `SandboxVars` — two sources, neither reliable. Both
+  now enumerate the live `SandboxOption` objects.
+- Client reads go through `Core.settings` instead of `Core.getOption`, clearing the
+  bug-list item about two `getOptionByName` lookups per call in hot paths.
+- Debug render hook and settings refresh are registered unconditionally and check
+  `Core.settings` themselves, so Debug can be toggled mid-session.
+
+---
+
 ## Provenance
 
 Every API claim above was verified by disassembling
