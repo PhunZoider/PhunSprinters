@@ -18,12 +18,14 @@ description=[hr]
 description=Sprinter behaviour is determined by stacking modifiers in this order:
 description=[list]
 description=[*]Global Base Risk (in your settings)
-description=[*]Zone Override (when [url=https://steamcommunity.com/sharedfiles/filedetails/?id=3676252660]PhunZones 2[/url] is installed)
+description=[*]Zone Override (when [url=https://steamcommunity.com/sharedfiles/filedetails/?id=3676252660]PhunZones 2[/url] is installed). [url=https://github.com/PhunZoider/PhunSprinters#zone-recipes]Recipes for safe havens and no-go areas[/url]
 description=[*]How long you've played for
 description=[*]What phase the moon is in
 description=[*]The mode you use (see below)
 description=[*]Light Suppression (enable to slow sprinters in light)
 description=[/list]
+description=
+description=[url=https://github.com/PhunZoider/PhunSprinters#how-risk-is-calculated]The exact formula, with a worked example[/url]
 description=
 description=[h1]Modes[/h1]
 description=[hr]
@@ -51,11 +53,15 @@ description=[/list]
 description=
 description=Some limits exist to prevent performance issues in dense areas.
 description=
+description=[url=https://github.com/PhunZoider/PhunSprinters#light-suppression]How the light level is measured, indoors and out[/url]
+description=
 description=[h1]Hours discount[/h1]
 description=[hr]
 description=Ramps difficulty with time survived instead of throwing full risk at a fresh character. A new player can be seeing a fraction of an area's risk while a veteran standing next to them takes all of it.
 description=
 description=Ideal for fresh servers, and for keeping someone's first night survivable without softening the map for everyone else.
+description=
+description=[url=https://github.com/PhunZoider/PhunSprinters#hours-discount]The ramp, hour by hour[/url]
 description=
 description=[h1]Moon phase modifiers[/h1]
 description=[hr]
@@ -63,9 +69,17 @@ description=Moon phases [b]multiply[/b] risk. A full moon night can be twice as 
 description=
 description=Set a phase to 0 and there are no sprinters at all on those nights, which turns a new moon into a window you can plan a run around.
 description=
+description=[url=https://github.com/PhunZoider/PhunSprinters#moon-phases]Every phase and its default[/url]
+description=
 description=[h1]Full documentation[/h1]
 description=[hr]
-description=The exact risk formula, worked examples, a full settings reference, and zone recipes for safe havens, no-go areas and graduated difficulty are on the [url=https://github.com/PhunZoider/PhunSprinters]GitHub page[/url].
+description=Everything above in more depth, on the [url=https://github.com/PhunZoider/PhunSprinters]GitHub page[/url]:
+description=[list]
+description=[*][url=https://github.com/PhunZoider/PhunSprinters#settings-reference]Every setting, its default, and what it does[/url]
+description=[*][url=https://github.com/PhunZoider/PhunSprinters#zone-recipes]Zone recipes: safe havens, no-go areas, graduated difficulty[/url]
+description=[*][url=https://github.com/PhunZoider/PhunSprinters#multiplayer]How risk works on a server[/url]
+description=[*][url=https://github.com/PhunZoider/PhunSprinters#troubleshooting]Troubleshooting and the debug overlay[/url]
+description=[/list]
 description=
 description=[h1]Using this with the vanilla Zombie Speed setting[/h1]
 description=[hr]
@@ -78,6 +92,8 @@ description=
 description=Want every zed running, the way vanilla does it? Set Default Risk to 100 and Mode to Always.
 description=
 description=Nothing is written to your save. The change applies for the session only.
+description=
+description=[url=https://github.com/PhunZoider/PhunSprinters#using-this-with-the-vanilla-zombie-speed-setting]The full breakdown, per Zombie Speed setting[/url]
 description=
 description=[img]https://i.ibb.co/DZ7Vffn/Thumbs-Up.png[/img]
 description=
