@@ -32,7 +32,7 @@
   "Sandbox_PhunSprinters_MaxDistance": "Max Distance",
   "Sandbox_PhunSprinters_MaxDistance_tooltip": "The maximum distance of player to zed must be to process the chance of being a sprinter (this is to improve performance trying to process zeds that are too far away)",
   "Sandbox_PhunSprinters_Debug": "Debug",
-  "Sandbox_PhunSprinters_Debug_tooltip": "Print verbosely (useful when diagnosing issues). Requires restart",
+  "Sandbox_PhunSprinters_Debug_tooltip": "Print verbosely to the console and show the per-zed debug overlay (useful when diagnosing issues). Takes effect within a minute of changing it, no restart needed.",
   "Sandbox_PhunSprinters_MaxQueue": "Queue Size",
   "Sandbox_PhunSprinters_MaxQueue_tooltip": "The max number of zeds to update per tick",
   "Sandbox_PhunSprinters_DefaultRisk": "Default Risk %%",

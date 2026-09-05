@@ -424,21 +424,6 @@ function Core:ini()
     self.inied = true
     Core.startTime = getTimestampMs()
     print("[PhunSprinters] Initializing Core")
-    -- Mod ids, no leading backslash: the ids really are "phunserver2" and
-    -- "phunserver2test" (see PhunServer's mod.info). The backslash prefix was dropped
-    -- between 42.14/phunzones.lua and common/phunzones.lua and this check never caught
-    -- up, so PhunServer detection has been silently failing.
-    if getActivatedMods():contains("phunserver") or getActivatedMods():contains("phunservertest") or
-        getActivatedMods():contains("phunserver2") or getActivatedMods():contains("phunserver2test") then
-        print("[PhunSprinters] PhunServer detected, using its night system")
-        local PS = PhunServer
-        function Core:testNight()
-            -- let phunserver handle this if it's present
-            self.dawnTime = PS.dawnTime
-            self.duskTime = PS.duskTime
-            self:setIsNight(PS.isNight)
-        end
-    end
 
     -- Re-cache settings: they are not guaranteed to be loaded when this file was. Go
     -- through updateSettings so there is exactly one way settings are read -- this used
@@ -501,7 +486,8 @@ function Core:setIsNight(value)
     Events.OnTick.Add(fireEvent)
 end
 
-function Core:testNight()
+-- Work the day/night phase out from the climate manager ourselves.
+function Core:calcNight()
 
     if not climateManager and getClimateManager then
         climateManager = getClimateManager()
@@ -525,6 +511,39 @@ function Core:testNight()
             self:setIsNight(night)
         end
     end
+end
+
+-- Defer the day/night phase to PhunLib where it is present, otherwise work it out.
+--
+-- PhunLib is the family's shared day/night source. PhunServer2DayNight, when installed,
+-- suppresses PhunLib's own cycle and publishes into it instead, so reading PhunLib
+-- covers both and there is nothing to sniff for.
+--
+-- What was here before: a getActivatedMods() test for "\\phunserver" that never matched,
+-- because the ids are phunserver2 / phunserver2test with no backslash. Fixing the ids
+-- exposed the code it guarded -- it captured "local PS = PhunServer" at ini time, and
+-- the global is PhunServer2DayNight, so PS was nil and this threw on every tick.
+--
+-- Hence: resolved per call rather than captured, since load order is not guaranteed,
+-- and it falls through to our own calculation whenever PhunLib has no answer yet.
+local loggedNightSource = false
+
+function Core:testNight()
+
+    local lib = PhunLib
+    if lib and lib.isNight ~= nil and lib.dawnTime and lib.duskTime then
+        if not loggedNightSource then
+            loggedNightSource = true
+            print("[PhunSprinters] PhunLib detected, deferring day/night to it")
+        end
+        self.dawnTime = lib.dawnTime
+        self.duskTime = lib.duskTime
+        self:setIsNight(lib.isNight)
+        return
+    end
+
+    self:calcNight()
+
 end
 
 function Core.getPlayerZoneData(player)
