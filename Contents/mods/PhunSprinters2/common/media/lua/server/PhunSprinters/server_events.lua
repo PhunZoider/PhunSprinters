@@ -27,9 +27,16 @@ local function settingsSignature()
 end
 
 local lastSignature = nil
+local dumpedLate = false
 
 Events.EveryOneMinute.Add(function()
     Core:testNight()
+
+    if not dumpedLate then
+        dumpedLate = true
+        Core.dumpSettings("one minute in")
+    end
+
     -- An admin editing sandbox options in-game re-pushes them and wipes our change,
     -- so re-assert it. No-ops when nothing needs doing.
     Core.neuterVanillaSprinters()

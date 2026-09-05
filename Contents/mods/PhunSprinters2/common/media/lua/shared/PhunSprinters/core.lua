@@ -223,6 +223,54 @@ function Core:updateSettings()
     end
 end
 
+-- Dump every PhunSprinters option from all three places it can be read, so a
+-- disagreement between them is visible:
+--
+--   SandboxVars  the Lua table the game builds from the loaded options (toLua)
+--   option       the live SandboxOption object, what getOption reads
+--   cached       our own Core.settings
+--
+-- All three should agree. SandboxVars disagreeing with option means the option was
+-- registered but never given the saved value. option disagreeing with cached means we
+-- cached too early, or something overwrote it afterwards.
+--
+-- Deliberately uses print, not debugLn: this is for diagnosing the case where the Debug
+-- setting itself may not have loaded.
+function Core.dumpSettings(tag)
+
+    local sandboxOptions = getSandboxOptions()
+    local vars = SandboxVars[Core.name] or {}
+
+    local keys = {}
+    for k in pairs(vars) do
+        table.insert(keys, k)
+    end
+    for k in pairs(Core.settings) do
+        if vars[k] == nil then
+            table.insert(keys, k)
+        end
+    end
+    table.sort(keys)
+
+    local where = isServer() and "SERVER" or (Core.tools.isLocal and "SP" or "CLIENT")
+    print("[PhunSprinters] ==== settings dump: " .. where .. " / " .. tostring(tag) .. " ====")
+    for _, k in ipairs(keys) do
+        local opt = sandboxOptions:getOptionByName(Core.name .. "." .. k)
+        local live = opt and opt:getValue()
+        local flag = (live ~= vars[k] or live ~= Core.settings[k]) and "   <-- MISMATCH" or ""
+        print("[PhunSprinters]   " .. k .. ": SandboxVars=" .. tostring(vars[k]) .. " option=" ..
+                  tostring(live) .. " cached=" .. tostring(Core.settings[k]) .. flag)
+    end
+
+    -- The two we actually write, so their state is on the record too.
+    for _, n in ipairs({"ZombieLore.Speed", "ZombieLore.SprinterPercentage"}) do
+        local opt = sandboxOptions:getOptionByName(n)
+        print("[PhunSprinters]   " .. n .. " = " .. tostring(opt and opt:getValue()))
+    end
+    print("[PhunSprinters] ==== end dump ====")
+
+end
+
 -- Take the server's settings as authoritative.
 --
 -- A joining client *does* receive the server's sandbox correctly. But
@@ -388,9 +436,7 @@ function Core:ini()
         Core.settings[k] = Core.getOption(k, v)
     end
 
-    print("[PhunSprinters] " .. (isServer() and "server" or (Core.tools.isLocal and "singleplayer" or "client")) ..
-              " settings after ini: DefaultRisk=" .. tostring(Core.settings.DefaultRisk) .. " Mode=" ..
-              tostring(Core.settings.Mode) .. " Debug=" .. tostring(Core.settings.Debug))
+    Core.dumpSettings("after ini")
 
     Core.neuterVanillaSprinters()
 

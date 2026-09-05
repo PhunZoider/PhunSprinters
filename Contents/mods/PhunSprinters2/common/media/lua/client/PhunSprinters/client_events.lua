@@ -48,8 +48,13 @@ local function setup()
         Core.onDebugZedLabels()
     end)
 
+    local dumpedLate = false
     Events.EveryOneMinute.Add(function()
         Core:updateSettings()
+        if not dumpedLate then
+            dumpedLate = true
+            Core.dumpSettings("one minute in")
+        end
     end)
 
 end
