@@ -4,3 +4,4 @@ author=UburGeek
 description=Highly configurable chance of sprinters
 poster=poster.png
 icon=icon.png
+versionMin=42.0.0
