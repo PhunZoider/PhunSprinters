@@ -40,7 +40,7 @@ end
 
 function Core.onDebugZedLabels()
 
-    if not Core.getOption("Debug") then
+    if not Core.settings.Debug then
         return
     end
     if not Core.tools.isAdmin(getPlayer()) then
@@ -59,7 +59,7 @@ function Core.onDebugZedLabels()
     end
 
     local t = getTimestampMs()
-    local maxDistance = Core.getOption("MaxDistance2") or 25
+    local maxDistance = Core.settings.MaxDistance2 or 25
     if maxDistance > 25 then
         maxDistance = 25
     end

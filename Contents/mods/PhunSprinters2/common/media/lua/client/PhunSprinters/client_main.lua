@@ -135,7 +135,7 @@ function Core.enableSprinting(value)
         Core.lastChangeSound = now
     elseif now - (Core.lastChangeSound or 0) > 5 then
         Core.lastChangeSound = now
-        local vol = Core.getOption("SprintingChangeNotificationVolume", 15) * .01
+        local vol = (Core.settings.SprintingChangeNotificationVolume or 15) * .01
         if vol > 0 then
             getSoundManager():PlaySound(value and "PhunSprinters_Start" or "PhunSprinters_End", false, 0):setVolume(vol);
         end
@@ -165,7 +165,7 @@ function Core.scream(zed, zData)
     local soundName = "PhunSprinters_" .. (ZombRand(5) + 1)
 
     if not zed:getEmitter():isPlaying(soundName) then
-        local vol = Core.getOption("SprintingChangeNotificationVolume", 15) * .01
+        local vol = (Core.settings.SprintingChangeNotificationVolume or 15) * .01
         if vol <= 0 then
             return
         end

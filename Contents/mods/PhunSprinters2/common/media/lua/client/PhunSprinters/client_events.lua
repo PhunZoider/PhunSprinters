@@ -16,6 +16,11 @@ local function setup()
     Events.OnTick.Remove(setup)
 
     Core:ini()
+    -- Ask the server for its settings. A joining client's own copy of every
+    -- PhunSprinters.* option has been reset to its default by this point.
+    if not Core.tools.isLocal then
+        sendClientCommand(Core.name, Core.commands.playerSetup, {})
+    end
     Core:recalcOutfits()
 
     local players = Core.tools.onlinePlayers()
@@ -35,17 +40,17 @@ local function setup()
         end
     end)
 
-    if Core.getOption("Debug") then
-        Events.OnPostRender.Add(function()
-            Core.onDebugZedLabels()
-        end)
+    -- Registered unconditionally. Both handlers check Core.settings themselves, so
+    -- toggling Debug mid-session now works. Previously they were only wired if Debug
+    -- happened to be on at startup -- and on a multiplayer client the server's settings
+    -- have not arrived by this point, so for a client it effectively never was.
+    Events.OnPostRender.Add(function()
+        Core.onDebugZedLabels()
+    end)
 
-        Events.EveryOneMinute.Add(function()
-            -- update settings
-            Core:updateSettings()
-        end)
-
-    end
+    Events.EveryOneMinute.Add(function()
+        Core:updateSettings()
+    end)
 
 end
 
@@ -132,7 +137,7 @@ end)
 
 Events[Core.events.OnDawn].Add(function()
 
-    if Core.getOption("Mode") == 1 then
+    if Core.settings.Mode == 1 then
         Core.enableSprinting(false)
     end
 
@@ -143,7 +148,7 @@ end)
 
 Events[Core.events.OnDusk].Add(function()
 
-    if Core.getOption("Mode") == 1 then
+    if Core.settings.Mode == 1 then
         Core.enableSprinting(true)
     end
     Core.lastRecalc = getTimestampMs()

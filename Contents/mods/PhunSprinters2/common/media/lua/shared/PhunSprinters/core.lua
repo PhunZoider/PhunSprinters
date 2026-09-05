@@ -9,6 +9,8 @@ PhunSprinters = {
     data = {},
     env = {},
     commands = {
+        playerSetup = "playerSetup",
+        settings = "settings",
         OnDusk = "OnDusk",
         OnDawn = "OnDawn"
     },
@@ -181,7 +183,15 @@ PhunSprinters = {
 
 local Core = PhunSprinters
 Core.isLocal = not isClient() and not isServer()
-Core.settings = SandboxVars[Core.name] or {}
+-- A copy, not a reference to the SandboxVars sub-table: toLua() rebuilds SandboxVars
+-- wholesale, which would leave us pointing at a stale table.
+Core.settings = {}
+for k, v in pairs(SandboxVars[Core.name] or {}) do
+    Core.settings[k] = v
+end
+
+-- Set once the server has told us its values. See Core.applyServerSettings.
+Core.settingsFromServer = false
 for _, event in pairs(Core.events) do
     if not Events[event] then
         print("PhunSprinters: Adding event " .. event)
@@ -202,9 +212,51 @@ function Core.debug(...)
 end
 
 function Core:updateSettings()
+    -- On a multiplayer client the server's values are authoritative and are pushed to
+    -- us. Re-reading the local sandbox here would overwrite them with this client's
+    -- defaults, which is the whole bug applyServerSettings exists to fix.
+    if self.settingsFromServer then
+        return
+    end
     for k, v in pairs(SandboxVars[Core.name] or {}) do
         self.settings[k] = self.getOption(k, v)
     end
+end
+
+-- Take the server's settings as authoritative.
+--
+-- A joining client *does* receive the server's sandbox correctly. But
+-- ConnectToServerState then calls Core.ResetLua to load the server's mod list, and that
+-- runs SandboxOptions.Reset() + CustomSandboxOptions.init() + initInstance(), which
+-- re-registers every mod option at its declared default. Nothing re-applies the
+-- server's values afterwards, so from then on the client reads its own defaults for
+-- every PhunSprinters.* option -- silently, with nothing logged, because the value was
+-- accepted and then discarded rather than rejected.
+--
+-- Verified against projectzomboid.jar: Core.ResetLua has exactly one caller, and it is
+-- ConnectToServerState. An admin editing settings in-game happens to paper over it for
+-- that session, because that re-push lands after the reset. This makes it deterministic.
+function Core.applyServerSettings(settings)
+
+    if not settings then
+        return
+    end
+
+    local changed = 0
+    for k, v in pairs(settings) do
+        if Core.settings[k] ~= v then
+            print("[PhunSprinters] server setting " .. tostring(k) .. ": " ..
+                      tostring(Core.settings[k]) .. " -> " .. tostring(v))
+            Core.settings[k] = v
+            changed = changed + 1
+        end
+    end
+
+    Core.settingsFromServer = true
+    print("[PhunSprinters] applied server settings (" .. tostring(changed) .. " differed from local)")
+
+    return changed
+
 end
 
 -- speedType is a public int field on IsoZombie, but PZ's Lua binding does not reliably
@@ -335,6 +387,10 @@ function Core:ini()
     for k, v in pairs(Core.settings) do
         Core.settings[k] = Core.getOption(k, v)
     end
+
+    print("[PhunSprinters] " .. (isServer() and "server" or (Core.tools.isLocal and "singleplayer" or "client")) ..
+              " settings after ini: DefaultRisk=" .. tostring(Core.settings.DefaultRisk) .. " Mode=" ..
+              tostring(Core.settings.Mode) .. " Debug=" .. tostring(Core.settings.Debug))
 
     Core.neuterVanillaSprinters()
 

@@ -47,8 +47,8 @@ function Core.CalcPlayersSprinterPercentage()
         end
 
         local totalHours = modData.PhunSprinters.totalHours + player:getHoursSurvived()
-        local discount = Core.getOption("HoursDiscount", 0)
-        local defaultRisk = Core.getOption("DefaultRisk", 0)
+        local discount = Core.settings.HoursDiscount or 0
+        local defaultRisk = Core.settings.DefaultRisk or 0
         local hoursAdj = (discount > 0 and discount > totalHours) and (totalHours / discount) or 1
         local minRisk = tonumber(pzdata.minSprinterRisk) or tonumber(defaultRisk) or 0
         local baseRisk = minRisk
