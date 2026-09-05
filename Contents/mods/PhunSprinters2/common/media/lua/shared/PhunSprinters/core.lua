@@ -513,33 +513,49 @@ function Core:calcNight()
     end
 end
 
--- Defer the day/night phase to PhunLib where it is present, otherwise work it out.
+-- Day/night sources, in order of preference.
 --
--- PhunLib is the family's shared day/night source. PhunServer2DayNight, when installed,
--- suppresses PhunLib's own cycle and publishes into it instead, so reading PhunLib
--- covers both and there is nothing to sniff for.
+-- PhunServer2DayNight is the current one. PhunLib is the deprecated channel that
+-- PhunServer2DayNight still bridges to for older mods -- but only when PhunLib is
+-- actually installed, so it cannot be relied on as the single read.
+--
+-- Neither is a dependency. We take whichever is present and work the phase out
+-- ourselves when neither is.
 --
 -- What was here before: a getActivatedMods() test for "\\phunserver" that never matched,
 -- because the ids are phunserver2 / phunserver2test with no backslash. Fixing the ids
--- exposed the code it guarded -- it captured "local PS = PhunServer" at ini time, and
--- the global is PhunServer2DayNight, so PS was nil and this threw on every tick.
---
--- Hence: resolved per call rather than captured, since load order is not guaranteed,
--- and it falls through to our own calculation whenever PhunLib has no answer yet.
-local loggedNightSource = false
+-- exposed the code it guarded -- it captured "local PS = PhunServer" at ini time and
+-- redefined this function around it, and PhunServer 2's global is PhunServer2DayNight,
+-- so PS was nil and every call threw. Hence: resolved per call rather than captured,
+-- since load order is not guaranteed, and guarded field by field.
+local nightSources = {{
+    name = "PhunServer2DayNight",
+    get = function()
+        return PhunServer2DayNight
+    end
+}, {
+    name = "PhunLib",
+    get = function()
+        return PhunLib
+    end
+}}
+
+local nightSourceLogged = nil
 
 function Core:testNight()
 
-    local lib = PhunLib
-    if lib and lib.isNight ~= nil and lib.dawnTime and lib.duskTime then
-        if not loggedNightSource then
-            loggedNightSource = true
-            print("[PhunSprinters] PhunLib detected, deferring day/night to it")
+    for _, source in ipairs(nightSources) do
+        local t = source.get()
+        if t and t.isNight ~= nil and t.dawnTime and t.duskTime then
+            if nightSourceLogged ~= source.name then
+                nightSourceLogged = source.name
+                print("[PhunSprinters] " .. source.name .. " detected, deferring day/night to it")
+            end
+            self.dawnTime = t.dawnTime
+            self.duskTime = t.duskTime
+            self:setIsNight(t.isNight)
+            return
         end
-        self.dawnTime = lib.dawnTime
-        self.duskTime = lib.duskTime
-        self:setIsNight(lib.isNight)
-        return
     end
 
     self:calcNight()
