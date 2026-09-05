@@ -55,48 +55,41 @@ end
 
 function Core.updateZed(zed)
 
-    local c = Core
-    local sprinters = c.sprinterIds
-    local zzz = zed:getModData()
-
-    local zData = Core.getZedData(zed) or {}
-    local id = zData.id
-
-    if not id then
+    local zData = Core.getZedData(zed)
+    if not zData or not zData.id then
         return
     end
 
-    local isSprinter = c.sprinterIds[id]
+    -- The verdict lives here, in this zed's own modData, and nowhere else. It is not
+    -- published, not synced and not persisted -- see "Identity is already ephemeral"
+    -- in Docs/B42-speed-refactor.md.
+    if zData.sprinter == nil then
 
-    if isSprinter == nil then
-        -- Locally testing sprinter
-        zData.modified = getTimestampMs()
-        isSprinter = Core.shouldSprint(zed, zData, getPlayer():getModData().PhunSprinters or {})
-        zData.sprinter = isSprinter
-        Core.sprinterIds[id] = isSprinter
-        if not zData.sprinter then
-            Core.applyZedVisualState(zed, zData)
-            Core.debugLn("PhunSprinters: " .. tostring(zData.id) .. " is not a sprinter")
-            Core.makeNormal(zed, zData)
+        -- Risk is per player and computed on a timer. Until it exists there is nothing
+        -- to test against, so leave the zed untested and come back next update rather
+        -- than recording a "no" we would be stuck with.
+        local pData = getPlayer():getModData().PhunSprinters
+        if not pData or pData.risk == nil then
             return
-        else
-            Core.applyZedVisualState(zed, zData)
-            triggerEvent(Core.events.OnSprinterAdded, zed)
         end
-    end
 
-    if zData.sprinter ~= isSprinter then
-        if isSprinter ~= true then
-            Core.makeNormal(zed, zData)
-            zData.sprinter = false
-        else
-            zData.sprinter = true
-        end
+        zData.sprinter = Core.shouldSprint(zed, zData, pData)
         zData.modified = getTimestampMs()
         Core.applyZedVisualState(zed, zData)
+
+        if zData.sprinter then
+            triggerEvent(Core.events.OnSprinterAdded, zed)
+        else
+            Core.debugLn("PhunSprinters: " .. tostring(zData.id) .. " is not a sprinter")
+            return
+        end
     end
 
-    if Core.sprint and isSprinter then
+    if not zData.sprinter then
+        return
+    end
+
+    if Core.sprint then
 
         if Core.settings.Mode == 4 or Core.settings.SlowInLight then
             -- adjust for light
@@ -202,8 +195,8 @@ function Core.getZedData(zed)
 
     if not d or d.id ~= id or (d.modified and d.modified < Core.startTime) then
 
-        -- reset
-        Core.addToSend(id, nil)
+        -- Reset. There is nothing to unpublish: the fresh table below IS the reset,
+        -- since the verdict lives only in this zed modData.
 
         -- Only undo what we did. A zed we never touched keeps whatever speed it has.
         if d.appliedSpeed then
@@ -229,21 +222,23 @@ function Core.getZedData(zed)
     return d
 end
 
--- Determine if zombie should sprint based on player risk
+-- Determine if zombie should sprint based on player risk.
+--
+-- Risk 0 records a plain "no". That used to be dangerous, because the verdict went
+-- into a global table and stuck for the life of the save; it is safe now that the
+-- verdict dies with the zed.
 function Core.shouldSprint(zed, zData, pData)
-    local risk = pData.risk or 0
-    if risk > 0 then
-        local chance = ZombRand(100)
-        Core.debugLn("Testing Zed (" .. tostring(zData.id) .. "). Rolled " .. tostring(chance) .. " against risk " ..
-                         tostring(risk) .. " and is " ..
-                         (chance <= risk and "now a sprinter" or "not going to be a sprinter "))
 
-        Core.addToSend(zData.id, chance <= risk)
-        return chance <= risk
-    else
-        Core.addToSend(zData.id, nil)
+    local risk = pData.risk or 0
+    if risk <= 0 then
         return false
     end
+
+    local chance = ZombRand(100)
+    Core.debugLn("Testing Zed (" .. tostring(zData.id) .. "). Rolled " .. tostring(chance) .. " against risk " ..
+                     tostring(risk) .. " and is " ..
+                     (chance <= risk and "now a sprinter" or "not going to be a sprinter "))
+    return chance <= risk
 
 end
 

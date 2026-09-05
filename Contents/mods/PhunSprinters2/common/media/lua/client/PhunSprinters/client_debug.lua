@@ -76,33 +76,28 @@ function Core.onDebugZedLabels()
 
                 local key = Core.getId(z)
                 local data = z:getModData().PhunSprinters
-                local isSprinter = Core.sprinterIds[key]
+                local isSprinter = data and data.sprinter
 
-                -- Colour is driven by sprinterIds, the authoritative verdict, rather
-                -- than by local modData. Green used to be the default and so meant
-                -- three different things at once -- never tested, tested and failed,
-                -- and "a sprinter whose local data is missing" -- which made ordinary
-                -- first-time testing look exactly like re-rolling.
+                -- The verdict is the zed's own modData and nothing else, so these four
+                -- states are the whole story. Green must not double as the default:
+                -- "never tested" and "tested and failed" look identical to a player
+                -- otherwise, which once made routine first-time testing look like
+                -- re-rolling.
                 local color, state
                 if isSprinter == nil then
                     color, state = {0.7, 0.7, 0.7, 1}, "untested"
                 elseif isSprinter ~= true then
                     color, state = {0, 1, 0, 1}, "no"
-                elseif not (data and data.sprinter) then
-                    -- Verdict says sprinter, but this client has no local state for it:
-                    -- modData wiped by resetForReuse, or not re-established yet. This is
-                    -- the case worth watching when testing identity across chunk loads.
-                    color, state = {1, 0, 1, 1}, "SPRINTER/nodata"
                 elseif data.sprinting then
                     color, state = {1, 0, 0, 1}, "run"
                 else
                     color, state = {1, 1, 0, 1}, "walk"
                 end
 
-                -- key is Core.getId, which on 42.17+ is IsoMovingObject.getID() -- a
-                -- PER-CLIENT object handle, so it cannot match between clients. onlineId
-                -- is the network identity (it is what ZombiePacket.id carries). Show both
-                -- so two clients side by side can be compared directly.
+                -- key is Core.getId = IsoMovingObject.getID(), a PER-CLIENT object
+                -- handle. That is fine now: nothing it keys crosses the wire any more.
+                -- onlineId is the network identity (what ZombiePacket.id carries), shown
+                -- so two clients can still be lined up against the same zed by eye.
                 local onlineId = z.getOnlineID and z:getOnlineID()
                 local text = key .. "/" .. tostring(onlineId) .. " (" .. state .. ")"
 

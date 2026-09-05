@@ -2,26 +2,11 @@ if isClient() then
     return
 end
 
-local Core = PhunSprinters
 local Commands = {}
 
-if not Core.isLocal then
-    Commands.isSprinter = function(player, args)
-
-        Core.debug(args)
-        for k, v in pairs(args) do
-            if k and Core.sprinterIds[k] ~= v then
-                Core.addToSend(k, v)
-            end
-        end
-
-    end
-end
-
-Commands.playerSetup = function(player)
-
-    sendServerCommand(Core.name, Core.commands.isSprinter, Core.sprinterIds)
-
-end
+-- No client -> server commands. The sprinter verdict used to be published here and
+-- rebroadcast to every client; it now lives in the zed's own modData and dies with the
+-- zed, so there is nothing to sync. This module and the OnClientCommand dispatcher in
+-- server_events stay as the extension point if that changes.
 
 return Commands

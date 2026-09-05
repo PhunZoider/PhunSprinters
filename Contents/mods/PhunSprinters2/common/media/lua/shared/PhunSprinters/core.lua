@@ -9,8 +9,6 @@ PhunSprinters = {
     data = {},
     env = {},
     commands = {
-        playerSetup = "playerSetup",
-        isSprinter = "isSprinter",
         OnDusk = "OnDusk",
         OnDawn = "OnDawn"
     },
@@ -18,20 +16,14 @@ PhunSprinters = {
         OnReady = "PhunSprintersOnReady",
         OnSprinterAdded = "PhunSprintersOnSprinterAdded",
         OnDusk = "PhunSprintersOnDusk",
-        OnDawn = "PhunSprintersOnDawn",
-        OnEmptyServer = "PhunSprintersOnEmptyServer"
+        OnDawn = "PhunSprintersOnDawn"
     },
     settings = {},
-    sprinterIds = {},
-    pendingIds = {},
-    toSend = {},
-    lastSend = 0,
     ui = {},
     elements = {},
     queueIds = {},
     queue = {},
     tools = require "PhunSprinters/tools",
-    pendingCalcs = false,
     sprint = true,
     daytime = true,
     baseOutfits = {
@@ -212,20 +204,6 @@ end
 function Core:updateSettings()
     for k, v in pairs(SandboxVars[Core.name] or {}) do
         self.settings[k] = self.getOption(k, v)
-    end
-end
-
-function Core.addToSend(id, value)
-    if value == 0 then
-        value = nil
-    end
-    local update = Core.sprinterIds[id] ~= value
-    Core.sprinterIds[id] = value
-    if Core.tools.isLocal then
-        return
-    end
-    if update then
-        table.insert(Core.toSend, id)
     end
 end
 

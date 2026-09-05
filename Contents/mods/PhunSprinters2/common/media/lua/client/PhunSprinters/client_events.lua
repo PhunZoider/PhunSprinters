@@ -11,19 +11,11 @@ local Commands = require("PhunSprinters/client_commands")
 local getTimestamp = getTimestamp
 local getTimestampMs = getTimestampMs
 
--- don't start calcing until we get ok from server
-if Core.isLocal then
-    Core.pendingCalcs = false
-else
-    Core.pendingCalcs = true
-end
-
 -- === Initialization ===
 local function setup()
     Events.OnTick.Remove(setup)
 
     Core:ini()
-    sendClientCommand(Core.name, Core.commands.playerSetup, {})
     Core:recalcOutfits()
 
     local players = Core.tools.onlinePlayers()
@@ -39,20 +31,6 @@ local function setup()
         local ts = getTimestamp()
         if ts >= nextCheck then
             nextCheck = ts + 1
-
-            if #Core.toSend > 0 then
-                local vars = {}
-                for _, v in ipairs(Core.toSend) do
-                    if Core.sprinterIds[v] == nil then
-                        vars[v] = 0
-                    else
-                        vars[v] = Core.sprinterIds[v]
-                    end
-                end
-                sendClientCommand(Core.name, Core.commands.isSprinter, vars)
-                Core.toSend = {}
-            end
-
             Core:testEnvironment()
         end
     end)
@@ -95,13 +73,6 @@ Events.OnServerCommand.Add(function(module, command, arguments)
         if Commands[command] then
             Commands[command](arguments)
         end
-    end
-end)
-
-Events.OnReceiveGlobalModData.Add(function(tableName, tableData)
-    if tableName == Core.name then
-        ModData.add(Core.name, tableData)
-        Core.sprinterIds = ModData.getOrCreate(Core.name, {})
     end
 end)
 
@@ -156,9 +127,6 @@ end)
 
 -- === Update Zombie State on Every Zombie Tick ===
 Events.OnZombieUpdate.Add(function(zed)
-    if Core.pendingCalcs then
-        return
-    end
     Core.enqueueUpdate(zed)
 end)
 

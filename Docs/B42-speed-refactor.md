@@ -429,6 +429,9 @@ write-up. `mod.info` has no `versionMin` or `modversion`.
 
 ## Suggested order
 
+*Status: 1 and 2 done. 3 dropped as moot. 4 mostly dissolved — the identity model is
+now "the zed's modData, and it dies with the zed". 5 outstanding.*
+
 1. ~~Direct-speed refactor — kills the sandbox toggling, the `DoZombieStats` cost, the
    fake-shambler nondeterminism, the `originalSpeed` staleness and the `Speed = 4` bug
    in one pass~~ **done, see below**
@@ -571,6 +574,52 @@ public on B42, but that came from the jar, not from a running game.
 
 `Core.testPlayers` (`client_main.lua`) has no callers at all — add it to the dead-code
 list in step 5.
+
+---
+
+## Step 2: the sync layer is gone (2026-09-05)
+
+The sprinter verdict now lives in the zed's own modData and nowhere else. It is not
+published, not synced, not persisted, and needs no cleanup — the zed dying or being
+recycled disposes of it.
+
+**Deleted**
+
+- `Core.sprinterIds`, `Core.toSend`, `Core.lastSend`, `Core.pendingIds`,
+  `Core.addToSend`, and the mod's global `ModData` table
+- `commands.isSprinter` and `commands.playerSetup`, both directions, plus the
+  per-second batched send on the client *and* the server, and the whole-table
+  broadcast to every joining client
+- `events.OnEmptyServer` and the `OnTickEvenPaused` tick-counter machinery that
+  drove it — it existed only to clear the verdict table
+- `OnZombieDead` and the PhunZones `OnZombieRemoved` handler — both only pruned it
+- `OnReceiveGlobalModData` on the client
+- `Core.pendingCalcs`, whose only clearer was the server's verdict push
+
+**Bugs that ceased to exist rather than being fixed**
+
+- Unbounded `sprinterIds` growth (the truthiness-vs-nil cleanup bug) — nothing to grow
+- The `0` sentinel collision in `addToSend` — nothing to encode
+- MP sync keyed on a per-client object handle — nothing crosses the wire, and every
+  remaining use of `Core.getId` (`queueIds`, `zData.id`, the overlay) is local, where
+  a per-client handle is exactly right
+- The `shouldSprint` risk-0 asymmetry. Risk 0 now records a plain `false`, which was
+  only ever dangerous because the verdict was permanent and global
+
+**Replaced**
+
+- `pendingCalcs` becomes a real precondition: `updateZed` will not test a zed until
+  `pData.risk` exists. Previously the gate was "the server has sent us the table",
+  which is not the thing that actually needs to be ready.
+
+**Consequence to watch.** Each client now tests independently against its own risk. On
+handover of a *suppressed* sprinter the new owner may reach a different verdict — see
+the MP section. An actively sprinting zed carries its own evidence (`speedType == 1`
+cannot occur without a mod having caused it), so the visible case is covered; adopting
+that signal explicitly is not yet implemented.
+
+**Step 3 (`testedAtRisk`) is dropped, not deferred.** It existed to stop a permanent
+false verdict depressing an area. Verdicts are not permanent.
 
 ---
 
