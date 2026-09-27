@@ -167,7 +167,7 @@ function Core.enableSprinting(value)
         -- Guard against a double chime if something toggles twice in quick succession.
         if now - (Core.lastChangeSound or 0) > 5 then
             Core.lastChangeSound = now
-            local vol = (Core.settings.SprintingChangeNotificationVolume or 15) * .01
+            local vol = (Core.settings.SprintingChangeNotificationVolume or 15) * .01 * Core.clientVolume("ChangeVolume")
             if vol > 0 then
                 getSoundManager():PlaySound(value and "PhunSprinters_Start" or "PhunSprinters_End", false, 0)
                     :setVolume(vol)
@@ -203,7 +203,8 @@ function Core.scream(zed, zData)
         -- Volume, not SprintingChangeNotificationVolume: this is the zed screech, and
         -- the sandbox option for it ("Percentage Sprinters Volume", 0 to disable) was
         -- never being read. The other option governs the day/night change chime.
-        local vol = (Core.settings.Volume or 10) * .01
+        -- Both are then scaled by the player's own slider in Options > Mods.
+        local vol = (Core.settings.Volume or 10) * .01 * Core.clientVolume("ScreechVolume")
         if vol <= 0 then
             return
         end
