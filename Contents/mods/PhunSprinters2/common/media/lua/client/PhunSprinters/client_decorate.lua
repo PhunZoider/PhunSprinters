@@ -117,8 +117,13 @@ function Core.applyZedVisualState(zed, zData)
     --
     -- The clearing path stays live and unconditional so a zed still carrying a
     -- skeleton -- from an earlier session, or another mod -- is put back to normal.
+    -- setSkeleton(false) only clears the flag: vanilla rebuilds the model on true but
+    -- not on false, so without resetModel the zed keeps the 45-bone skeleton mesh,
+    -- which is the thing that crashes. See Docs/B42-speed-refactor.md, "Skeleton
+    -- aim crash".
     if zed:isSkeleton() then
         zed:setSkeleton(false)
+        zed:resetModel()
     end
 
     if not zData.sprinter then

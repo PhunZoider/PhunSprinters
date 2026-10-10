@@ -741,6 +741,56 @@ eliminated the mod, so it is worth keeping.
 
 ---
 
+## Skeleton aim crash (root-caused 2026-10-10, game 42.21.0)
+
+Why `Skeletons` stays disabled. The crash is in vanilla, and nothing a Lua mod can
+reach fixes it.
+
+**Evidence.** `hs_err_pid38860.log` and `hs_err_pid40284.log` in the game folder, both
+2026-09-05 (the skeleton test), are `EXCEPTION_ACCESS_VIOLATION` in `PZBullet64.dll`:
+
+```
+Bullet.updateBallisticsTargetSkeleton(II[F)V   <- native
+BallisticsTarget.updateSkeleton
+BallisticsTarget.add
+CombatManager.processBallisticsTargets
+CombatManager.calculateHitListWeapon / calculateHitInfoList
+CombatManager.updateReticle                    <- every frame while aiming a ranged weapon
+```
+
+A native fault kills the JVM outright, which is why there is no Lua or Java log.
+
+**Root cause.** `setSkeleton(true)` swaps the body to `skinned/Male_Skeleton` /
+`Female_Skeleton` via `ModelManager.Reset`. Those meshes have **45** bones: the
+human body's 35 plus ten `*Nub` end bones (`Bip01_HeadNub`, `Bip01_L_Finger0Nub`,
+etc.). `BallisticsTarget.initialize` sets `numberOfBones = boneTransforms.length`, so
+45, and `updateSkeleton` hands that count to native. But `getBoneTransforms` fills
+only the fixed `SkeletonBone.all()` set, the static buffer starts at `245 = 35 x 7`,
+and `Bullet.addBallisticsTarget(id)` takes no bone count, so the native target is
+built for the human layout. Native walks 45 bones into a 35-bone structure and faults.
+
+Any zed in the ranged weapon's hit list gets a `BallisticsTarget`, so aiming a gun
+with a skeleton in the cone and in range is enough. Melee never reaches this path.
+
+**Vanilla fix** (for a bug report): clamp the count passed in `updateSkeleton` to
+`SkeletonBone.all().length`, or have native size the target from the count.
+
+**Why no Lua workaround.**
+- *Paint the skeleton texture on the normal body*: `HumanVisual:setSkinTextureName`
+  works, but `Skeleton.png` is UV-mapped for the skeleton mesh, not the body, so on the
+  35-bone body it renders as noise.
+- *Swap skeletons back to the body while a local player holds a gun*: on any client
+  that does not own the zed, every zombie packet runs
+  `NetworkZombieVariables` -> `zombie.setSkeleton(flag)`, and `setSkeleton(true)`
+  calls `ModelManager.Reset` again. The local swap is undone on the next packet.
+- A Java patch (e.g. via ZombieBuddy) could clamp the count, but that is a separate
+  install for every player, not a workshop dependency.
+
+**Related fix, 2026-10-10.** `setSkeleton(false)` only clears the flag. Vanilla
+resets the model on `true`, never on `false`. So the clearing path in
+`client_decorate.lua` left zeds wearing the 45-bone mesh, still crashable, until
+something else reset them. It now calls `zed:resetModel()` after clearing.
+
 ## Provenance
 
 Every API claim above was verified by disassembling
