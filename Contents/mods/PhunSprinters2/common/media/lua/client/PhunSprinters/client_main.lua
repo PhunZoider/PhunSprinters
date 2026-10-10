@@ -175,7 +175,7 @@ function Core.enableSprinting(value)
         end
     end
 
-    if Core.settings.Debug then
+    if Core.isDebugExtended() then
         print("PhunSprinters: Environment changed - " .. (value and "sprinting" or "normal"))
     end
 

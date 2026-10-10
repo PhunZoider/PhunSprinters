@@ -133,9 +133,10 @@ option PhunSprinters.layout
 }
 
 option PhunSprinters.Debug
-{ 
-    type = boolean, 
-    default = false,
+{
+    type = enum,
+    numValues = 3,
+    default = 1,
     page=PhunSprinters,
     translation = PhunSprinters_Debug,
 }

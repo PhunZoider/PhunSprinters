@@ -76,7 +76,7 @@ function Core.CalcPlayersSprinterPercentage()
         else
             modData.PhunSprinters.riskLevel = "VeryHigh"
         end
-        if Core.settings.Debug and lastRisk ~= formatNumber(risk) then
+        if Core.isDebugExtended() and lastRisk ~= formatNumber(risk) then
             Core.debugLn("risk=" .. tostring(formatNumber(risk)) .. " (was " .. tostring(lastRisk) .. ")")
         end
 

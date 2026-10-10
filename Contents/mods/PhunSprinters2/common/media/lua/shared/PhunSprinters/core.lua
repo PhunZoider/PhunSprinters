@@ -198,14 +198,38 @@ for _, event in pairs(Core.events) do
     end
 end
 
+Core.debugModes = {
+    off = 1,
+    simple = 2,
+    extended = 3
+}
+
+-- The Debug option as one of Core.debugModes. Always go through this rather than testing
+-- Core.settings.Debug for truth: it is an enum now, and 1 (Off) is truthy in Lua. A world
+-- saved while Debug was still a boolean can hand back true/false, so map those too.
+function Core.debugMode()
+    local d = Core.settings.Debug
+    if d == true then
+        return Core.debugModes.extended
+    elseif type(d) ~= "number" then
+        return Core.debugModes.off
+    end
+    return d
+end
+
+-- Console logging is Extended only; Simple is the overlay alone.
+function Core.isDebugExtended()
+    return Core.debugMode() == Core.debugModes.extended
+end
+
 function Core.debugLn(str)
-    if Core.settings.Debug then
+    if Core.isDebugExtended() then
         print("[" .. Core.name .. "] " .. str)
     end
 end
 
 function Core.debug(...)
-    if Core.settings.Debug then
+    if Core.isDebugExtended() then
         Core.tools.debug(Core.name, ...)
     end
 end
@@ -464,7 +488,7 @@ function Core:ini()
     -- can be nothing but defaults.
     Core:updateSettings()
 
-    if Core.settings.Debug then
+    if Core.isDebugExtended() then
         Core.dumpSettings("after ini")
     end
 
