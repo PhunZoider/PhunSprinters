@@ -11,7 +11,8 @@ Design and rationale live in `B42-speed-refactor.md`. This is only how to check 
 
 - **A fresh world.** The old test world had a sandbox fault unrelated to this mod (see
   "The DefaultRisk hunt" in the design doc). Do not use it.
-- **`PhunSprinters.Debug = true`.** The overlay is the instrument for most of this.
+- **`PhunSprinters.Debug = 3` (Extended).** The overlay is the instrument for most of this,
+  and Extended is the only level that logs. Simple (`2`) shows the speed alone.
   It can now be toggled mid-session, but have it on from the start anyway.
 - **Edit sandbox values with the server down.** It rewrites on shutdown.
 - Have the server console visible. Several checks are log lines, not in-game effects.
@@ -156,7 +157,7 @@ Small, easy to forget, and two of them were live bugs.
 
 | # | Check | Expect |
 |---|---|---|
-| G1 | Server start | No Lua errors. `Initializing Core`, then the settings dump when Debug is on. |
+| G1 | Server start | No Lua errors. `Initializing Core`, then the settings dump when Debug is Extended. |
 | G2 | Client start, SP and MP | Same, no errors. |
 | G5 | Log in **at night**, Mode `Dusk till dawn` | Sprinters are active immediately, not after a delay, and no spurious chime a minute in. The client used to start with `isNight` unset, which read as day. |
 | G6 | From G5, sit through the **next** transition | The chime plays. Silence at login is correct (nothing changed), but the first real dusk or dawn after it must be heard — it used to be swallowed, once per session. |

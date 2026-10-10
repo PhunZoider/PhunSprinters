@@ -170,6 +170,36 @@ moons a genuine window to travel in.
 
 ---
 
+## The sensor panel
+
+A small panel beside the clock shows tonight's moon and a row of pips for your current
+risk. Hover it for the breakdown: the area's risk, the moon modifier, any hours discount,
+whether conditions currently let sprinters run, and tomorrow's moon.
+
+With **Always Show UI** on, everyone sees it. Turn it off and the panel only appears while
+wearing a **Military Sensor** on either wrist; tick **Lootable Sensor** to put those into
+the loot tables. Turn both off for no panel at all. Both need a restart.
+
+**UI Layout** switches the panel between horizontal and vertical.
+
+---
+
+## Sounds
+
+Two sounds, each with a server volume in the sandbox settings:
+
+- **Percentage Sprinters Volume**: the screech a sprinter gives the first time it runs.
+- **Sprinting Change Volume**: a chime when conditions change, as sprinting becomes
+  possible (dusk, bad weather) or stops being possible (dawn). It announces the
+  conditions, not a particular zombie, so with Slow in light or mode 4 it can sound a
+  while before anything actually runs.
+
+Setting either to `0` turns it off for everyone. Each player can then scale both for
+themselves under **Options > Mods > Phun Sprinters**: `100` is as the server set it, `0`
+mutes it for that player alone, and up to `200` makes it louder.
+
+---
+
 ## Settings reference
 
 | Setting                        | Default        | What it does                                                               |
@@ -181,16 +211,16 @@ moons a genuine window to travel in.
 | Hours Discount                 | 0              | Hours of survival before full risk applies. 0 disables                     |
 | Moon Phase Multipliers         | 50-200         | Per-phase risk multipliers                                                 |
 | Replace vanilla sprinters with | Fast shamblers | What the game's own sprinters become. See below                            |
-| Percentage Sprinters Volume    | 10             | Volume of the sprinter screech. 0 silences it                              |
-| Sprinting Change Volume        | 15             | Volume of the sound when conditions change. 0 silences it                  |
+| Percentage Sprinters Volume    | 10             | Volume of the sprinter screech. See [Sounds](#sounds)                      |
+| Sprinting Change Volume        | 15             | Volume of the chime when conditions change. See [Sounds](#sounds)          |
 | Decorate Sprinters             | on             | Dress sprinters up around the holidays, if the relevant mods are installed |
-| Always Show UI                 | on             | Show the sensor panel without needing the wearable                         |
+| Always Show UI                 | on             | Show the [sensor panel](#the-sensor-panel) without needing the wearable    |
 | Lootable Sensor                | off            | Put the military sensor into loot, for when the UI is not always shown     |
-| UI Layout                      | Vertical       | Sensor panel orientation                                                   |
+| UI Layout                      | Horizontal     | Sensor panel orientation                                                   |
 | Min / Max Distance             | 14 / 35        | The band, in tiles, where zombies are tested                               |
 | Max Queue                      | 20             | Zombies evaluated per tick. Lower it if you see stutter in hordes          |
 | Ignore (mutant type)           | Leaper, Weeper | Per-type opt-out for The Mutants. See [Compatibility](#compatibility)      |
-| Debug                          | off            | Verbose logging and the per-zombie overlay                                 |
+| Debug                          | Off            | Per-zombie overlay: Simple (speed only) or Extended (detail and logging)   |
 
 ---
 
@@ -237,10 +267,13 @@ Server settings are authoritative. Clients follow them.
 
 ## Troubleshooting
 
-Turn **Debug** on. It can be toggled without a restart, though it takes up to a minute to
-apply.
+Set **Debug** to Simple or Extended. It can be changed without a restart, though it takes
+up to a minute to apply. Labels are only drawn for admins.
 
-Each zombie within 25 tiles gets a label:
+**Simple** labels each zombie within 25 tiles with its current speed (Sprinter, Fast
+Shambler or Shambler), coloured the same way as the Extended states below.
+
+**Extended** also logs verbosely to the console, and each label reads:
 
 ```
 <id> <state> [L<light>] <base>><live>

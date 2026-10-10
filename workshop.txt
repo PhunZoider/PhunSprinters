@@ -3,7 +3,7 @@ id=3676252110
 title=PhunSprinters 2
 description=
 description=PhunSprinters is the ultimate dynamic sprinter experience for Zomboid. PhunSprinters does [b]not[/b] simply add sprinters.
-description=It calculates [b]risk[/b] and that risk can change depending on [b]where you are, how long you’ve survived, the moon cycle, and the environment[/b].
+description=It calculates [b]risk[/b] and that risk can change depending on [b]where you are, how long you've survived, the moon cycle, and the environment[/b].
 description=
 description=[h1]Why not just turn on vanilla sprinters?[/h1]
 description=[hr]
@@ -29,77 +29,68 @@ description=[url=https://github.com/PhunZoider/PhunSprinters#how-risk-is-calcula
 description=
 description=[h1]Modes[/h1]
 description=[hr]
-description=There are four different modes that determine when sprinters will run
 description=[table]
-description=[tr][th]Mode[/th][th]Description[/th][/tr]
-description=[tr][td][b]1- Dusk till Dawn[/b][/td][td]Sprinters will walk during daytime, but when the sun goes down, they run[/td][/tr]
-description=[tr][td][b]2- Always[/b][/td][td]Sprinters will always run (like vanilla)[/td][/tr]
-description=[tr][td][b]3- When its too dark outside[/b][/td][td]During the night or when weather reduces visibility, zeds will run (even if its daytime).[/td][/tr]
-description=[tr][td][b]4- When its too dark around them[/b][/td][td]This is the phunest option, but can be the most demanding performance wise. In this mode, sprinters will run if it ever gets too dark around them. In this mode, your flashlight becomes a critical part of gameplay.[/td][/tr]
+description=[tr][th]Mode[/th][th]When sprinters run[/th][/tr]
+description=[tr][td][b]1- Dusk till Dawn[/b][/td][td]Walk during the day, run once the sun goes down[/td][/tr]
+description=[tr][td][b]2- Always[/b][/td][td]Always run (like vanilla)[/td][/tr]
+description=[tr][td][b]3- When it's too dark outside[/b][/td][td]At night, or when weather cuts visibility, even in daytime[/td][/tr]
+description=[tr][td][b]4- When it's too dark around them[/b][/td][td]The phunest option, and the most demanding. Sprinters run whenever it gets too dark around them, so your flashlight becomes a critical part of gameplay[/td][/tr]
 description=[/table]
 description=
 description=[h1]Light suppression[/h1]
 description=[hr]
-description=When enabled, light forces sprinters to slow down
-description=
-description=This creates emergent gameplay:
+description=When enabled, light forces sprinters to slow down:
 description=[list]
 description=[*]Flashlights become tactical tools
 description=[*]Base lighting matters
 description=[*]Night travel becomes a risk vs reward decision
-description=[*]It brings some of the Phun of mode 4 to modes 1, 2 and 3. Mode 4 already works this way, so the setting does nothing there
-description=[*]It applies to every sprinter in the world, including ones the game rolled itself
+description=[*]Brings the Phun of mode 4 to modes 1, 2 and 3 (mode 4 already works this way)
 description=[/list]
-description=
-description=Some limits exist to prevent performance issues in dense areas.
 description=
 description=[url=https://github.com/PhunZoider/PhunSprinters#light-suppression]How the light level is measured, indoors and out[/url]
 description=
 description=[h1]Hours discount[/h1]
 description=[hr]
-description=Ramps difficulty with time survived instead of throwing full risk at a fresh character. A new player can be seeing a fraction of an area's risk while a veteran standing next to them takes all of it.
-description=
-description=Ideal for fresh servers, and for keeping someone's first night survivable without softening the map for everyone else.
+description=Ramps difficulty with time survived instead of throwing full risk at a fresh character. A new player can be seeing a fraction of an area's risk while a veteran standing next to them takes all of it. Ideal for fresh servers.
 description=
 description=[url=https://github.com/PhunZoider/PhunSprinters#hours-discount]The ramp, hour by hour[/url]
 description=
 description=[h1]Moon phase modifiers[/h1]
 description=[hr]
-description=Moon phases [b]multiply[/b] risk. A full moon night can be twice as dangerous as a new moon one, and every phase is configurable.
-description=
-description=Set a phase to 0 and there are no sprinters at all on those nights, which turns a new moon into a window you can plan a run around.
+description=Moon phases [b]multiply[/b] risk. A full moon night can be twice as dangerous as a new moon one, and every phase is configurable. Set a phase to 0 and there are no sprinters at all on those nights.
 description=
 description=[url=https://github.com/PhunZoider/PhunSprinters#moon-phases]Every phase and its default[/url]
 description=
+description=[h1]Sensor panel and sounds[/h1]
+description=[hr]
+description=A panel by the clock shows the moon and your current risk; hover it for the breakdown. Show it to everyone, or only to players wearing a lootable Military Sensor. Each player can turn the sprinter sounds down for themselves under Options > Mods.
+description=
+description=[h1]Vanilla Zombie Speed[/h1]
+description=[hr]
+description=PhunSprinters has to own who runs, so vanilla sprinters are converted to a slower speed when the world loads (on [b]Random[/b], only the sprinter share is touched). Nothing is written to your save. Want every zed running? Set Default Risk to 100 and Mode to Always.
+description=
+description=[url=https://github.com/PhunZoider/PhunSprinters#using-this-with-the-vanilla-zombie-speed-setting]The full breakdown, per Zombie Speed setting[/url]
+description=
+description=[h1]Compatibility[/h1]
+description=[hr]
+description=[list]
+description=[*][url=https://steamcommunity.com/sharedfiles/filedetails/?id=3676252660]PhunZones 2[/url] for per-zone risk
+description=[*][url=https://steamcommunity.com/sharedfiles/filedetails/?id=3792193021]PhunServer 2[/url] Day/Night drives dusk and dawn when installed
+description=[*][url=https://steamcommunity.com/sharedfiles/filedetails/?id=3796669056]The Mutants[/url]: choose per mutant type whether it can become a sprinter. Leapers and Weepers are left to The Mutants by default
+description=[/list]
+description=
 description=[h1]Full documentation[/h1]
 description=[hr]
-description=Everything above in more depth, on the [url=https://github.com/PhunZoider/PhunSprinters]GitHub page[/url]:
 description=[list]
 description=[*][url=https://github.com/PhunZoider/PhunSprinters#settings-reference]Every setting, its default, and what it does[/url]
-description=[*][url=https://github.com/PhunZoider/PhunSprinters#zone-recipes]Zone recipes: safe havens, no-go areas, graduated difficulty[/url]
 description=[*][url=https://github.com/PhunZoider/PhunSprinters#multiplayer]How risk works on a server[/url]
 description=[*][url=https://github.com/PhunZoider/PhunSprinters#troubleshooting]Troubleshooting and the debug overlay[/url]
 description=[/list]
 description=
-description=[h1]Using this with the vanilla Zombie Speed setting[/h1]
-description=[hr]
-description=PhunSprinters has to own who runs, so it takes vanilla's sprinters off the board first.
-description=
-description=If your Zombie Speed is [b]Sprinters[/b], those zeds are converted to a slower speed when the world loads, and PhunSprinters decides which of them run from there. If it is [b]Random[/b], only the sprinter share is removed, so your fast shambler and shambler mix is left as it is. On [b]Fast Shamblers[/b] or [b]Shamblers[/b] nothing is changed at all.
-description=
-description=This is what makes everything above work. A vanilla sprinter used to ignore light suppression, dusk till dawn and zone limits completely, because there was no way to slow one down.
-description=
-description=Want every zed running, the way vanilla does it? Set Default Risk to 100 and Mode to Always.
-description=
-description=Nothing is written to your save. The change applies for the session only.
-description=
-description=[url=https://github.com/PhunZoider/PhunSprinters#using-this-with-the-vanilla-zombie-speed-setting]The full breakdown, per Zombie Speed setting[/url]
-description=
 description=[img]https://i.ibb.co/DZ7Vffn/Thumbs-Up.png[/img]
 description=
 description=[h2]More Phun Stuff[/h2]
-description=[url=https://steamcommunity.com/sharedfiles/filedetails/?id=3689006725][img]https://i.ibb.co/4ZLgMZ4m/preview.png[/img][/url] [url=https://steamcommunity.com/sharedfiles/filedetails/?id=3676252660][img]https://i.ibb.co/3mQpB8ST/preview.png[/img][/url] [url=https://steamcommunity.com/sharedfiles/filedetails/?id=3676251425][img]https://i.ibb.co/fYNn5BLC/preview.png[/img][/url] 
-description=[url=https://steamcommunity.com/sharedfiles/filedetails/?id=3792193021][img]https://i.ibb.co/vCBcKtp8/preview.png[/img][/url] [url=https://steamcommunity.com/sharedfiles/filedetails/?id=3676250472][img]https://i.ibb.co/svW9sVvK/preview.png[/img][/url] [url=https://steamcommunity.com/sharedfiles/filedetails/?id=3793624522][img]https://i.ibb.co/k2k39f8w/preview.png[/img][/url]
+description=[url=https://steamcommunity.com/sharedfiles/filedetails/?id=3812500419][img]https://i.ibb.co/DggjJWss/preview.png[/img][/url] [url=https://steamcommunity.com/sharedfiles/filedetails/?id=3812506730][img]https://i.ibb.co/QvxxrqJD/preview.png[/img][/url] [url=https://steamcommunity.com/sharedfiles/filedetails/?id=3689006725][img]https://i.ibb.co/4ZLgMZ4m/preview.png[/img][/url] [url=https://steamcommunity.com/sharedfiles/filedetails/?id=3793624522][img]https://i.ibb.co/k2k39f8w/preview.png[/img][/url] [url=https://steamcommunity.com/sharedfiles/filedetails/?id=3816322755][img]https://i.ibb.co/GfPVgK6f/preview.png[/img][/url] [url=https://steamcommunity.com/sharedfiles/filedetails/?id=3676252660][img]https://i.ibb.co/3mQpB8ST/preview.png[/img][/url] [url=https://steamcommunity.com/sharedfiles/filedetails/?id=3676251425][img]https://i.ibb.co/fYNn5BLC/preview.png[/img][/url] [url=https://steamcommunity.com/sharedfiles/filedetails/?id=3676250472][img]https://i.ibb.co/svW9sVvK/preview.png[/img][/url] [url=https://steamcommunity.com/sharedfiles/filedetails/?id=3792193021][img]https://i.ibb.co/vCBcKtp8/preview.png[/img][/url] 
 description=
 description=Coded with love for our awesome [url=https://discord.gg/v2USyAtP6q]PhunZoid[/url] community. [url=https://github.com/PhunZoider/PhunSprinters]GitHub repo and more info[/url]
 description=
