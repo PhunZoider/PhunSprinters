@@ -228,6 +228,14 @@ function Core.getZedData(zed)
         return
     end -- Skip special zeds like bandits
 
+    if Core.isIgnoredMutant(zed) then
+        -- Left to The Mutants. It may have classified this zed after we had already
+        -- tested it, so drop anything we recorded but do not touch its speed: The
+        -- Mutants applies its own when it realises the zed.
+        md.PhunSprinters = nil
+        return
+    end
+
     local id = Core.getId(zed)
 
     if not md.PhunSprinters then
@@ -277,9 +285,12 @@ end
 -- as "not a sprinter" here: we never suppress it in light, never stop it at dawn, and
 -- if the player who promoted it walks away it runs forever with nobody managing it.
 -- That is the orphaned-sprinter case.
+--
+-- Mutants are the exception: The Mutants gives Leapers and Weepers speed 1 itself, so for
+-- them a 1 is not evidence of another controller and they roll like anything else.
 function Core.adoptIfSprinting(zed, zData)
 
-    if zData.sprinter == true or Core.speedTypeOf(zed) ~= 1 then
+    if zData.sprinter == true or Core.speedTypeOf(zed) ~= 1 or Core.mutantType(zed) then
         return false
     end
 

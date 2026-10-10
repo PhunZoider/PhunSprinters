@@ -189,6 +189,7 @@ moons a genuine window to travel in.
 | UI Layout                      | Vertical       | Sensor panel orientation                                                   |
 | Min / Max Distance             | 14 / 35        | The band, in tiles, where zombies are tested                               |
 | Max Queue                      | 20             | Zombies evaluated per tick. Lower it if you see stutter in hordes          |
+| Ignore (mutant type)           | Leaper, Weeper | Per-type opt-out for The Mutants. See [Compatibility](#compatibility)      |
 | Debug                          | off            | Verbose logging and the per-zombie overlay                                 |
 
 ---
@@ -271,6 +272,12 @@ when a value does not look like what you configured.
 - [PhunServer 2](https://steamcommunity.com/sharedfiles/filedetails/?id=3792193021)
   Day/Night, if installed, drives dusk and dawn instead of our own calculation. Optional,
   detected automatically.
+- [The Mutants](https://steamcommunity.com/sharedfiles/filedetails/?id=3796669056). Each
+  mutant type has its own "Ignore" tick box. A ticked type is left entirely to The Mutants:
+  never tested, never sped up, never slowed down. An unticked type rolls against risk like
+  any other zed, and when it is not chosen (or it is daytime) it keeps the speed The Mutants
+  gave it. Leapers and Weepers are ticked by default because The Mutants already makes them
+  run; if you untick them they still run whenever we are not making them sprint.
 
 B42 only. B41 users should stay on
 [PhunSprinters 1](https://steamcommunity.com/sharedfiles/filedetails/?id=3532685233).

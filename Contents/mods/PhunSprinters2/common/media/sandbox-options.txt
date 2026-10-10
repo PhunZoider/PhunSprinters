@@ -199,3 +199,51 @@ option PhunSprinters.SprintingChangeNotificationVolume
     translation = PhunSprinters_SprintingChangeNotificationVolume,
 }
 
+option PhunSprinters.IgnoreMutantPuker
+{
+    type = boolean,
+    default = false,
+    page = PhunSprinters,
+    translation = PhunSprinters_IgnoreMutantPuker,
+}
+
+option PhunSprinters.IgnoreMutantHusk
+{
+    type = boolean,
+    default = false,
+    page = PhunSprinters,
+    translation = PhunSprinters_IgnoreMutantHusk,
+}
+
+option PhunSprinters.IgnoreMutantSkitter
+{
+    type = boolean,
+    default = false,
+    page = PhunSprinters,
+    translation = PhunSprinters_IgnoreMutantSkitter,
+}
+
+option PhunSprinters.IgnoreMutantWrecker
+{
+    type = boolean,
+    default = false,
+    page = PhunSprinters,
+    translation = PhunSprinters_IgnoreMutantWrecker,
+}
+
+option PhunSprinters.IgnoreMutantLeaper
+{
+    type = boolean,
+    default = true,
+    page = PhunSprinters,
+    translation = PhunSprinters_IgnoreMutantLeaper,
+}
+
+option PhunSprinters.IgnoreMutantWeeper
+{
+    type = boolean,
+    default = true,
+    page = PhunSprinters,
+    translation = PhunSprinters_IgnoreMutantWeeper,
+}
+

@@ -318,6 +318,23 @@ function Core.speedTypeOf(zed)
     return zed.speedType
 end
 
+-- The Mutants (PZTheMutants) type for this zed ("Leaper", "Husk", ...), or nil when the
+-- zed is not a mutant or the mod is not installed. The Mutants classifies some zeds
+-- after they spawn, so this can change from nil to a type during a zed's life.
+function Core.mutantType(zed)
+    local api = PZTheMutants and PZTheMutants.API
+    if api and api.getMutantType then
+        return api.getMutantType(zed)
+    end
+end
+
+-- Mutant types ticked in the sandbox (IgnoreMutantLeaper etc.) are left entirely to
+-- The Mutants: never tested, never sped up, never slowed down.
+function Core.isIgnoredMutant(zed)
+    local mutant = Core.mutantType(zed)
+    return mutant ~= nil and Core.settings["IgnoreMutant" .. mutant] == true
+end
+
 -- What vanilla would roll for a zed now that sprinters are off. Used when a zed has no
 -- readable speed of its own -- see captureBaseSpeed.
 function Core.neuteredSpeedType()
@@ -342,7 +359,9 @@ end
 function Core.captureBaseSpeed(zed, zData)
     if not zData.baseSpeedType then
         local st = Core.speedTypeOf(zed)
-        if st == 2 or st == 3 then
+        if st == 2 or st == 3 or (st == 1 and Core.mutantType(zed)) then
+            -- A mutant's own speed is The Mutants' choice (Leapers and Weepers run
+            -- natively), so a 1 there is genuine and is what we hand back.
             zData.baseSpeedType = st
         else
             -- 1 (rolled before the neuter, or another client's doing) or -1 (mid
