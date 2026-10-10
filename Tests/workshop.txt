@@ -2,9 +2,6 @@ version=1
 title=PhunSprinters 2 [DEV]
 id=3674596402
 description=⚠️ DEV BRANCH - This version is for previewing, testing and feedback on new features for [url=https://steamcommunity.com/sharedfiles/filedetails/?id=3676252110]PhunSprinters 2[/url], it may break and be updated frequently
-version=1
-id=3676252110
-title=PhunSprinters 2
 description=
 description=PhunSprinters is the ultimate dynamic sprinter experience for Zomboid. PhunSprinters does [b]not[/b] simply add sprinters.
 description=It calculates [b]risk[/b] and that risk can change depending on [b]where you are, how long you’ve survived, the moon cycle, and the environment[/b].

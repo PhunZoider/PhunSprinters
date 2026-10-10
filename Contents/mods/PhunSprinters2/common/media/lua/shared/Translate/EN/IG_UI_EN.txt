@@ -38,8 +38,8 @@ IG_UI_EN = {
     IGUI_PhunSprinters_ActiveMode4 = "Sprinters are restless when in the dark",
     IGUI_PhunSprinters_InactiveMode4 = "Sprinters are soothed in the light",
     IGUI_PhunSprinters_Options = "Phun Sprinters",
-    IGUI_PhunSprinters_Options_ScreechVolume = "Sprinter Screech Volume %%",
+    IGUI_PhunSprinters_Options_ScreechVolume = "Sprinter Screech Volume",
     IGUI_PhunSprinters_Options_ScreechVolume_Tooltip = "Scales the server's sprinter screech volume for you only. 100 is as the server set it, 0 mutes it for you. If the server has it at 0 it stays off.",
-    IGUI_PhunSprinters_Options_ChangeVolume = "Sprinting Change Volume %%",
+    IGUI_PhunSprinters_Options_ChangeVolume = "Sprinting Change Volume",
     IGUI_PhunSprinters_Options_ChangeVolume_Tooltip = "Scales the server's volume for the sound that plays when sprinting becomes possible or stops being possible (eg dusk and dawn), for you only. 100 is as the server set it, 0 mutes it for you. If the server has it at 0 it stays off.",
 }
