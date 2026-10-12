@@ -49,6 +49,14 @@ description=[/list]
 description=
 description=[url=https://github.com/PhunZoider/PhunSprinters#light-suppression]How the light level is measured, indoors and out[/url]
 description=
+description=[h1]Sprinter speed[/h1]
+description=[hr]
+description=Want sprinters without the instant death? [b]Sprinter Speed %[/b] slows them down, from 100 (vanilla) to 25. It slows the whole run, lunge included, and the zed genuinely covers less ground. Each sprinter keeps the speed it had when it started running, and only zeds this mod makes sprint are affected.
+description=
+description=[b]Note:[/b] this replaces the vanilla zombie sprint animation files, so don't run it alongside another "slower sprinters" mod.
+description=
+description=[url=https://github.com/PhunZoider/PhunSprinters#sprinter-speed]How it works[/url]
+description=
 description=[h1]Hours discount[/h1]
 description=[hr]
 description=Ramps difficulty with time survived instead of throwing full risk at a fresh character. A new player can be seeing a fraction of an area's risk while a veteran standing next to them takes all of it. Ideal for fresh servers.
@@ -77,6 +85,7 @@ description=[list]
 description=[*][url=https://steamcommunity.com/sharedfiles/filedetails/?id=3676252660]PhunZones 2[/url] for per-zone risk
 description=[*][url=https://steamcommunity.com/sharedfiles/filedetails/?id=3792193021]PhunServer 2[/url] Day/Night drives dusk and dawn when installed
 description=[*][url=https://steamcommunity.com/sharedfiles/filedetails/?id=3796669056]The Mutants[/url]: choose per mutant type whether it can become a sprinter. Leapers and Weepers are left to The Mutants by default
+description=[*]Not compatible with other "slower sprinters" mods, which replace the same animation files. Use Sprinter Speed % instead
 description=[/list]
 description=
 description=[h1]Full documentation[/h1]

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animNode x_extends="defaultLunge.xml">
+	<m_Name>sprint3</m_Name>
+	<m_AnimName>Zombie_Sprint06</m_AnimName>
+	<m_SpeedScale>PhunSprintersLungeSpeed</m_SpeedScale>
+	<m_Conditions x_name="ac445593-e119-4cc9-b60e-581ecc4c54f1">
+		<m_Name>zombieWalkType</m_Name>
+		<m_Type>STRING</m_Type>
+		<m_Value>sprint3</m_Value>
+	</m_Conditions>
+	<m_Events x_name="81429db4-208b-43de-924a-7209a23838f3">
+		<m_EventName>Footstep</m_EventName>
+		<m_TimePc>0.15</m_TimePc>
+		<m_ParameterValue>sprint</m_ParameterValue>
+	</m_Events>
+	<m_Events x_name="4d46b9b4-17f7-4a0f-a615-34b9ad7a3772">
+		<m_EventName>Footstep</m_EventName>
+		<m_TimePc>0.6</m_TimePc>
+		<m_ParameterValue>sprint</m_ParameterValue>
+	</m_Events>
+</animNode>

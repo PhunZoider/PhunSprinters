@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animNode x_extends="sprintToward.xml">
+	<m_Name>sprint2</m_Name>
+	<m_AnimName>Zombie_Sprint02</m_AnimName>
+	<m_SpeedScale>PhunSprintersSpeed</m_SpeedScale>
+	<m_Conditions x_name="11a1126f-7c06-411f-81b4-8a4b25c0e37a">
+		<m_Name>shouldSprint</m_Name>
+	</m_Conditions>
+	<m_Conditions x_name="3114a643-c627-44ad-b950-3db1cdcd4172">
+		<m_Name>zombieWalkType</m_Name>
+		<m_Type>STRING</m_Type>
+		<m_Value>sprint2</m_Value>
+	</m_Conditions>
+	<m_Events x_name="658011c0-36ab-4ee4-824c-b48435bdce01">
+		<m_EventName>Footstep</m_EventName>
+		<m_TimePc>0.15</m_TimePc>
+		<m_ParameterValue>sprint</m_ParameterValue>
+	</m_Events>
+	<m_Events x_name="b07f8f79-5921-4d18-89e8-298123abb689">
+		<m_EventName>Footstep</m_EventName>
+		<m_TimePc>0.6</m_TimePc>
+		<m_ParameterValue>sprint</m_ParameterValue>
+	</m_Events>
+</animNode>

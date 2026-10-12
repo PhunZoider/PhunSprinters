@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animNode x_extends="sprintPathfind.xml">
+	<m_Name>sprintPathfind4</m_Name>
+	<m_AnimName>Zombie_Sprint05</m_AnimName>
+	<m_SpeedScale>PhunSprintersSpeed</m_SpeedScale>
+	<m_Conditions x_name="fbaa74db-e44c-4a04-be61-ff20e5e32c30">
+		<m_Name>zombieWalkType</m_Name>
+		<m_Type>STRING</m_Type>
+		<m_Value>sprint4</m_Value>
+	</m_Conditions>
+	<m_Events x_name="44bb1aa6-f3eb-4522-adc5-95ab4f2add6f">
+		<m_EventName>Footstep</m_EventName>
+		<m_TimePc>0.15</m_TimePc>
+		<m_ParameterValue>sprint</m_ParameterValue>
+	</m_Events>
+	<m_Events x_name="daa9ff71-7200-4969-a07e-e7d496d83e74">
+		<m_EventName>Footstep</m_EventName>
+		<m_TimePc>0.6</m_TimePc>
+		<m_ParameterValue>sprint</m_ParameterValue>
+	</m_Events>
+</animNode>

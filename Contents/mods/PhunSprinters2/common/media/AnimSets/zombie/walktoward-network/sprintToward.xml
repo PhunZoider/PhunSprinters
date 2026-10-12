@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animNode>
+	<m_Name>sprintToward</m_Name>
+	<m_BlendTime>0.35</m_BlendTime>
+	<m_SpeedScale>0.80</m_SpeedScale>
+	<m_randomAdvanceFraction>0.25</m_randomAdvanceFraction>
+	<m_Conditions x_name="11a1126f-7c06-411f-81b4-8a4b25c0e37a">
+		<m_Name>bhastarget</m_Name>
+		<m_Type>BOOL</m_Type>
+		<m_Value>true</m_Value>
+	</m_Conditions>
+	<m_Conditions x_name="22f62b27-24a7-4666-b683-a87939f0eb13">
+		<m_Name>intrees</m_Name>
+		<m_Type>BOOL</m_Type>
+		<m_Value>false</m_Value>
+	</m_Conditions>
+</animNode>

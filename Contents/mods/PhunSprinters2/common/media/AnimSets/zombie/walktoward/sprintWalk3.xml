@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animNode x_extends="sprint3.xml">
+	<m_Name>sprintWalk3</m_Name>
+	<m_AnimName>Zombie_Walk3</m_AnimName>
+	<m_SpeedScale>0.80</m_SpeedScale>
+	<m_Conditions x_name="f644a678-9126-4b0b-bf83-5e87c570a971">
+		<m_Value>false</m_Value>
+	</m_Conditions>
+	<m_Events x_name="8aa7ce1a-ae5c-4fa4-ac24-2654e7579f61">
+		<m_ParameterValue>walk</m_ParameterValue>
+	</m_Events>
+	<m_Events x_name="8dec19a3-ef7a-40d9-a929-6b828da562dc">
+		<m_ParameterValue>walk</m_ParameterValue>
+	</m_Events>
+</animNode>

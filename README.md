@@ -86,6 +86,36 @@ The light figure compared against Darkness Level is 0-100:
 
 ---
 
+## Sprinter speed
+
+Full-speed sprinters are a lot. **Sprinter Speed %** slows them down without taking them
+away, so you can play with sprinters that are dangerous rather than instant death.
+
+| Value | Effect                          |
+| ----- | ------------------------------- |
+| 100   | Vanilla sprinters. The default  |
+| 75    | 25% slower                      |
+| 50    | Half speed                      |
+| 25    | The minimum, a quarter speed    |
+
+It slows the whole run, including the final lunge, by playing the sprint animations
+slower. Zombie movement follows the animation, so the zombie genuinely covers less
+ground; it is not a cosmetic change.
+
+- **Only our sprinters are affected.** A zombie this mod never made sprint, such as a
+  Mutants type you have ticked to ignore, runs at the normal vanilla speed.
+- **Each sprinter keeps its speed.** A sprinter's speed is fixed when it first starts
+  running, so changing the setting affects new sprinters, not ones already chasing you.
+  Settings reach clients within a game minute, so give it a moment before testing.
+- **It does not survive a restart**, the same as the sprinter verdict itself. After a
+  restart zombies are tested afresh, and any new sprinters get the current value.
+
+This works by replacing the vanilla zombie sprint animation files with copies whose speed
+is read from the setting. Other "slower sprinters" mods replace the same files, so run
+one or the other, not both. See [Compatibility](#compatibility).
+
+---
+
 ## Zone recipes
 
 These need [PhunZones 2](https://steamcommunity.com/sharedfiles/filedetails/?id=3676252660).
@@ -207,6 +237,7 @@ mutes it for that player alone, and up to `200` makes it louder.
 | Mode                           | Dusk till dawn | When sprinters run. See above                                              |
 | Slow in light                  | off            | Light drops a running sprinter back to a walk                              |
 | Darkness Level                 | 74             | The 0-100 light level sprinting is gated on                                |
+| Sprinter Speed %               | 100            | How fast sprinters run, 25-100% of vanilla. See [Sprinter speed](#sprinter-speed) |
 | Default Risk                   | 1              | Base sprinter chance where no zone overrides it                            |
 | Hours Discount                 | 0              | Hours of survival before full risk applies. 0 disables                     |
 | Moon Phase Multipliers         | 50-200         | Per-phase risk multipliers                                                 |
@@ -261,6 +292,11 @@ Speed itself replicates natively, so everyone sees the same thing. If another pl
 already made a zombie sprint, your client adopts that verdict rather than second-guessing
 it, so a sprinter does not lose its identity when it changes hands.
 
+Sprinter speed needs no syncing either: it comes from the server's settings, so every
+client gives a new sprinter the same value. The one exception is right after an admin
+changes it, when a sprinter that was already running on one client can be adopted at the
+new speed on another, and briefly animate at a different pace than it moves.
+
 Server settings are authoritative. Clients follow them.
 
 ---
@@ -311,6 +347,9 @@ when a value does not look like what you configured.
   any other zed, and when it is not chosen (or it is daytime) it keeps the speed The Mutants
   gave it. Leapers and Weepers are ticked by default because The Mutants already makes them
   run; if you untick them they still run whenever we are not making them sprint.
+- **Other slower-sprinter mods**, such as Slower Sprinters. They replace the same zombie
+  sprint animation files this mod uses for [Sprinter speed](#sprinter-speed), so whichever
+  loads last wins and the other's speed setting stops working. Use one or the other.
 
 B42 only. B41 users should stay on
 [PhunSprinters 1](https://steamcommunity.com/sharedfiles/filedetails/?id=3532685233).

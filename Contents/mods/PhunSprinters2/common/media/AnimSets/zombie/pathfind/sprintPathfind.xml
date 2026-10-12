@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animNode>
+	<m_Name>sprintPathfind</m_Name>
+	<m_BlendTime>0.20</m_BlendTime>
+	<m_SpeedScale>0.80</m_SpeedScale>
+	<m_Conditions x_name="64907edd-9f18-4302-85f9-72d871b28a99">
+		<m_Name>bMoving</m_Name>
+		<m_Type>BOOL</m_Type>
+		<m_Value>true</m_Value>
+	</m_Conditions>
+	<m_Conditions x_name="be012dbc-d44a-49c6-bc12-2db1de04ac2b">
+		<m_Name>intrees</m_Name>
+		<m_Type>BOOL</m_Type>
+		<m_Value>false</m_Value>
+	</m_Conditions>
+</animNode>

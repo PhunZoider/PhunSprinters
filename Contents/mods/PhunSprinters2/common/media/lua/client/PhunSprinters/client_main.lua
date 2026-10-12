@@ -29,8 +29,37 @@ local applySpeedType = {
     end
 }
 
+-- How fast a sprinter's run plays, from the SprinterSpeed option.
+--
+-- The sprint and sprint-lunge anim nodes in media/AnimSets/zombie are vanilla copies
+-- whose m_SpeedScale names these variables instead of a number. Movement follows the
+-- animation, so a slower clip is a slower zed. The 0.80 and 0.90 are the scales those
+-- nodes have in vanilla, so 100% is exactly vanilla.
+--
+-- An unset variable reads as 1.0 (AnimNode.getSpeedScale falls back to
+-- getVariableFloat(name, 1.0f)), which is why only zeds we make sprint need it: any
+-- other zed reaching those nodes plays them at full speed. The value is a sandbox
+-- constant, so every client sets the same one and no syncing is needed.
+--
+-- Decided once per zed, when it first becomes ours: changing the option affects new
+-- sprinters, not ones already running. Like the verdict, it lives in this zed's modData
+-- and is gone when getZedData resets the zed.
+local function applySpeedScale(zed, zData)
+    if zData.speedScalePct then
+        return
+    end
+    local pct = Core.settings.SprinterSpeed or 100
+    zData.speedScalePct = pct
+    zed:setVariable("PhunSprintersSpeed", 0.80 * pct * 0.01)
+    zed:setVariable("PhunSprintersLungeSpeed", 0.90 * pct * 0.01)
+end
+
 local function applySpeed(zed, zData, target)
     zData.appliedSpeed = target
+    if target == 1 then
+        -- Before the early return, which an adopted zed (already speed 1) always takes.
+        applySpeedScale(zed, zData)
+    end
     -- makeInactive(true) pins speedType to 3 and re-activation re-rolls it, so a
     -- write to an inactive zed is wasted. The re-assert in updateZed catches it.
     if zed.inactive or Core.speedTypeOf(zed) == target then
@@ -232,6 +261,11 @@ function Core.getZedData(zed)
         -- Left to The Mutants. It may have classified this zed after we had already
         -- tested it, so drop anything we recorded but do not touch its speed: The
         -- Mutants applies its own when it realises the zed.
+        if md.PhunSprinters and md.PhunSprinters.speedScalePct then
+            -- Its runs are not ours to slow either.
+            zed:clearVariable("PhunSprintersSpeed")
+            zed:clearVariable("PhunSprintersLungeSpeed")
+        end
         md.PhunSprinters = nil
         return
     end
@@ -252,6 +286,10 @@ function Core.getZedData(zed)
         -- Only undo what we did. A zed we never touched keeps whatever speed it has.
         if d.appliedSpeed then
             Core.makeNormal(zed, d)
+        end
+        if d.speedScalePct then
+            zed:clearVariable("PhunSprintersSpeed")
+            zed:clearVariable("PhunSprintersLungeSpeed")
         end
 
         if zed:isSkeleton() then
