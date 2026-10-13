@@ -1,6 +1,6 @@
 # B42 Direct-Speed Refactor — design notes
 
-Status: **step 1 implemented (2026-09-05). Steps 2-5 still outstanding.**
+Status: **done and merged to main (2026-10-10).** Steps 1, 2 and 5 implemented, 3 dropped, 4 mostly dissolved; see "Suggested order". Sprinter Speed % (2026-10-12) is a separate feature built on top: it slows the sprint anim nodes, not the speed type.
 
 Background: the mod currently changes a zombie's speed by mutating the global
 `ZombieLore.Speed` sandbox option inside a `makeInactive(true/false)` bracket

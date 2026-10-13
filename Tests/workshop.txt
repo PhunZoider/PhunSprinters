@@ -6,6 +6,15 @@ description=
 description=PhunSprinters is the ultimate dynamic sprinter experience for Zomboid. PhunSprinters does [b]not[/b] simply add sprinters.
 description=It calculates [b]risk[/b] and that risk can change depending on [b]where you are, how long you've survived, the moon cycle, and the environment[/b].
 description=
+description=[list]
+description=[*]Sprinters that come out at night, in the dark, in bad weather or under a full moon
+description=[*]Torchlight and base lighting that slow a sprinter back to a walk
+description=[*]Adjustable sprinter speed, from full vanilla down to a quarter
+description=[*]Per-zone sprinter risk with PhunZones 2: safe towns, lethal military bases
+description=[*]Risk that ramps up with time survived, so new characters and fresh servers ease in
+description=[*]Build 42, single player and multiplayer
+description=[/list]
+description=
 description=[h1]Why not just turn on vanilla sprinters?[/h1]
 description=[hr]
 description=Vanilla gives you a percentage. Those zeds are sprinters everywhere, at all times, from your first hour to your last.
@@ -104,5 +113,5 @@ description=[url=https://steamcommunity.com/sharedfiles/filedetails/?id=38125004
 description=
 description=Coded with love for our awesome [url=https://discord.gg/v2USyAtP6q]PhunZoid[/url] community. [url=https://github.com/PhunZoider/PhunSprinters]GitHub repo and more info[/url]
 description=
-tags=Build 42;Items;Multiplayer;Gameplay
+tags=Build 42;Balance;Hardmode;Interface;Items;Multiplayer
 visibility=unlisted
