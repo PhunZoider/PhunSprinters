@@ -791,6 +791,25 @@ resets the model on `true`, never on `false`. So the clearing path in
 `client_decorate.lua` left zeds wearing the 45-bone mesh, still crashable, until
 something else reset them. It now calls `zed:resetModel()` after clearing.
 
+## Per-zed cost and the speed range (2026-10-14)
+
+Full measurements and method are in [perf-probe.md](perf-probe.md). What changes here:
+
+- **The queue no longer keys on `Core.getId`.** It uses `Core.getNumId` (plain
+  `getID`/`getOnlineID`, no `instanceof`, no `tostring`) and head/tail indices in place
+  of `Core.queue` / `Core.queueIds`, which are gone. So the "remaining uses of
+  `Core.getId`" listed in the step 2 section are now `zData.id` and the overlay only.
+- **Zeds already tested "no" are rechecked every 10 ticks**, staggered by id, rather
+  than every tick. Adoption by `adoptIfSprinting` still happens for them, up to 10 ticks
+  later. Sprinters, untested zeds and the light check are unchanged.
+- **Sprint speed is no longer one sandbox constant.** `Core.sprinterSpeedPct` picks a
+  value between `SprinterSpeedMin` and `SprinterSpeed`, or the zed's zone's
+  `minSprinterSpeed` / `maxSprinterSpeed`. Its position in the range comes from
+  `getOnlineID` in MP, so clients still agree without syncing (verified with two
+  clients). This is the one MP use of the network id since step 2. As noted above, the
+  `core.lua` comment saying `getOnlineID` no longer exists on 42.17 is wrong; it is
+  `getID` that is per client.
+
 ## Provenance
 
 Every API claim above was verified by disassembling

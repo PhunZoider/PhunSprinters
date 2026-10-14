@@ -60,15 +60,16 @@ different zombie with its own roll, not the same one changing its mind.
 
 ## Modes
 
-| Mode                               | When sprinters run                                                                                                                                           |
-| ---------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| 1. Dusk till dawn                  | Walk during the day, run once the sun goes down                                                                                                              |
-| 2. Always                          | Always run, the way vanilla sprinters do                                                                                                                     |
-| 3. When it is too dark outside     | Run at night, and during weather that drops visibility, even in daytime                                                                                      |
+| Mode                               | When sprinters run                                                                                                                                            |
+| ---------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1. Dusk till dawn                  | Walk during the day, run once the sun goes down                                                                                                               |
+| 2. Always                          | Always run, the way vanilla sprinters do                                                                                                                      |
+| 3. When it is too dark outside     | Run at night, and during weather that drops visibility, even in daytime                                                                                       |
 | 4. When it is too dark around them | Run whenever the light on their own tile drops below your Darkness Level. Even if it's bright outside, turn the lights off in a room and watch it come alive! |
 
-Mode 4 is the most interesting and the most expensive. It is evaluated per zombie per
-tile, so your torch matters moment to moment.
+Mode 4 is the most interesting. It is evaluated per zombie, on its own tile, so your
+torch matters moment to moment. It is also cheaper than it sounds; see
+[Performance](#performance).
 
 ### Light suppression
 
@@ -91,12 +92,12 @@ The light figure compared against Darkness Level is 0-100:
 Full-speed sprinters are a lot. **Sprinter Speed %** slows them down without taking them
 away, so you can play with sprinters that are dangerous rather than instant death.
 
-| Value | Effect                          |
-| ----- | ------------------------------- |
-| 100   | Vanilla sprinters. The default  |
-| 75    | 25% slower                      |
-| 50    | Half speed                      |
-| 25    | The minimum, a quarter speed    |
+| Value | Effect                         |
+| ----- | ------------------------------ |
+| 100   | Vanilla sprinters. The default |
+| 75    | 25% slower                     |
+| 50    | Half speed                     |
+| 25    | The minimum, a quarter speed   |
 
 It slows the whole run, including the final lunge, by playing the sprint animations
 slower. Zombie movement follows the animation, so the zombie genuinely covers less
@@ -115,13 +116,14 @@ either end of the range; see [Zone recipes](#zone-recipes).
 - **Only our sprinters are affected.** A zombie this mod never made sprint, such as a
   Mutants type you have ticked to ignore, runs at the normal vanilla speed.
 - **Each sprinter keeps its speed.** A sprinter's speed is fixed when it first starts
-  running, so changing the setting affects new sprinters, not ones already chasing you.
+  running, so changing the settings or a zone affects new sprinters, not ones already
+  chasing you.
   Settings reach clients within a game minute, so give it a moment before testing.
 - **It does not survive a restart**, the same as the sprinter verdict itself. After a
   restart zombies are tested afresh, and any new sprinters get the current value.
 
 This works by replacing the vanilla zombie sprint animation files with copies whose speed
-is read from the setting. Other "slower sprinters" mods replace the same files, so run
+is read from these settings. Other "slower sprinters" mods replace the same files, so run
 one or the other, not both. See [Compatibility](#compatibility).
 
 ---
@@ -141,9 +143,6 @@ speed values off whatever zone the sprinter is standing in when it first starts 
 
 All are optional. Leave one unset and the global setting applies. A sprinter keeps its
 speed when it follows you into another zone.
-
-**Slower sprinters near spawn.** Set `minSprinterSpeed` to `40` and `maxSprinterSpeed` to
-`60` in a starter town, so the sprinters new players meet are survivable.
 
 **A safe haven.** Set `maxSprinterRisk` to `0`. No sprinters in that zone, whatever the
 moon is doing and however long the player has survived. Good for a starter town or a
@@ -165,6 +164,14 @@ standing in it.
 **A cap that still lets the moon matter.** Set `minSprinterRisk` to `30` and
 `maxSprinterRisk` to `50`. Normal nights sit near 30, full moons push toward the cap, and
 the zone never becomes a bloodbath.
+
+**Slower sprinters near spawn.** Set `minSprinterSpeed` to `40` and `maxSprinterSpeed` to
+`60` in a starter town, so the sprinters new players meet are survivable. Pair it with a
+low `maxSprinterRisk` for a gentle first night.
+
+**Faster the further out you go.** Leave the sandbox range at `50`-`80`, then raise it in
+outlying zones: `maxSprinterSpeed` `90` in the countryside, `minSprinterSpeed` `80` and
+`maxSprinterSpeed` `100` at the military base.
 
 ---
 
@@ -249,27 +256,27 @@ mutes it for that player alone, and up to `200` makes it louder.
 
 ## Settings reference
 
-| Setting                        | Default        | What it does                                                               |
-| ------------------------------ | -------------- | -------------------------------------------------------------------------- |
-| Mode                           | Dusk till dawn | When sprinters run. See above                                              |
-| Slow in light                  | off            | Light drops a running sprinter back to a walk                              |
-| Darkness Level                 | 74             | The 0-100 light level sprinting is gated on                                |
+| Setting                        | Default        | What it does                                                                      |
+| ------------------------------ | -------------- | --------------------------------------------------------------------------------- |
+| Mode                           | Dusk till dawn | When sprinters run. See above                                                     |
+| Slow in light                  | off            | Light drops a running sprinter back to a walk                                     |
+| Darkness Level                 | 74             | The 0-100 light level sprinting is gated on                                       |
 | Sprinter Speed %               | 100            | How fast sprinters run, 25-100% of vanilla. See [Sprinter speed](#sprinter-speed) |
-| Slowest Sprinter Speed %       | 100            | Bottom of the speed range. At or above Sprinter Speed, there is no range    |
-| Default Risk                   | 1              | Base sprinter chance where no zone overrides it                            |
-| Hours Discount                 | 0              | Hours of survival before full risk applies. 0 disables                     |
-| Moon Phase Multipliers         | 50-200         | Per-phase risk multipliers                                                 |
-| Replace vanilla sprinters with | Fast shamblers | What the game's own sprinters become. See below                            |
-| Percentage Sprinters Volume    | 10             | Volume of the sprinter screech. See [Sounds](#sounds)                      |
-| Sprinting Change Volume        | 15             | Volume of the chime when conditions change. See [Sounds](#sounds)          |
-| Decorate Sprinters             | on             | Dress sprinters up around the holidays, if the relevant mods are installed |
-| Always Show UI                 | on             | Show the [sensor panel](#the-sensor-panel) without needing the wearable    |
-| Lootable Sensor                | off            | Put the military sensor into loot, for when the UI is not always shown     |
-| UI Layout                      | Horizontal     | Sensor panel orientation                                                   |
-| Min / Max Distance             | 14 / 35        | The band, in tiles, where zombies are tested                               |
-| Max Queue                      | 20             | Zombies evaluated per tick. Lower it if you see stutter in hordes          |
-| Ignore (mutant type)           | Leaper, Weeper | Per-type opt-out for The Mutants. See [Compatibility](#compatibility)      |
-| Debug                          | Off            | Per-zombie overlay: Simple (speed only) or Extended (detail and logging)   |
+| Slowest Sprinter Speed %       | 100            | Bottom of the speed range. At or above Sprinter Speed, there is no range          |
+| Default Risk                   | 1              | Base sprinter chance where no zone overrides it                                   |
+| Hours Discount                 | 0              | Hours of survival before full risk applies. 0 disables                            |
+| Moon Phase Multipliers         | 50-200         | Per-phase risk multipliers                                                        |
+| Replace vanilla sprinters with | Fast shamblers | What the game's own sprinters become. See below                                   |
+| Percentage Sprinters Volume    | 10             | Volume of the sprinter screech. See [Sounds](#sounds)                             |
+| Sprinting Change Volume        | 15             | Volume of the chime when conditions change. See [Sounds](#sounds)                 |
+| Decorate Sprinters             | on             | Dress sprinters up around the holidays, if the relevant mods are installed        |
+| Always Show UI                 | on             | Show the [sensor panel](#the-sensor-panel) without needing the wearable           |
+| Lootable Sensor                | off            | Put the military sensor into loot, for when the UI is not always shown            |
+| UI Layout                      | Horizontal     | Sensor panel orientation                                                          |
+| Min / Max Distance             | 14 / 35        | The band, in tiles, where zombies are tested                                      |
+| Max Queue                      | 20             | Sprinters re-evaluated per tick. Lower is cheaper, but light reacts slower        |
+| Ignore (mutant type)           | Leaper, Weeper | Per-type opt-out for The Mutants. See [Compatibility](#compatibility)             |
+| Debug                          | Off            | Per-zombie overlay: Simple (speed only) or Extended (detail and logging)          |
 
 ---
 
@@ -353,12 +360,36 @@ in the sensor panel's tooltip.
 `PhunSprinters.dumpSettings("check")` in the console prints every setting three ways, for
 when a value does not look like what you configured.
 
+### Performance
+
+The mod runs a check on every zombie near you, every tick, so its cost grows with the
+horde. Measured with 300 zombies in range, it takes about **0.8-0.9 ms per tick** of main
+thread time, whether they are all sprinters or none are. On the test machine that did not
+show up in frame time at all.
+
+What keeps it there:
+
+- A zombie that has been tested and is **not** a sprinter is only looked at again every
+  10 ticks.
+- Sprinters between Min and Max Distance take turns through a queue, **Max Queue** of
+  them per tick. With 300 sprinters and the default of 20, each is re-evaluated about
+  every 15 ticks, which is still well under a second.
+- Sprinters inside Min Distance are handled every tick, so light reacts instantly up
+  close.
+
+To measure it on your own machine, run these in the debug console (`-debug`):
+
+```lua
+PhunSprinters.probe.spawn(300)           -- a ring of zombies 15-30 tiles out
+PhunSprinters.probe.start(60, "mine")    -- after ~30 s; prints a report after 60 s
+```
+
 ---
 
 ## Compatibility
 
 - [PhunZones 2](https://steamcommunity.com/sharedfiles/filedetails/?id=3676252660) for
-  per-zone risk. Optional.
+  per-zone risk and sprinter speed. Optional.
 - [PhunServer 2](https://steamcommunity.com/sharedfiles/filedetails/?id=3792193021)
   Day/Night, if installed, drives dusk and dawn instead of our own calculation. Optional,
   detected automatically.

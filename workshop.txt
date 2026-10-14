@@ -11,6 +11,7 @@ description=[*]Torchlight and base lighting that slow a sprinter back to a walk
 description=[*]Adjustable sprinter speed, from full vanilla down to a quarter, or a range so every sprinter is different
 description=[*]Per-zone sprinter risk and speed with PhunZones 2: safe towns, lethal military bases
 description=[*]Risk that ramps up with time survived, so new characters and fresh servers ease in
+description=[*]Light on performance: under 1 ms per tick with 300 zeds around you, measured
 description=[*]Build 42, single player and multiplayer
 description=[/list]
 description=
@@ -27,7 +28,7 @@ description=[hr]
 description=Sprinter behaviour is determined by stacking modifiers in this order:
 description=[list]
 description=[*]Global Base Risk (in your settings)
-description=[*]Zone Override (when [url=https://steamcommunity.com/sharedfiles/filedetails/?id=3676252660]PhunZones 2[/url] is installed). [url=https://github.com/PhunZoider/PhunSprinters#zone-recipes]Recipes for safe havens and no-go areas[/url]
+description=[*]Zone Override (when [url=https://steamcommunity.com/sharedfiles/filedetails/?id=3676252660]PhunZones 2[/url] is installed). [url=https://github.com/PhunZoider/PhunSprinters#zone-recipes]Recipes for safe havens, no-go areas and per-zone speeds[/url]
 description=[*]How long you've played for
 description=[*]What phase the moon is in
 description=[*]The mode you use (see below)
@@ -93,7 +94,7 @@ description=
 description=[h1]Compatibility[/h1]
 description=[hr]
 description=[list]
-description=[*][url=https://steamcommunity.com/sharedfiles/filedetails/?id=3676252660]PhunZones 2[/url] for per-zone risk
+description=[*][url=https://steamcommunity.com/sharedfiles/filedetails/?id=3676252660]PhunZones 2[/url] for per-zone risk and sprinter speed
 description=[*][url=https://steamcommunity.com/sharedfiles/filedetails/?id=3792193021]PhunServer 2[/url] Day/Night drives dusk and dawn when installed
 description=[*][url=https://steamcommunity.com/sharedfiles/filedetails/?id=3796669056]The Mutants[/url]: choose per mutant type whether it can become a sprinter. Leapers and Weepers are left to The Mutants by default
 description=[*]Not compatible with other "slower sprinters" mods, which replace the same animation files. Use Sprinter Speed % instead
@@ -105,6 +106,7 @@ description=[list]
 description=[*][url=https://github.com/PhunZoider/PhunSprinters#settings-reference]Every setting, its default, and what it does[/url]
 description=[*][url=https://github.com/PhunZoider/PhunSprinters#multiplayer]How risk works on a server[/url]
 description=[*][url=https://github.com/PhunZoider/PhunSprinters#troubleshooting]Troubleshooting and the debug overlay[/url]
+description=[*][url=https://github.com/PhunZoider/PhunSprinters#performance]Performance, and how to measure it yourself[/url]
 description=[/list]
 description=
 description=[img]https://i.ibb.co/DZ7Vffn/Thumbs-Up.png[/img]

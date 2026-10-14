@@ -1,9 +1,11 @@
 # Per-zed performance investigation
 
-Status: **in progress (2026-10-14).** Probe built, detail mode run once at Risk 0. The
-non-sprinter path is now broken down (see "detail-300 breakdown"), and there are plain
-totals at Risk 0 and Risk 100, and a Risk 100 detail run. Optimisations made the same day
-(see "Changes made"); next is re-measuring them in game with the same runs.
+Status: **done (2026-10-14).** At 300 zeds the mod went from 1.78 to 0.84 ms/tick at
+Risk 0, and from 1.10 to 0.93 at Risk 100 (see "Results after the changes"). The speed
+range it was clearing the way for is built and tested with two clients. One question
+remains open, and it is about behaviour, not cost: the 51 sprinters at Risk 0 (see
+r0-v3 below, and "Still unverified" in [B42-test-plan.md](B42-test-plan.md)).
+The rest of this doc is the investigation as it happened, kept for the method.
 
 ## Why
 

@@ -169,6 +169,32 @@ and the whole justification is that it never reaches disk.
 
 ---
 
+## H. Sprinter speed range
+
+Debug on Extended: each sprinter's label ends with its speed, e.g. `72%`.
+
+| # | Steps | Expect |
+|---|---|---|
+| H1 | Sprinter Speed 75, Slowest Sprinter Speed left at 100 | Every sprinter `75%`. An existing config must not change. |
+| H2 | Sprinter Speed 90, Slowest 50, `spawn(300)` at Risk 100, night | A spread from 50 to 90; slower ones visibly lag. |
+| H3 | A zone with `minSprinterSpeed` / `maxSprinterSpeed` set | Zeds that first sprint inside it stay within the zone's range, and keep their speed when they follow you out. |
+| H4 | Two clients, same sprinter | Same `%` on both. It comes from `getOnlineID`, so no syncing. |
+
+---
+
+## I. Per-zed cost
+
+Measured with the probe in `client_probe.lua`; method, numbers and history are in
+[perf-probe.md](perf-probe.md).
+
+| # | Steps | Expect |
+|---|---|---|
+| I1 | `spawn(300)`, wait, `PhunSprinters.probe.start(60, "check")` at Risk 0 and at Risk 100 | MOD TOTAL around 0.8-0.9 ms/tick on the dev machine (1.78 / 1.10 before the 2026-10-14 queue changes). |
+| I2 | Slow in light, Mode 4, torch on and off a sprinter | Reacts as before. Sprinters were not throttled; only zeds already tested "no" are rechecked every 10 ticks. |
+| I3 | E2 again: client A promotes a zed client B tested "no" | B still adopts it, within a fraction of a second. |
+
+---
+
 ## Known behaviours that are not bugs
 
 Do not spend time on these:
@@ -234,7 +260,23 @@ repeating every minute (`5e90c68`).
 
 ---
 
+## Run log — 2026-10-14
+
+**Passed:** H2, H3, H4 on a local server with two clients. I1 (0.84 ms at Risk 0, 0.93
+at Risk 100) and I2 in single player.
+
+**Not run:** H1, I3.
+
+---
+
 ## Still unverified
+
+- **Sprinters at Risk 0.** Two probe runs had 51-53 of 300 freshly spawned zeds as
+  sprinters with Default Risk 0, a cached player risk of 0, and Zombie Speed Random with
+  SprinterPercentage 0. `shouldSprint` cannot say yes at 0, so they came from a stale
+  risk at test time or from `adoptIfSprinting`. With Debug on Extended, the log tells the
+  two apart: `Rolled N against risk R` against `Adopting sprinter`. See
+  [perf-probe.md](perf-probe.md).
 
 - **Whether the server rolls speed for zeds no client owns.** `neuterVanillaSprinters`
   runs server-side to cover it, but the behaviour itself has not been observed.
