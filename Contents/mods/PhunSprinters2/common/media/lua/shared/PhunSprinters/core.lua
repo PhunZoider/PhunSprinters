@@ -21,8 +21,6 @@ PhunSprinters = {
     settings = {},
     ui = {},
     elements = {},
-    queueIds = {},
-    queue = {},
     tools = require "PhunSprinters/tools",
     sprint = true,
     -- Set once enableSprinting has reconciled at least once, so the startup baseline
@@ -509,6 +507,16 @@ end
 -- I suppose getOnlineID is no longer a thing in B42.17
 local testForOnlineId = getCore():getGameVersion():getMajor() == 42 and getCore():getGameVersion():getMinor() < 17 and
                             (isClient() or isServer() or isCoopHost())
+
+-- The same identity as getId, as a number, for callers that already hold a live zombie
+-- (OnZombieUpdate, the queue). Skipping the instanceof and the tostring matters there:
+-- getId was a quarter of enqueueUpdate's cost (Docs/perf-probe.md).
+function Core.getNumId(zed)
+    if testForOnlineId then
+        return zed:getOnlineID()
+    end
+    return zed:getID()
+end
 
 function Core.getId(zed)
     if zed then
