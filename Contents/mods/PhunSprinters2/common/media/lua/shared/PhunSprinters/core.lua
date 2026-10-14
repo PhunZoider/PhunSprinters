@@ -667,3 +667,9 @@ end
 function Core.getPlayerZoneData(player)
     return {}
 end
+
+-- The zone a zed is standing in. Both are stubs until PhunZones has built its data
+-- (client_events.lua replaces them), and stay stubs without PhunZones.
+function Core.getZedZoneData(zed)
+    return {}
+end

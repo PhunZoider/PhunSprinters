@@ -102,6 +102,16 @@ It slows the whole run, including the final lunge, by playing the sprint animati
 slower. Zombie movement follows the animation, so the zombie genuinely covers less
 ground; it is not a cosmetic change.
 
+### A range of speeds
+
+Set **Slowest Sprinter Speed %** below Sprinter Speed and each sprinter gets its own speed
+somewhere between the two. With 50 and 90, some sprinters barely outpace a jog and others
+are nearly vanilla, so a crowd stops arriving as one wall.
+
+Slowest Sprinter Speed defaults to 100. At or above Sprinter Speed it does nothing, and
+every sprinter runs at exactly Sprinter Speed, as before. A PhunZones zone can override
+either end of the range; see [Zone recipes](#zone-recipes).
+
 - **Only our sprinters are affected.** A zombie this mod never made sprint, such as a
   Mutants type you have ticked to ignore, runs at the normal vanilla speed.
 - **Each sprinter keeps its speed.** A sprinter's speed is fixed when it first starts
@@ -119,14 +129,21 @@ one or the other, not both. See [Compatibility](#compatibility).
 ## Zone recipes
 
 These need [PhunZones 2](https://steamcommunity.com/sharedfiles/filedetails/?id=3676252660).
-PhunSprinters reads two values off whatever zone the player is standing in:
+PhunSprinters reads two risk values off whatever zone the player is standing in, and two
+speed values off whatever zone the sprinter is standing in when it first starts running:
 
-| Key               | Effect                                                             |
-| ----------------- | ------------------------------------------------------------------ |
-| `minSprinterRisk` | Replaces Default Risk as the base for this zone                    |
-| `maxSprinterRisk` | Caps the final risk in this zone, after moon and hours are applied |
+| Key                | Effect                                                             |
+| ------------------ | ------------------------------------------------------------------ |
+| `minSprinterRisk`  | Replaces Default Risk as the base for this zone                    |
+| `maxSprinterRisk`  | Caps the final risk in this zone, after moon and hours are applied |
+| `minSprinterSpeed` | Replaces Slowest Sprinter Speed % in this zone, 25-100             |
+| `maxSprinterSpeed` | Replaces Sprinter Speed % in this zone, 25-100                     |
 
-Both are optional. Leave one unset and the global setting applies.
+All are optional. Leave one unset and the global setting applies. A sprinter keeps its
+speed when it follows you into another zone.
+
+**Slower sprinters near spawn.** Set `minSprinterSpeed` to `40` and `maxSprinterSpeed` to
+`60` in a starter town, so the sprinters new players meet are survivable.
 
 **A safe haven.** Set `maxSprinterRisk` to `0`. No sprinters in that zone, whatever the
 moon is doing and however long the player has survived. Good for a starter town or a
@@ -238,6 +255,7 @@ mutes it for that player alone, and up to `200` makes it louder.
 | Slow in light                  | off            | Light drops a running sprinter back to a walk                              |
 | Darkness Level                 | 74             | The 0-100 light level sprinting is gated on                                |
 | Sprinter Speed %               | 100            | How fast sprinters run, 25-100% of vanilla. See [Sprinter speed](#sprinter-speed) |
+| Slowest Sprinter Speed %       | 100            | Bottom of the speed range. At or above Sprinter Speed, there is no range    |
 | Default Risk                   | 1              | Base sprinter chance where no zone overrides it                            |
 | Hours Discount                 | 0              | Hours of survival before full risk applies. 0 disables                     |
 | Moon Phase Multipliers         | 50-200         | Per-phase risk multipliers                                                 |
@@ -292,10 +310,12 @@ Speed itself replicates natively, so everyone sees the same thing. If another pl
 already made a zombie sprint, your client adopts that verdict rather than second-guessing
 it, so a sprinter does not lose its identity when it changes hands.
 
-Sprinter speed needs no syncing either: it comes from the server's settings, so every
-client gives a new sprinter the same value. The one exception is right after an admin
-changes it, when a sprinter that was already running on one client can be adopted at the
-new speed on another, and briefly animate at a different pace than it moves.
+Sprinter speed needs no syncing either. Where a sprinter lands in the speed range comes
+from its network id, not a dice roll, so every client works out the same speed for the
+same zombie from the server's settings. The exceptions are right after an admin changes
+the settings, and a sprinter standing right on a zone border with different speeds on
+each side. In both cases another client can adopt it at a different speed, and it briefly
+animates at a different pace than it moves.
 
 Server settings are authoritative. Clients follow them.
 
@@ -312,7 +332,7 @@ Shambler or Shambler), coloured the same way as the Extended states below.
 **Extended** also logs verbosely to the console, and each label reads:
 
 ```
-<id> <state> [L<light>] <base>><live>
+<id> <state> [L<light>] <base>><live> [<speed>%]
 ```
 
 | Colour | State      | Meaning                            |
@@ -324,7 +344,8 @@ Shambler or Shambler), coloured the same way as the Extended states below.
 
 `L<light>` only appears in the modes where light decides anything, and is directly
 comparable with your Darkness Level. `base>live` is the speed the zombie returns to when
-it stops running, then what it is doing now.
+it stops running, then what it is doing now. `<speed>%` is a sprinter's own sprint speed,
+once it has been given one.
 
 Global values, the adjusted light, fog, dawn and dusk times, and your current risk, are
 in the sensor panel's tooltip.

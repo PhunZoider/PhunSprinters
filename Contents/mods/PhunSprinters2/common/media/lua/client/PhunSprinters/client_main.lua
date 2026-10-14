@@ -29,7 +29,39 @@ local applySpeedType = {
     end
 }
 
--- How fast a sprinter's run plays, from the SprinterSpeed option.
+local function clampSpeedPct(v)
+    return math.max(25, math.min(100, v))
+end
+
+-- This zed's sprint speed as a percentage, 25-100.
+--
+-- A range from SprinterSpeedMin up to SprinterSpeed, unless the zone the zed is standing
+-- in sets minSprinterSpeed or maxSprinterSpeed. A minimum at or above the maximum
+-- collapses to the maximum. That is also what keeps existing configs unchanged:
+-- SprinterSpeedMin defaults to 100, so a server that only ever set SprinterSpeed still
+-- gets exactly that for every sprinter.
+--
+-- Where in the range a zed lands is not a roll. It comes from the zed's id, so every
+-- client works out the same speed for the same zed without any syncing. In MP that has
+-- to be getOnlineID: getID is numbered by each process separately (see "MP sync has been
+-- dead since 42.17" in Docs/B42-speed-refactor.md). The golden-ratio step spreads
+-- consecutive ids evenly across the range.
+function Core.sprinterSpeedPct(zed)
+    local hi = Core.settings.SprinterSpeed or 100
+    local lo = Core.settings.SprinterSpeedMin or hi
+    local zone = Core.getZedZoneData(zed) or {}
+    hi = clampSpeedPct(tonumber(zone.maxSprinterSpeed) or hi)
+    lo = clampSpeedPct(tonumber(zone.minSprinterSpeed) or lo)
+    if lo >= hi then
+        return hi
+    end
+    local id = isClient() and zed:getOnlineID() or zed:getID()
+    local f = id * 0.6180339887498949
+    f = f - math.floor(f)
+    return lo + math.floor(f * (hi - lo + 1))
+end
+
+-- How fast a sprinter's run plays, from Core.sprinterSpeedPct.
 --
 -- The sprint and sprint-lunge anim nodes in media/AnimSets/zombie are vanilla copies
 -- whose m_SpeedScale names these variables instead of a number. Movement follows the
@@ -38,17 +70,18 @@ local applySpeedType = {
 --
 -- An unset variable reads as 1.0 (AnimNode.getSpeedScale falls back to
 -- getVariableFloat(name, 1.0f)), which is why only zeds we make sprint need it: any
--- other zed reaching those nodes plays them at full speed. The value is a sandbox
--- constant, so every client sets the same one and no syncing is needed.
+-- other zed reaching those nodes plays them at full speed. Every client derives the same
+-- value for the same zed, so no syncing is needed.
 --
--- Decided once per zed, when it first becomes ours: changing the option affects new
--- sprinters, not ones already running. Like the verdict, it lives in this zed's modData
--- and is gone when getZedData resets the zed.
+-- Decided once per zed, when it first becomes ours: changing the options or the zone
+-- affects new sprinters, not ones already running, and a sprinter keeps its speed when
+-- it crosses into another zone. Like the verdict, it lives in this zed's modData and is
+-- gone when getZedData resets the zed.
 local function applySpeedScale(zed, zData)
     if zData.speedScalePct then
         return
     end
-    local pct = Core.settings.SprinterSpeed or 100
+    local pct = Core.sprinterSpeedPct(zed)
     zData.speedScalePct = pct
     zed:setVariable("PhunSprintersSpeed", 0.80 * pct * 0.01)
     zed:setVariable("PhunSprintersLungeSpeed", 0.90 * pct * 0.01)

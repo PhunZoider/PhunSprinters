@@ -215,8 +215,10 @@ What it shows:
    - A cheaper queue than `table.remove(t, 1)`.
    - Throttling per zed, but **not** the light check: Slow in light has to stay
      responsive.
-4. Then build the speed range: `SprinterSpeedMin`/`Max` sandbox options plus
-   `minSprinterSpeed`/`maxSprinterSpeed` PhunZones fields. Derive each zed's value from a
-   hash of its online ID, so every client agrees without syncing, and take bounds from
-   the **zed's** zone (`PhunZones.getPhysicalZone(zed)` works on any object), decided once
-   when it first sprints.
+4. ~~Then build the speed range.~~ Built 2026-10-14: `Core.sprinterSpeedPct` in
+   `client_main.lua`. `SprinterSpeed` stays as the top of the range, so existing configs
+   keep their value; the new `SprinterSpeedMin` defaults to 100, and a minimum at or above
+   the maximum collapses to the maximum. Zone fields `minSprinterSpeed` /
+   `maxSprinterSpeed` are read from the **zed's** zone (`Core.getZedZoneData`). Position in
+   the range is `frac(id * golden ratio)`, using `getOnlineID` in MP and `getID` in SP.
+   Unit-tested under LuaJIT; not yet tried in game.

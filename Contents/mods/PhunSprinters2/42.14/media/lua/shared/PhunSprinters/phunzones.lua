@@ -26,6 +26,24 @@ if activeMods:contains("\\phunzones2") or activeMods:contains("\\phunzones2test"
             group = "mods",
             order = 101
         }
+
+        PZ.fields.minSprinterSpeed = {
+            label = "IGUI_PhunSprinters_minSpeed",
+            type = "string",
+            tooltip = "IGUI_PhunSprinters_minSpeed_Tooltip",
+            default = "",
+            group = "mods",
+            order = 102
+        }
+
+        PZ.fields.maxSprinterSpeed = {
+            label = "IGUI_PhunSprinters_maxSpeed",
+            type = "string",
+            tooltip = "IGUI_PhunSprinters_maxSpeed_Tooltip",
+            default = "",
+            group = "mods",
+            order = 103
+        }
     end
 
 else

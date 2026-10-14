@@ -102,6 +102,10 @@ local function extendedLabel(z, data, player)
         end
         -- "base>live": the speed it returns to, then what it reads as now.
         text = text .. " " .. tostring(data.baseSpeedType or "?") .. ">" .. tostring(live)
+        -- Its own sprint speed, once it has been given one.
+        if data.speedScalePct then
+            text = text .. " " .. tostring(data.speedScalePct) .. "%"
+        end
     else
         text = text .. " " .. tostring(live)
     end

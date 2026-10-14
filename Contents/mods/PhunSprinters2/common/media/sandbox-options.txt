@@ -47,6 +47,16 @@ option PhunSprinters.SprinterSpeed
     translation = PhunSprinters_SprinterSpeed,
 }
 
+option PhunSprinters.SprinterSpeedMin
+{
+    type = integer,
+    default = 100,
+    min = 25,
+    max = 100,
+    page = PhunSprinters,
+    translation = PhunSprinters_SprinterSpeedMin,
+}
+
 option PhunSprinters.HoursDiscount
 {
     type = integer, 
