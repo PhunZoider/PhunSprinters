@@ -22,7 +22,7 @@ Design and rationale live in `B42-speed-refactor.md`. This is only how to check 
 Each zed within 25 tiles is labelled:
 
 ```
-<id> <state> [L<light>] <base>><live> [SKEL]
+<id> <state> [L<light>] [immune] <base>><live> [<speed>%] [SKEL]
 ```
 
 | Colour | State | Meaning |
@@ -35,6 +35,8 @@ Each zed within 25 tiles is labelled:
 - `id` is `Core.getId` -- `getID()` on 42.17+, `getOnlineID()` below it in MP. Stable
   within a session, and reused across zeds after that, so use it to follow one zed for
   a few minutes, not to identify it across a chunk reload.
+- `immune` marks a sprinter that light does not slow. Like `L<light>`, it appears only
+  under Mode 4 or Slow in light.
 - `L<light>` appears only under Mode 4 or Slow in light, where light actually decides
   anything. It is 0-100, directly comparable with the **Darkness Level** setting, and it
   is the same value the decision used -- not the raw local light, which differs outdoors
@@ -179,6 +181,13 @@ Debug on Extended: each sprinter's label ends with its speed, e.g. `72%`.
 | H2 | Sprinter Speed 90, Slowest 50, `spawn(300)` at Risk 100, night | A spread from 50 to 90; slower ones visibly lag. |
 | H3 | A zone with `minSprinterSpeed` / `maxSprinterSpeed` set | Zeds that first sprint inside it stay within the zone's range, and keep their speed when they follow you out. |
 | H4 | Two clients, same sprinter | Same `%` on both. It comes from `getOnlineID`, so no syncing. |
+| H5 | Mode 4, Light Immune Sprinters 0, Risk 100, shine a torch across a crowd | Every sprinter drops to yellow. No `immune` on any label. An existing config must not change. |
+| H6 | Same, Light Immune Sprinters 25, `spawn(300)` | About a quarter show `immune` and stay red in the beam, including inside 14 tiles. The rest drop to yellow. |
+| H7 | Same, Light Immune Sprinters 100, in daylight outdoors | Everything runs. Mode 4 has no other condition. |
+| H8 | Mode 1, Slow in light on, Light Immune Sprinters 100 | Red through a torch beam at night, yellow by day. Immunity covers light, not the mode. |
+| H9 | Mode 2, Slow in light off, Light Immune Sprinters 100 | No `immune` on any label, since light is not being checked. |
+| H10 | A zone with `sprinterLightImmunity` `100`, sandbox 0 | Zeds that first run inside it are `immune`, and stay so when they follow you out. `0` in a zone with sandbox 100 is the reverse. |
+| H11 | Two clients, same sprinter in a torch beam, Light Immune Sprinters 50 | Same `immune` on both, and no flicker between red and yellow. |
 
 ---
 

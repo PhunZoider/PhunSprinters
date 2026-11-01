@@ -17,6 +17,16 @@ option PhunSprinters.SlowInLight
     translation = PhunSprinters_SlowInLight,
 }
 
+option PhunSprinters.LightImmunity
+{
+    type = integer,
+    default = 0,
+    min = 0,
+    max = 100,
+    page = PhunSprinters,
+    translation = PhunSprinters_LightImmunity,
+}
+
 option PhunSprinters.VanillaSprinters
 {
     type = enum,

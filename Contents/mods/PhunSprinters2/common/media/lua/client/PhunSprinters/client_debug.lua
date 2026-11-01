@@ -99,6 +99,9 @@ local function extendedLabel(z, data, player)
         -- else it is a number that explains nothing.
         if Core.settings.Mode == 4 or Core.settings.SlowInLight then
             text = text .. " L" .. string.format("%.0f", Core.effectiveLight(z, player))
+            if data.lightImmune then
+                text = text .. " immune"
+            end
         end
         -- "base>live": the speed it returns to, then what it reads as now.
         text = text .. " " .. tostring(data.baseSpeedType or "?") .. ">" .. tostring(live)

@@ -7,9 +7,9 @@ description=It calculates [b]risk[/b] and that risk can change depending on [b]w
 description=
 description=[list]
 description=[*]Sprinters that come out at night, in the dark, in bad weather or under a full moon
-description=[*]Torchlight and base lighting that slow a sprinter back to a walk
+description=[*]Torchlight and base lighting that slow a sprinter back to a walk, with an optional share of sprinters that ignore it
 description=[*]Adjustable sprinter speed, from full vanilla down to a quarter, or a range so every sprinter is different
-description=[*]Per-zone sprinter risk and speed with PhunZones 2: safe towns, lethal military bases
+description=[*]Per-zone sprinter risk, speed and light immunity with PhunZones 2: safe towns, lethal military bases
 description=[*]Risk that ramps up with time survived, so new characters and fresh servers ease in
 description=[*]Light on performance: under 1 ms per tick with 300 zeds around you, measured
 description=[*]Build 42, single player and multiplayer
@@ -28,7 +28,7 @@ description=[hr]
 description=Sprinter behaviour is determined by stacking modifiers in this order:
 description=[list]
 description=[*]Global Base Risk (in your settings)
-description=[*]Zone Override (when [url=https://steamcommunity.com/sharedfiles/filedetails/?id=3676252660]PhunZones 2[/url] is installed). [url=https://github.com/PhunZoider/PhunSprinters#zone-recipes]Recipes for safe havens, no-go areas and per-zone speeds[/url]
+description=[*]Zone Override (when [url=https://steamcommunity.com/sharedfiles/filedetails/?id=3676252660]PhunZones 2[/url] is installed). [url=https://github.com/PhunZoider/PhunSprinters#zone-recipes]Recipes for safe havens, no-go areas, per-zone speeds and light immunity[/url]
 description=[*]How long you've played for
 description=[*]What phase the moon is in
 description=[*]The mode you use (see below)
@@ -56,6 +56,8 @@ description=[*]Base lighting matters
 description=[*]Night travel becomes a risk vs reward decision
 description=[*]Brings the Phun of mode 4 to modes 1, 2 and 3 (mode 4 already works this way)
 description=[/list]
+description=
+description=Set [b]Light Immune Sprinters %[/b] and that share of sprinters ignore light altogether, so a torch is no longer a guarantee. It defaults to 0, and with PhunZones 2 each zone can set its own.
 description=
 description=[url=https://github.com/PhunZoider/PhunSprinters#light-suppression]How the light level is measured, indoors and out[/url]
 description=
@@ -94,7 +96,7 @@ description=
 description=[h1]Compatibility[/h1]
 description=[hr]
 description=[list]
-description=[*][url=https://steamcommunity.com/sharedfiles/filedetails/?id=3676252660]PhunZones 2[/url] for per-zone risk and sprinter speed
+description=[*][url=https://steamcommunity.com/sharedfiles/filedetails/?id=3676252660]PhunZones 2[/url] for per-zone risk, sprinter speed and light immunity
 description=[*][url=https://steamcommunity.com/sharedfiles/filedetails/?id=3792193021]PhunServer 2[/url] Day/Night drives dusk and dawn when installed
 description=[*][url=https://steamcommunity.com/sharedfiles/filedetails/?id=3796669056]The Mutants[/url]: choose per mutant type whether it can become a sprinter. Leapers and Weepers are left to The Mutants by default
 description=[*]Not compatible with other "slower sprinters" mods, which replace the same animation files. Use Sprinter Speed % instead

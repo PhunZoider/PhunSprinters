@@ -44,6 +44,15 @@ if activeMods:contains("\\phunzones2") or activeMods:contains("\\phunzones2test"
             group = "mods",
             order = 103
         }
+
+        PZ.fields.sprinterLightImmunity = {
+            label = "IGUI_PhunSprinters_lightImmunity",
+            type = "string",
+            tooltip = "IGUI_PhunSprinters_lightImmunity_Tooltip",
+            default = "",
+            group = "mods",
+            order = 104
+        }
     end
 
 else

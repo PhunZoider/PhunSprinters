@@ -104,7 +104,7 @@ if PhunZones then
                 return getPhysicalZone(player)
             end
             -- A zed has no PhunZones modData, so this falls through to a lookup by its
-            -- x/y. Only called once per zed, when it is first given a speed.
+            -- x/y. Only called when a zed is first given a speed or a light immunity.
             function Core.getZedZoneData(zed)
                 return getPhysicalZone(zed)
             end

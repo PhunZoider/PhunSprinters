@@ -33,6 +33,18 @@ local function clampSpeedPct(v)
     return math.max(25, math.min(100, v))
 end
 
+-- Where this zed's id lands between 0 and 1, for a choice that has to come out the same on
+-- every client without any syncing. In MP that has to be getOnlineID: getID is numbered by
+-- each process separately (see "MP sync has been dead since 42.17" in
+-- Docs/B42-speed-refactor.md). Consecutive ids spread evenly across the range.
+--
+-- Each choice needs its own irrational step. With the same step for two of them, the same
+-- zeds land low on both.
+local function idFraction(zed, step)
+    local f = (isClient() and zed:getOnlineID() or zed:getID()) * step
+    return f - math.floor(f)
+end
+
 -- This zed's sprint speed as a percentage, 25-100.
 --
 -- A range from SprinterSpeedMin up to SprinterSpeed, unless the zone the zed is standing
@@ -42,10 +54,7 @@ end
 -- gets exactly that for every sprinter.
 --
 -- Where in the range a zed lands is not a roll. It comes from the zed's id, so every
--- client works out the same speed for the same zed without any syncing. In MP that has
--- to be getOnlineID: getID is numbered by each process separately (see "MP sync has been
--- dead since 42.17" in Docs/B42-speed-refactor.md). The golden-ratio step spreads
--- consecutive ids evenly across the range.
+-- client works out the same speed for the same zed.
 function Core.sprinterSpeedPct(zed)
     local hi = Core.settings.SprinterSpeed or 100
     local lo = Core.settings.SprinterSpeedMin or hi
@@ -55,10 +64,25 @@ function Core.sprinterSpeedPct(zed)
     if lo >= hi then
         return hi
     end
-    local id = isClient() and zed:getOnlineID() or zed:getID()
-    local f = id * 0.6180339887498949
-    f = f - math.floor(f)
-    return lo + math.floor(f * (hi - lo + 1))
+    return lo + math.floor(idFraction(zed, 0.6180339887498949) * (hi - lo + 1))
+end
+
+-- Is this sprinter one of the LightImmunity percent that light does not slow?
+--
+-- LightImmunity, unless the zone the zed is standing in sets sprinterLightImmunity. Like
+-- speed this comes from the zed's id rather than a roll: clients disagreeing here would
+-- take turns setting its speed, one stopping it and the other starting it again.
+--
+-- Decided once per zed, the first time light could matter to it, and it lives in the
+-- zed's modData like the verdict. 0 can never be immune and 100 always is, since the
+-- fraction is at least 0 and below 1.
+function Core.isLightImmune(zed, zData)
+    if zData.lightImmune == nil then
+        local zone = Core.getZedZoneData(zed) or {}
+        local pct = tonumber(zone.sprinterLightImmunity) or Core.settings.LightImmunity or 0
+        zData.lightImmune = idFraction(zed, 0.41421356237309503) * 100 < pct
+    end
+    return zData.lightImmune
 end
 
 -- How fast a sprinter's run plays, from Core.sprinterSpeedPct.
@@ -137,8 +161,7 @@ function Core.updateZed(zed)
         -- The player this zed is actually after, where that is one of ours: risk is per
         -- player, and getPlayer() is only ever player one on splitscreen.
         local target = zed:getTarget()
-        local player = (target and instanceof(target, "IsoPlayer") and target:isLocalPlayer()) and target or
-                           getPlayer()
+        local player = (target and instanceof(target, "IsoPlayer") and target:isLocalPlayer()) and target or getPlayer()
 
         local pData = player:getModData().PhunSprinters
         if not pData or pData.risk == nil then
@@ -176,7 +199,7 @@ function Core.applySprintState(zed, zData)
 
     if Core.sprint then
 
-        if Core.settings.Mode == 4 or Core.settings.SlowInLight then
+        if (Core.settings.Mode == 4 or Core.settings.SlowInLight) and not Core.isLightImmune(zed, zData) then
             -- adjust for light
             Core.adjustForLight(zed, zData, zed:getTarget())
 
@@ -229,10 +252,11 @@ function Core.enableSprinting(value)
         -- Guard against a double chime if something toggles twice in quick succession.
         if now - (Core.lastChangeSound or 0) > 5 then
             Core.lastChangeSound = now
-            local vol = (Core.settings.SprintingChangeNotificationVolume or 15) * .01 * Core.clientVolume("ChangeVolume")
+            local vol = (Core.settings.SprintingChangeNotificationVolume or 15) * .01 *
+                            Core.clientVolume("ChangeVolume")
             if vol > 0 then
-                getSoundManager():PlaySound(value and "PhunSprinters_Start" or "PhunSprinters_End", false, 0)
-                    :setVolume(vol)
+                getSoundManager():PlaySound(value and "PhunSprinters_Start" or "PhunSprinters_End", false, 0):setVolume(
+                    vol)
             end
         end
     end

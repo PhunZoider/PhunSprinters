@@ -7,6 +7,8 @@
     "IGUI_PhunSprinters_minSpeed_Tooltip": "The slowest a sprinter in this zone can be, 25-100. Leave blank to use the sandbox setting",
     "IGUI_PhunSprinters_maxSpeed": "Sprinter Speed %%",
     "IGUI_PhunSprinters_maxSpeed_Tooltip": "The fastest a sprinter in this zone can be, 25-100. Leave blank to use the sandbox setting",
+    "IGUI_PhunSprinters_lightImmunity": "Light Immune Sprinters %%",
+    "IGUI_PhunSprinters_lightImmunity_Tooltip": "The percentage of sprinters in this zone that light does not slow, 0-100. Leave blank to use the sandbox setting",
     "IGUI_PhunSprinters_ZedsAreRestless": "Sprinters are restless",
     "IGUI_PhunSprinters_ZedsAreSettling": "Sprinters are settled",
     "IGUI_PhunSprinters_MoonPhase0": "New Moon",

@@ -809,6 +809,12 @@ Full measurements and method are in [perf-probe.md](perf-probe.md). What changes
   clients). This is the one MP use of the network id since step 2. As noted above, the
   `core.lua` comment saying `getOnlineID` no longer exists on 42.17 is wrong; it is
   `getID` that is per client.
+- **Some sprinters can ignore light.** `Core.isLightImmune` skips `adjustForLight` for the
+  `LightImmunity` percent of sprinters, or the zed's zone's `sprinterLightImmunity`. It
+  comes from the id for the same reason speed does, and more is at stake: clients that
+  disagree fight over `speedType` rather than just animating differently. It uses a
+  different step to speed, because with the same step every immune zed landed in the slow
+  half of the range (75 of 75 over ids 1-300 at 25%).
 
 ## Provenance
 

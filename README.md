@@ -85,6 +85,16 @@ The light figure compared against Darkness Level is 0-100:
 - **Outdoors in daylight** it is the global fog-adjusted brightness instead, because the
   per-tile value outdoors is always effectively full daylight and would ignore weather.
 
+**Light Immune Sprinters %** lets some sprinters ignore all of this. At 25, about a quarter
+of sprinters keep running through your torch beam, so a light is no longer a guarantee.
+The default of 0 means light slows every sprinter, as before. A PhunZones zone can
+override it; see [Zone recipes](#zone-recipes).
+
+Immunity only covers the light check, not the rest of the mode. In mode 1 an immune
+sprinter still walks by day, and in mode 3 it still walks when it is bright outside. Mode 4
+has no other condition, so an immune sprinter there runs all the time, even at noon.
+Without mode 4 or Slow in light, the setting does nothing.
+
 ---
 
 ## Sprinter speed
@@ -132,17 +142,19 @@ one or the other, not both. See [Compatibility](#compatibility).
 
 These need [PhunZones 2](https://steamcommunity.com/sharedfiles/filedetails/?id=3676252660).
 PhunSprinters reads two risk values off whatever zone the player is standing in, and two
-speed values off whatever zone the sprinter is standing in when it first starts running:
+speed values and a light immunity off whatever zone the sprinter is standing in when it
+first starts running:
 
-| Key                | Effect                                                             |
-| ------------------ | ------------------------------------------------------------------ |
-| `minSprinterRisk`  | Replaces Default Risk as the base for this zone                    |
-| `maxSprinterRisk`  | Caps the final risk in this zone, after moon and hours are applied |
-| `minSprinterSpeed` | Replaces Slowest Sprinter Speed % in this zone, 25-100             |
-| `maxSprinterSpeed` | Replaces Sprinter Speed % in this zone, 25-100                     |
+| Key                     | Effect                                                             |
+| ----------------------- | ------------------------------------------------------------------ |
+| `minSprinterRisk`       | Replaces Default Risk as the base for this zone                    |
+| `maxSprinterRisk`       | Caps the final risk in this zone, after moon and hours are applied |
+| `minSprinterSpeed`      | Replaces Slowest Sprinter Speed % in this zone, 25-100             |
+| `maxSprinterSpeed`      | Replaces Sprinter Speed % in this zone, 25-100                     |
+| `sprinterLightImmunity` | Replaces Light Immune Sprinters % in this zone, 0-100              |
 
 All are optional. Leave one unset and the global setting applies. A sprinter keeps its
-speed when it follows you into another zone.
+speed and its light immunity when it follows you into another zone.
 
 **A safe haven.** Set `maxSprinterRisk` to `0`. No sprinters in that zone, whatever the
 moon is doing and however long the player has survived. Good for a starter town or a
@@ -172,6 +184,9 @@ low `maxSprinterRisk` for a gentle first night.
 **Faster the further out you go.** Leave the sandbox range at `50`-`80`, then raise it in
 outlying zones: `maxSprinterSpeed` `90` in the countryside, `minSprinterSpeed` `80` and
 `maxSprinterSpeed` `100` at the military base.
+
+**Nowhere is safe at the military base.** With mode 4 or Slow in light, set
+`sprinterLightImmunity` to `50` there, so half of what you meet ignores your torch.
 
 ---
 
@@ -260,6 +275,7 @@ mutes it for that player alone, and up to `200` makes it louder.
 | ------------------------------ | -------------- | --------------------------------------------------------------------------------- |
 | Mode                           | Dusk till dawn | When sprinters run. See above                                                     |
 | Slow in light                  | off            | Light drops a running sprinter back to a walk                                     |
+| Light Immune Sprinters %       | 0              | Share of sprinters that light does not slow. See [Light suppression](#light-suppression) |
 | Darkness Level                 | 74             | The 0-100 light level sprinting is gated on                                       |
 | Sprinter Speed %               | 100            | How fast sprinters run, 25-100% of vanilla. See [Sprinter speed](#sprinter-speed) |
 | Slowest Sprinter Speed %       | 100            | Bottom of the speed range. At or above Sprinter Speed, there is no range          |
@@ -324,6 +340,10 @@ the settings, and a sprinter standing right on a zone border with different spee
 each side. In both cases another client can adopt it at a different speed, and it briefly
 animates at a different pace than it moves.
 
+Light immunity is worked out from the network id in the same way, with the same two
+exceptions. There, clients that disagree take turns stopping and starting the sprinter
+until it leaves the light.
+
 Server settings are authoritative. Clients follow them.
 
 ---
@@ -339,7 +359,7 @@ Shambler or Shambler), coloured the same way as the Extended states below.
 **Extended** also logs verbosely to the console, and each label reads:
 
 ```
-<id> <state> [L<light>] <base>><live> [<speed>%]
+<id> <state> [L<light>] [immune] <base>><live> [<speed>%]
 ```
 
 | Colour | State      | Meaning                            |
@@ -350,7 +370,8 @@ Shambler or Shambler), coloured the same way as the Extended states below.
 | red    | `run`      | One of ours, running               |
 
 `L<light>` only appears in the modes where light decides anything, and is directly
-comparable with your Darkness Level. `base>live` is the speed the zombie returns to when
+comparable with your Darkness Level. `immune` marks a sprinter that light does not slow.
+`base>live` is the speed the zombie returns to when
 it stops running, then what it is doing now. `<speed>%` is a sprinter's own sprint speed,
 once it has been given one.
 
@@ -389,7 +410,7 @@ PhunSprinters.probe.start(60, "mine")    -- after ~30 s; prints a report after 6
 ## Compatibility
 
 - [PhunZones 2](https://steamcommunity.com/sharedfiles/filedetails/?id=3676252660) for
-  per-zone risk and sprinter speed. Optional.
+  per-zone risk, sprinter speed and light immunity. Optional.
 - [PhunServer 2](https://steamcommunity.com/sharedfiles/filedetails/?id=3792193021)
   Day/Night, if installed, drives dusk and dawn instead of our own calculation. Optional,
   detected automatically.
